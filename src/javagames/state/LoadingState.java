@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import javagames.sound.SoundCue;
+import javagames.sound.SoundLooper;
 import javagames.sound.BlockingClip;
 import javagames.sound.BlockingDataLine;
 import javagames.sound.LoopEvent;
@@ -35,7 +36,8 @@ public class LoadingState extends State
 	private String ambienceFileName = "AMBIENCE_alien.wav";
 	
 	//AttributeName, FileName
-	private Map<String, String> soundFX;
+	private Map<String, String> soundCues;
+	private Map<String, String> soundLoops;
 	
 	private ExecutorService threadPool;
 	private List<Callable<Boolean>> loadTasks;
@@ -47,9 +49,12 @@ public class LoadingState extends State
 	public LoadingState()
 	{
 		//Add any Sound Effects here
-		soundFX = Collections.synchronizedMap(new HashMap<String, String>());
-		soundFX.put("explosion", "EXPLOSION_large_01.wav");
-		soundFX.put("fire-clip", "WEAPON_scifi_fire_02.wav");
+		soundCues = Collections.synchronizedMap(new HashMap<String, String>());
+		soundCues.put("explosion", "EXPLOSION_large_01.wav");
+		soundCues.put("fire-clip", "WEAPON_scifi_fire_02.wav");
+		
+		soundLoops = Collections.synchronizedMap(new HashMap<String, String>());
+		soundLoops.put("thruster", "DRONE9RE.WAV");
 	}
 	
 	@Override
@@ -111,7 +116,7 @@ public class LoadingState extends State
 		});
 		
 		//Load Sound FX
-		for (Map.Entry<String, String> entry : soundFX.entrySet())
+		for (Map.Entry<String, String> entry : soundCues.entrySet())
 		{
 			loadTasks.add(new Callable<Boolean>() 
 			{
@@ -127,6 +132,25 @@ public class LoadingState extends State
 					return Boolean.TRUE;
 				}
 				
+			});
+		}
+		
+		//Load Sound FX
+		for (Map.Entry<String, String> entry : soundLoops.entrySet())
+		{
+			loadTasks.add(new Callable<Boolean>() 
+			{
+				@Override
+				public Boolean call() throws Exception 
+				{
+					byte[] soundBytes = ResourceLoader.loadSound(this.getClass(), entry.getValue());
+					SoundLooper clip =
+							new SoundLooper( new BlockingDataLine( soundBytes ) );
+						clip.initialize();
+						clip.open();
+						controller.setAttribute(entry.getKey(), clip );
+						return Boolean.TRUE;
+				}
 			});
 		}
 		

@@ -13,7 +13,7 @@ public class SoundLooper extends SoundEvent {
 	public static final String EVENT_OPEN = "open";
 	public static final String EVENT_CLOSE = "close";
 	private String currentState;
-
+	
 	public SoundLooper(AudioStream audio) {
 		super(audio);
 		currentState = STATE_CLOSED;
@@ -30,7 +30,7 @@ public class SoundLooper extends SoundEvent {
 	public void fire() {
 		put(EVENT_FIRE);
 	}
-
+	
 	public void done() {
 		put(EVENT_DONE);
 	}
