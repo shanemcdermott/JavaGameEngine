@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javagames.state.LoadingState;
 import javagames.state.StateController;
 
 public class StateFramework extends WindowFramework 
@@ -13,16 +14,16 @@ public class StateFramework extends WindowFramework
 
 	public StateFramework()
 	{
-		appBorder = Color.DARK_GRAY;
-		appWidth = 1680;
-		appHeight = 1050;
-		appSleep = 10L;
-		appTitle = "State Framework";
-		appWorldWidth = 2.0f;
-		appWorldHeight = 2.0f;
-		appBorderScale = 0.95f;
-		appDisableCursor = true;
-		appMaintainRatio = true;
+		appBorder = GameConstants.APP_BORDER;
+		appWidth = GameConstants.APP_WIDTH;
+		appHeight = GameConstants.APP_HEIGHT;
+		appSleep = GameConstants.APP_SLEEP;
+		appTitle = GameConstants.APP_TITLE;
+		appWorldWidth = GameConstants.WORLD_WIDTH;
+		appWorldHeight = GameConstants.WORLD_HEIGHT;
+		appBorderScale = GameConstants.BORDER_SCALE;
+		appDisableCursor = GameConstants.DISABLE_CURSOR;
+		appMaintainRatio = GameConstants.MAINTAIN_RATIO;
 	}
 	
 	@Override
@@ -33,7 +34,7 @@ public class StateFramework extends WindowFramework
 		controller.setAttribute("app", this);
 		controller.setAttribute("keys", keyboard);
 		controller.setAttribute("viewport", getViewportTransform());
-		//controller.setState(new GameLoading());
+		controller.setState(new LoadingState());
 	}
 	
 	public void shutDownGame()
