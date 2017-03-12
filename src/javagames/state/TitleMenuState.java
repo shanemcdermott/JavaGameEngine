@@ -15,6 +15,7 @@ import javagames.util.Utility;
 public class TitleMenuState extends AttractState 
 {
 	protected Color fontColor = Color.GREEN;
+	
 	protected SoundCue laser;
 	
 	protected SoundLooper thruster;

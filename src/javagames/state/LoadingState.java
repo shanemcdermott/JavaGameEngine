@@ -30,6 +30,8 @@ import javagames.util.Utility;
 import javagames.util.Vector2f;
 import javagames.util.XMLUtility;
 
+
+//TODO: XML/ GameObject Loading
 public class LoadingState extends State 
 {
 	private String backgroundFileName = "space_background_600x600.png";
@@ -48,11 +50,12 @@ public class LoadingState extends State
 	
 	public LoadingState()
 	{
-		//Add any Sound Effects here
+		//Add any Sound Cues here
 		soundCues = Collections.synchronizedMap(new HashMap<String, String>());
 		soundCues.put("explosion", "EXPLOSION_large_01.wav");
 		soundCues.put("fire-clip", "WEAPON_scifi_fire_02.wav");
 		
+		//Add any looping sounds here
 		soundLoops = Collections.synchronizedMap(new HashMap<String, String>());
 		soundLoops.put("thruster", "DRONE9RE.WAV");
 	}
