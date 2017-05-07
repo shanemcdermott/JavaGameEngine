@@ -168,6 +168,7 @@ public abstract class GameFramework extends JFrame implements Runnable {
 	protected void processInput(float delta) {
 		keyboard.poll();
 		mouse.poll();
+		mouse.setWorldPosition(getWorldMousePosition());
 	}
 
 	protected void updateObjects(float delta) {

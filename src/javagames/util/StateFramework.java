@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import genesis.editor.EditorState;
 import javagames.state.LoadingState;
 import javagames.state.StateController;
 
@@ -32,9 +33,10 @@ public class StateFramework extends WindowFramework
 		super.initialize();
 		controller = new StateController();
 		controller.setAttribute("app", this);
+		controller.setAttribute("mouse", mouse);
 		controller.setAttribute("keys", keyboard);
 		controller.setAttribute("viewport", getViewportTransform());
-		controller.setState(new LoadingState());
+		controller.setState(new EditorState());
 	}
 	
 	public void shutDownGame()

@@ -1,5 +1,7 @@
 package javagames.util;
 
+import java.awt.Point;
+
 public class Vector2f {
 	
 	public float x;
@@ -101,6 +103,11 @@ public class Vector2f {
 				* (float) Math.sin(angle));
 	}
 
+	public Point toPoint()
+	{
+		return new Point((int)x,(int)y);
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("(%s,%s)", x, y);

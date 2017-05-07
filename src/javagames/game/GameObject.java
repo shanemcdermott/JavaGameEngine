@@ -13,7 +13,6 @@ public class GameObject
 	private Sprite sprite;
 	
 	private ArrayList<Vector2f[]> collisionList;
-	private ArrayList<Vector2f> positionList;
 	
 	private float rotation;
 	private float rotationDelta;
@@ -23,7 +22,18 @@ public class GameObject
 	public GameObject()
 	{
 		collisionList = new ArrayList<Vector2f[]>();
-		positionList = new ArrayList<Vector2f>();
+		position = new Vector2f();
+		velocity = new Vector2f();
+	}
+	
+	public void setPosition(Vector2f pos)
+	{
+		this.position=pos;
+	}
+	
+	public Vector2f getPosition()
+	{
+		return position;
 	}
 	
 	public void setSprite(Sprite sprite) 
@@ -43,15 +53,11 @@ public class GameObject
 		//collisionList.clear();
 		//Vector2f[] world = transformPolygon();
 		//collisionList.add(world);
-		positionList.clear();
-		positionList.add(position);
+		
 	}
 	
-	public void draw(Graphics2D g, Matrix3x3f view)
+	public void render(Graphics2D g, Matrix3x3f view)
 	{
-		for (Vector2f pos : positionList) 
-		{
-			sprite.render(g, view, pos, rotation);
-		}
+		sprite.render(g, view, position, rotation);
 	}
 }

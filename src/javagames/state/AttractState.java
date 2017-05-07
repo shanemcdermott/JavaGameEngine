@@ -94,7 +94,7 @@ public abstract class AttractState extends State
 	public void render(Graphics2D g, Matrix3x3f view) {
 		background.render(g, view);
 		for (GameObject o : gameObjects) {
-			o.draw(g, view);
+			o.render(g, view);
 		}
 	}
 }

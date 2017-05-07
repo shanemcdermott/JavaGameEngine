@@ -11,6 +11,7 @@ implements MouseListener, MouseMotionListener, MouseWheelListener {
 
    private static final int BUTTON_COUNT = 3;
    
+   private Vector2f worldPos;
    private Point mousePos;
    private Point currentPos;
    private boolean[] mouse;
@@ -60,6 +61,16 @@ implements MouseListener, MouseMotionListener, MouseWheelListener {
       }
    }
 
+   public void setWorldPosition(Vector2f inPosition)
+   {
+	   worldPos = inPosition;
+   }
+   
+   public Vector2f getWorldPosition()
+   {
+	   return worldPos;
+   }
+   
    public boolean isRelative() {
       return relative;
    }

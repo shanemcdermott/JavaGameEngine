@@ -1,12 +1,13 @@
 package javagames.util.geom;
 
+import java.awt.Graphics2D;
+import java.awt.Point;
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
 
-public class BoundingCircle implements BoundingShape
+public class BoundingCircle extends BoundingShape
 {
-
-	public Vector2f center;
+	public boolean fill = true;
 	public float radius;
 	
 	public BoundingCircle(float radius)
@@ -16,8 +17,13 @@ public class BoundingCircle implements BoundingShape
 	
 	public BoundingCircle(Vector2f center, float radius)
 	{
-		this.center = center;
+		setPosition(center);
 		this.radius = radius;
+	}
+	
+	public void setRadius(float radius)
+	{
+		this.radius=radius;
 	}
 	
 	@Override
@@ -37,7 +43,7 @@ public class BoundingCircle implements BoundingShape
 
 	public boolean intersectsCircle(BoundingCircle otherCircle)
 	{
-		return intersectsCircle(otherCircle.center, otherCircle.radius);
+		return intersectsCircle(otherCircle.position, otherCircle.radius);
 	}
 	
 	/**
@@ -48,7 +54,7 @@ public class BoundingCircle implements BoundingShape
 	 */
 	public boolean intersectsCircle(Vector2f center, float radius)
 	{
-		Vector2f c = this.center.sub(center);
+		Vector2f c = this.position.sub(center);
 		float r = this.radius + radius;
 		return c.lenSqr() < r * r;
 	}
@@ -56,8 +62,29 @@ public class BoundingCircle implements BoundingShape
 	@Override
 	public boolean contains(Vector2f point) 
 	{
-		Vector2f dist = point.sub(center);
+		Vector2f dist = point.sub(position);
 		return dist.lenSqr() < radius*radius;
 	}
 	
+	@Override
+	public void setPosition(Vector2f point)
+	{
+		super.setPosition(point);
+	}
+	
+	@Override
+	public void render(Graphics2D g, Matrix3x3f view)
+	{
+		Vector2f pos = view.mul(position);
+		Vector2f dim = view.mul(new Vector2f(radius,radius));
+		dim.x*= 0.625f;
+		dim = dim.mul(0.5f);
+		Point p = pos.sub(dim.mul(0.5f)).toPoint();
+		Point d = dim.toPoint();
+	
+		if(fill)
+			g.fillOval(p.x, p.y, d.x,d.y);
+		else
+			g.drawOval(p.x, p.y, d.x,d.y);
+	}
 }

@@ -1,11 +1,17 @@
 package javagames.util.geom;
 
 
+import java.awt.Graphics2D;
+
+import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
 
-public class BoundingBox implements BoundingShape 
+public class BoundingBox extends BoundingShape 
 {
 
+	protected float width;
+	protected float height;
+	
 	public Vector2f min;
 	public Vector2f max;
 	
@@ -18,6 +24,8 @@ public class BoundingBox implements BoundingShape
 	{
 		this.min = min;
 		this.max = max;
+		width = max.x-min.x;
+		height = max.y-min.y;
 	}
 	
 	@Override
@@ -27,7 +35,6 @@ public class BoundingBox implements BoundingShape
 			return intersectAABB((BoundingBox) otherShape);
 		else if(otherShape instanceof BoundingCircle)
 			return intersectsCircle((BoundingCircle) otherShape);
-			
 		System.err.println("otherShape is not recognized!");
 		return false;
 	}
@@ -59,6 +66,16 @@ public class BoundingBox implements BoundingShape
 		return true;
 	}
 	
+	@Override
+	public void setPosition(Vector2f point)
+	{
+		super.setPosition(point);
+		min.x = point.x - (width*0.5f);
+		min.y = point.y - (height*0.5f);
+		max.x =point.x + width*0.5f;
+		max.y = point.y + height*0.5f;
+	}
+	
 	/**
 	 * Intersection test with a circle
 	 * @param circle -circle to test
@@ -66,7 +83,7 @@ public class BoundingBox implements BoundingShape
 	 */
 	public boolean intersectsCircle(BoundingCircle circle)
 	{
-		return intersectsCircle(circle.center, circle.radius);
+		return intersectsCircle(circle.position, circle.radius);
 	}
 	
 	/**
@@ -127,5 +144,11 @@ public class BoundingBox implements BoundingShape
 	public String toString()
 	{
 		return String.format("Min: %s Max: %s", min, max);
+	}
+
+	@Override
+	public void render(Graphics2D g, Matrix3x3f view) {
+		// TODO Auto-generated method stub
+		
 	}
 }

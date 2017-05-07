@@ -1,17 +1,27 @@
 package javagames.util.geom;
 
+import java.awt.Graphics2D;
+
+import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
 
-public interface BoundingShape
+public abstract class BoundingShape
 {
-
+	protected Vector2f position;
+	
 	/**
 	 * Checks intersection with another shape.
 	 * @param otherShape -Bounding Shape to compare against
 	 * @return			true if the two shapes intersect
 	 */
-	public boolean intersects(BoundingShape otherShape);
+	public abstract boolean intersects(BoundingShape otherShape);
 	
-	public boolean contains(Vector2f point);
+	public abstract boolean contains(Vector2f point);
 	
+	public void setPosition(Vector2f point)
+	{
+		this.position=new Vector2f(point);
+	}
+	
+	public abstract void render(Graphics2D g, Matrix3x3f view);
 }
