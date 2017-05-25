@@ -18,12 +18,14 @@ public class GameObject
 	private float rotationDelta;
 	private Vector2f position;
 	private Vector2f velocity;
-
+	protected String name;
+	
 	public GameObject()
 	{
 		collisionList = new ArrayList<Vector2f[]>();
 		position = new Vector2f();
 		velocity = new Vector2f();
+		name = "GameObject";
 	}
 	
 	public void setPosition(Vector2f pos)

@@ -11,7 +11,7 @@ import javagames.state.StateController;
 public class StateFramework extends WindowFramework 
 {
 
-	private StateController controller;
+	protected StateController controller;
 
 	public StateFramework()
 	{
@@ -36,7 +36,7 @@ public class StateFramework extends WindowFramework
 		controller.setAttribute("mouse", mouse);
 		controller.setAttribute("keys", keyboard);
 		controller.setAttribute("viewport", getViewportTransform());
-		controller.setState(new EditorState());
+		//controller.setState(new EditorState());
 	}
 	
 	public void shutDownGame()
