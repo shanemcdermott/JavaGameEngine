@@ -9,14 +9,12 @@ public class Vector2f {
 	public float w;
 
 	public Vector2f() {
-		this.x = 0.0f;
-		this.y = 0.0f;
-		this.w = 1.0f;
+		this(0.f);
 	}
 
-	public Vector2f(float size) 
+	public Vector2f(float v)
 	{
-		this(size,size);
+		this(v,v);
 	}
 	
 	public Vector2f(Vector2f v) {
@@ -25,10 +23,9 @@ public class Vector2f {
 		this.w = v.w;
 	}
 
-	public Vector2f(float x, float y) {
-		this.x = x;
-		this.y = y;
-		this.w = 1.0f;
+	public Vector2f(float x, float y) 
+	{
+		this(x,y,1.f);
 	}
 
 	public Vector2f(float x, float y, float w) {
@@ -37,6 +34,13 @@ public class Vector2f {
 		this.w = w;
 	}
 
+	public Vector2f(Point p)
+	{
+		this.x = p.x;
+		this.y = p.y;
+		this.w = 1.f;
+	}
+	
 	public void translate(float tx, float ty) {
 		x += tx;
 		y += ty;
@@ -99,6 +103,11 @@ public class Vector2f {
 		return new Vector2f(-y, x);
 	}
 
+	public Vector2f abs()
+	{
+		return new Vector2f(Math.abs(x),Math.abs(y));
+	}
+	
 	public float angle() {
 		return (float) Math.atan2(y, x);
 	}
@@ -115,6 +124,6 @@ public class Vector2f {
 	
 	@Override
 	public String toString() {
-		return String.format("(%s,%s)", x, y);
+		return String.format("(%.2f,%.2f)", x, y);
 	}
 }

@@ -6,5 +6,5 @@ import javagames.util.Matrix3x3f;
 
 public interface Drawable 
 {
-	public void render(Graphics g, Matrix3x3f view);
+	void render(Graphics g, Matrix3x3f viewport); //Draw the object with passed Graphics
 }

@@ -1,11 +1,11 @@
-package javagames.util;
+package javagames.framework;
 
 import java.awt.*;
 import java.awt.event.*;
 
 public class WindowFramework extends GameFramework {
 	
-	private Canvas canvas;
+	protected Canvas canvas;
 
 	@Override
 	protected void createFramework() {
