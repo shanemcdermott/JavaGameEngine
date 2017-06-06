@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javagames.game.GameObject;
-import javagames.util.KeyboardInput;
+import javagames.player.KeyboardInput;
 import javagames.util.Matrix3x3f;
 import javagames.util.Sprite;
 

@@ -1,9 +1,11 @@
-package javagames.util;
+package javagames.player;
 
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import javagames.util.Vector2f;
 
 
 public class RelativeMouseInput 

@@ -5,6 +5,9 @@ import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import javax.swing.*;
 
+import javagames.player.KeyboardInput;
+import javagames.player.RelativeMouseInput;
+
 public abstract class GameFramework extends JFrame implements Runnable {
 	
 	private BufferStrategy bs;

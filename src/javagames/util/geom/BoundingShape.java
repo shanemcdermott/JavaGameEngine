@@ -1,11 +1,13 @@
 package javagames.util.geom;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javagames.g2d.Drawable;
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
 
-public abstract class BoundingShape
+public abstract class BoundingShape implements Drawable
 {
 	protected Vector2f position;
 	
@@ -23,5 +25,5 @@ public abstract class BoundingShape
 		this.position=new Vector2f(point);
 	}
 	
-	public abstract void render(Graphics2D g, Matrix3x3f view);
+	public abstract void render(Graphics g, Matrix3x3f view);
 }

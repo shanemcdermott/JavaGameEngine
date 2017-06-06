@@ -1,4 +1,4 @@
-package javagames.util;
+package javagames.player;
 
 
 import java.awt.event.*;

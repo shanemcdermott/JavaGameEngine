@@ -1,5 +1,6 @@
 package javagames.util.geom;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import javagames.util.Matrix3x3f;
@@ -73,18 +74,23 @@ public class BoundingCircle extends BoundingShape
 	}
 	
 	@Override
-	public void render(Graphics2D g, Matrix3x3f view)
+	public void render(Graphics g, Matrix3x3f view)
 	{
-		Vector2f pos = view.mul(position);
-		Vector2f dim = view.mul(new Vector2f(radius,radius));
-		dim.x*= 0.625f;
-		dim = dim.mul(0.5f);
-		Point p = pos.sub(dim.mul(0.5f)).toPoint();
+		
+		Vector2f dim = new Vector2f(radius);
+		Vector2f tl = position.sub(dim);
+		dim.mul(2.f);
+		tl.y += dim.y;
+		tl = view.mul(tl);
+		//dim = view.mul(dim);
 		Point d = dim.toPoint();
-	
+		Point p = tl.toPoint();
+		
+		
 		if(fill)
 			g.fillOval(p.x, p.y, d.x,d.y);
 		else
 			g.drawOval(p.x, p.y, d.x,d.y);
 	}
+
 }

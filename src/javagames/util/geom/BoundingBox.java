@@ -1,7 +1,9 @@
 package javagames.util.geom;
 
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
@@ -70,10 +72,28 @@ public class BoundingBox extends BoundingShape
 	public void setPosition(Vector2f point)
 	{
 		super.setPosition(point);
-		min.x = point.x - (width*0.5f);
-		min.y = point.y - (height*0.5f);
-		max.x =point.x + width*0.5f;
-		max.y = point.y + height*0.5f;
+		Vector2f halfSize = new Vector2f();
+		getHalfSize(halfSize);
+		min.x = point.x - halfSize.x;
+		min.y = point.y - halfSize.y;
+		max.x =point.x + halfSize.x;
+		max.y = point.y + halfSize.y;
+	}
+	
+	public float getHalfWidth()
+	{
+		return width * 0.5f;
+	}
+	
+	public float getHalfHeight()
+	{
+		return height * 0.5f;
+	}
+	
+	public void getHalfSize(Vector2f outHalfSize)
+	{
+		outHalfSize.x = getHalfWidth();
+		outHalfSize.y = getHalfHeight();
 	}
 	
 	/**
@@ -147,8 +167,13 @@ public class BoundingBox extends BoundingShape
 	}
 
 	@Override
-	public void render(Graphics2D g, Matrix3x3f view) {
-		// TODO Auto-generated method stub
+	public void render(Graphics g, Matrix3x3f view) 
+	{
+		Vector2f tl = view.mul(position.add(new Vector2f(-getHalfWidth(),getHalfHeight())));
+		Vector2f s = view.mul(new Vector2f(width,height));
+		Point d = s.toPoint();
+		Point p = tl.toPoint();
+		g.drawRect(p.x, p.y, d.x,d.y);
 		
 	}
 }

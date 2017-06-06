@@ -9,19 +9,20 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 
 import javagames.game.GameObject;
+import javagames.player.KeyboardInput;
+import javagames.player.PlayerController;
+import javagames.player.RelativeMouseInput;
 import javagames.state.State;
-import javagames.util.KeyboardInput;
 import javagames.util.Matrix3x3f;
-import javagames.util.RelativeMouseInput;
 import javagames.util.Sprite;
 import javagames.util.Vector2f;
 import javagames.world.InfluenceObject;
 
-public class EditorState extends State 
+public class GameState extends State 
 {
 	protected Color fontColor = Color.GREEN;
-	protected List<GameObject> objects;
-	protected GameObject cursor;
+	protected List<GameObject> gameObjects;
+	protected PlayerController player;
 	protected RelativeMouseInput mouse;
 	protected KeyboardInput keys;
 		
@@ -29,26 +30,25 @@ public class EditorState extends State
 	public void enter()
 	{
 		super.enter();
+		gameObjects = new ArrayList<GameObject>();
 		keys = (KeyboardInput) controller.getAttribute("keys");
 		mouse = (RelativeMouseInput)controller.getAttribute("mouse");
-		cursor = new InfluenceObject();
-		objects = new ArrayList<GameObject>();
+		player = new PlayerController(this);
 	}
 		
 	@Override
 	public void processInput(float deltaTime)
 	{
 		super.processInput(deltaTime);
-		cursor.setPosition(mouse.getWorldPosition());
-		if(mouse.buttonDownOnce(MouseEvent.BUTTON1))
-		{
-			InfluenceObject i = new InfluenceObject();
-			i.setPosition(cursor.getPosition());
-			objects.add(i);
-		}
+		player.processInput(mouse, keys,deltaTime);
 			
 	}
 		
+	public void addObject(GameObject object)
+	{
+		gameObjects.add(object);
+	}
+	
 	public void render(Graphics2D g, Matrix3x3f view) 
 	{
 		super.render(g, view);
@@ -56,9 +56,8 @@ public class EditorState extends State
 		int height = app.getScreenHeight();
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 					RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		cursor.render(g,view);
 		drawGrid(g,view);
-		for(GameObject go : objects)
+		for(GameObject go : gameObjects)
 		{
 			go.render(g, view);
 		}
@@ -68,7 +67,7 @@ public class EditorState extends State
 	
 	public void drawGrid(Graphics2D g, Matrix3x3f view)
 	{
-		for(float i= -1; i<=1;i+=0.5f)
+		for(float i= -100; i<=100;i+=10.f)
 		{
 			Vector2f v = view.mul(new Vector2f(i,-1));
 			Vector2f v2 = view.mul(new Vector2f(i,1));
