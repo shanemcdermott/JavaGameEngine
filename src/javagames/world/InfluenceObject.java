@@ -3,6 +3,7 @@ package javagames.world;
 import java.awt.Graphics2D;
 
 import java.awt.Color;
+import java.awt.Graphics;
 
 import javagames.game.GameObject;
 import javagames.util.Matrix3x3f;
@@ -35,10 +36,10 @@ public class InfluenceObject extends GameObject
 	}
 	
 	@Override
-	public void render(Graphics2D g, Matrix3x3f view)
+	public void render(Graphics g, Matrix3x3f viewport)
 	{
 		g.setColor(color);
-		bounds.render(g,view);
+		bounds.render(g,viewport);
 	}
 
 }
