@@ -13,8 +13,8 @@ import javagames.util.Vector2f;
 public class BoundingBox extends BoundingShape 
 {
 
-	public float width;
-	public float height;
+	protected float width;
+	protected float height;
 	
 	public BoundingBox()
 	{
@@ -56,6 +56,22 @@ public class BoundingBox extends BoundingShape
 		position.y = (float) rectangle.getCenterY();
 	}
 
+	public void resize(float width, float height)
+	{
+		this.width=width;
+		this.height = height;
+	}
+	
+	public float getWidth()
+	{
+		return width;
+	}
+	
+	public float getHeight()
+	{
+		return height;
+	}
+	
 	public Vector2f getTopLeft()
 	{
 		Vector2f min = getMin();

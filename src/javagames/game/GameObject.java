@@ -1,5 +1,6 @@
 package javagames.game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class GameObject implements Drawable
 	private String name;
 	private Map<String, Object> components;
 	
+	protected Color color;
 	protected BoundingShape bounds;
 	
 	protected Matrix3x3f transform;
@@ -55,6 +57,15 @@ public class GameObject implements Drawable
 		return components.keySet();
 	}
 
+	public void setColor(Color c)
+	{
+		color = c;
+	}
+	
+	public Color getColor()
+	{
+		return color;
+	}
 	
 	public void setPosition(Vector2f pos)
 	{
@@ -96,7 +107,10 @@ public class GameObject implements Drawable
 	public void render(Graphics g, Matrix3x3f viewport) 
 	{
 		if(bounds!=null)
+		{
+			g.setColor(color);
 			bounds.render(g, viewport);
+		}
 		
 	}
 }

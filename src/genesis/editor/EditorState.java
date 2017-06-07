@@ -15,6 +15,7 @@ import javagames.util.Matrix3x3f;
 import javagames.util.RelativeMouseInput;
 import javagames.util.Sprite;
 import javagames.util.Vector2f;
+import javagames.world.Dungeon;
 import javagames.world.InfluenceObject;
 
 public class EditorState extends State 
@@ -33,6 +34,7 @@ public class EditorState extends State
 		mouse = (RelativeMouseInput)controller.getAttribute("mouse");
 		cursor = new InfluenceObject();
 		objects = new ArrayList<GameObject>();
+		objects.add(new Dungeon("DummyDungeon"));
 	}
 		
 	@Override
@@ -57,7 +59,7 @@ public class EditorState extends State
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 					RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		cursor.render(g,view);
-		drawGrid(g,view);
+		//drawGrid(g,view);
 		for(GameObject go : objects)
 		{
 			go.render(g, view);
