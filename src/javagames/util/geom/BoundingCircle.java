@@ -77,17 +77,18 @@ public class BoundingCircle extends BoundingShape
 	@Override
 	public void render(Graphics g, Matrix3x3f viewport) 
 	{
-		Vector2f pos = viewport.mul(position);
-		Vector2f dim = viewport.mul(new Vector2f(radius,radius));
-		dim.x*= 0.625f;
-		dim = dim.mul(0.5f);
-		Point p = pos.sub(dim.mul(0.5f)).toPoint();
-		Point d = dim.toPoint();
+		// TODO Auto-generated method stub
+		Vector2f size = new Vector2f(radius,radius);
+		Vector2f topLeft = position.sub(size);
+		topLeft.y += radius * 2.f;
+		topLeft = viewport.mul(topLeft);
+		size.scale(900.f, 900.f);
+	
 	
 		if(fill)
-			g.fillOval(p.x, p.y, d.x,d.y);
+			g.fillOval((int)topLeft.x, (int)topLeft.y, (int)size.x, (int)size.y);
 		else
-			g.drawOval(p.x, p.y, d.x,d.y);
+			g.drawOval((int)topLeft.x, (int)topLeft.y, (int)size.x, (int)size.y);
 		
 	}
 }

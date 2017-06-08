@@ -38,7 +38,7 @@ public class GameObject implements Drawable
 		rotation = 0.f;
 		scale = new Vector2f(1.f,1.f);
 		components = Collections.synchronizedMap(new HashMap<String, Object>());
-		
+		color = Color.WHITE;
 	}
 	
 	public Object getComponent(String name) {
@@ -70,6 +70,7 @@ public class GameObject implements Drawable
 	public void setPosition(Vector2f pos)
 	{
 		this.position=pos;
+		bounds.setPosition(pos);
 	}
 	
 	public Vector2f getPosition()
@@ -92,6 +93,11 @@ public class GameObject implements Drawable
 	{
 		updateTransform(deltaTime);
 		
+	}
+	
+	public BoundingShape getBounds()
+	{
+		return bounds;
 	}
 	
 	public void updateTransform(float deltaTime) 

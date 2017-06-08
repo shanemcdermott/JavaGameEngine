@@ -1,9 +1,10 @@
-package javagames.util;
+package javagames.framework;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import javax.swing.*;
+import javagames.util.*;
 
 public abstract class GameFramework extends JFrame implements Runnable {
 	
@@ -168,7 +169,6 @@ public abstract class GameFramework extends JFrame implements Runnable {
 	protected void processInput(float delta) {
 		keyboard.poll();
 		mouse.poll();
-		mouse.setWorldPosition(getWorldMousePosition());
 	}
 
 	protected void updateObjects(float delta) {

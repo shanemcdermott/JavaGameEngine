@@ -1,7 +1,7 @@
 package javagames.state;
 
 import java.awt.Graphics2D;
-import javagames.util.StateFramework;
+import javagames.framework.StateFramework;
 import javagames.util.Matrix3x3f;
 
 public class State {

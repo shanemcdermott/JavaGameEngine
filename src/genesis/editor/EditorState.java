@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 
+import javagames.game.GameCursor;
 import javagames.game.GameObject;
 import javagames.state.State;
 import javagames.util.KeyboardInput;
@@ -22,7 +23,6 @@ public class EditorState extends State
 {
 	protected Color fontColor = Color.GREEN;
 	protected List<GameObject> objects;
-	protected GameObject cursor;
 	protected RelativeMouseInput mouse;
 	protected KeyboardInput keys;
 		
@@ -32,22 +32,14 @@ public class EditorState extends State
 		super.enter();
 		keys = (KeyboardInput) controller.getAttribute("keys");
 		mouse = (RelativeMouseInput)controller.getAttribute("mouse");
-		cursor = new InfluenceObject();
 		objects = new ArrayList<GameObject>();
-		objects.add(new Dungeon("DummyDungeon"));
 	}
 		
 	@Override
 	public void processInput(float deltaTime)
 	{
 		super.processInput(deltaTime);
-		cursor.setPosition(mouse.getWorldPosition());
-		if(mouse.buttonDownOnce(MouseEvent.BUTTON1))
-		{
-			InfluenceObject i = new InfluenceObject();
-			i.setPosition(cursor.getPosition());
-			objects.add(i);
-		}
+
 			
 	}
 		
@@ -58,7 +50,6 @@ public class EditorState extends State
 		int height = app.getScreenHeight();
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 					RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		cursor.render(g,view);
 		//drawGrid(g,view);
 		for(GameObject go : objects)
 		{

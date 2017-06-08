@@ -94,6 +94,11 @@ public class Vector2f {
 		return new Vector2f(-y, x);
 	}
 
+	public Vector2f abs()
+	{
+		return new Vector2f(Math.abs(x),Math.abs(y));
+	}
+	
 	public float angle() {
 		return (float) Math.atan2(y, x);
 	}

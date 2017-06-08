@@ -33,6 +33,22 @@ public class Dungeon extends GameRoom
 		updateRoomSize(newSize);
 	}
 	
+	public GameRoom getRoomAt(Vector2f location)
+	{
+		if(!bounds.contains(location)) return null;
+		
+		for(int x = 0; x < rooms.length; x++)
+		{
+			for(int y = 0; y < rooms.length; y++)
+			{
+				if(rooms[x][y].contains(location))
+					return rooms[x][y];
+			}
+		}
+		
+		return null;
+	}
+	
 	private void updateRoomSize(Vector2f dungeonBounds)
 	{
 		roomSize.x = dungeonBounds.x / rooms.length;

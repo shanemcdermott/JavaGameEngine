@@ -12,6 +12,6 @@ public class GameConstants
 	public static final float WORLD_WIDTH = 2.0f;
 	public static final float WORLD_HEIGHT = 2.0f;
 	public static final float BORDER_SCALE = 0.95f;
-	public static final boolean DISABLE_CURSOR = true;
+	public static final boolean DISABLE_CURSOR = false;
 	public static final boolean MAINTAIN_RATIO = true;
 }
