@@ -10,7 +10,7 @@ import javagames.util.Vector2f;
 public abstract class BoundingShape implements Drawable
 {
 	protected Vector2f position;
-	
+	public boolean fill;
 	/**
 	 * Checks intersection with another shape.
 	 * @param otherShape -Bounding Shape to compare against

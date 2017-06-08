@@ -115,6 +115,6 @@ public class Vector2f {
 	
 	@Override
 	public String toString() {
-		return String.format("(%s,%s)", x, y);
+		return String.format("(%.2f,%.2f)", x, y);
 	}
 }

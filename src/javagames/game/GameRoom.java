@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
@@ -13,7 +14,7 @@ import javagames.util.geom.BoundingBox;
 
 public class GameRoom extends GameObject 
 {
-	public List<GameObject> contents;
+	public Vector<GameObject> contents;
 	
 	public GameRoom(Vector2f location)
 	{
@@ -21,7 +22,7 @@ public class GameRoom extends GameObject
 		position = new Vector2f(location);
 		bounds = new BoundingBox();
 		bounds.setPosition(position);
-		contents = new ArrayList<GameObject>();
+		contents = new Vector<GameObject>();
 	}
 
 	public boolean contains(Vector2f point)

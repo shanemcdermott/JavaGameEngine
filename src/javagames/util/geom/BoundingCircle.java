@@ -8,7 +8,6 @@ import javagames.util.Vector2f;
 
 public class BoundingCircle extends BoundingShape
 {
-	public boolean fill = true;
 	public float radius;
 	
 	public BoundingCircle(float radius)
@@ -20,6 +19,7 @@ public class BoundingCircle extends BoundingShape
 	{
 		setPosition(center);
 		this.radius = radius;
+		fill = true;
 	}
 	
 	public void setRadius(float radius)

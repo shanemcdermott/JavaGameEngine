@@ -1,7 +1,10 @@
 package genesis.editor;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JPanel;
 
 import javagames.game.GameCursor;
 import javagames.game.GameObject;
@@ -14,6 +17,7 @@ import javagames.world.InfluenceObject;
 public class EditorTool extends GameCursor
 {
 	public WorldEditor editor;
+	public JPanel	toolPanel;
 	
 	public EditorTool(WorldEditor editor)
 	{
@@ -21,6 +25,7 @@ public class EditorTool extends GameCursor
 		bounds=new BoundingCircle(new Vector2f(), 0.1f);
 		color = new Color(0,255,0,100);
 		this.editor = editor;
+		toolPanel = new JPanel();
 	}
 
 }

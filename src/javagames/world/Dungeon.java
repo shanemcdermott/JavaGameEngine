@@ -1,6 +1,7 @@
 package javagames.world;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,20 +34,36 @@ public class Dungeon extends GameRoom
 		updateRoomSize(newSize);
 	}
 	
+	public Point getRoomIndices(Vector2f location)
+	{
+		Vector2f bottomLeft = location.sub(rooms[0][0].getPosition()).add(roomSize.mul(0.5f));
+		bottomLeft.x /= roomSize.x;
+		bottomLeft.y /= roomSize.y;
+		return bottomLeft.abs().toPoint();
+	}
+	
 	public GameRoom getRoomAt(Vector2f location)
 	{
 		if(!bounds.contains(location)) return null;
+		Point p = getRoomIndices(location);
+		return rooms[p.x][p.y];
+	}
+	
+	public void setRoomAt(Vector2f location, GameRoom inRoom)
+	{
+		if(!bounds.contains(location)) return;
 		
 		for(int x = 0; x < rooms.length; x++)
 		{
 			for(int y = 0; y < rooms.length; y++)
 			{
 				if(rooms[x][y].contains(location))
-					return rooms[x][y];
+				{
+					rooms[x][y] = inRoom;
+					return;
+				}
 			}
 		}
-		
-		return null;
 	}
 	
 	private void updateRoomSize(Vector2f dungeonBounds)

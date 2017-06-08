@@ -14,7 +14,9 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -40,6 +42,9 @@ public class WorldEditor extends SwingFramework
 {
 
 	protected List<GameObject> objects;
+	protected HashMap<String,EditorTool> tools;
+	
+	
 	public	  Dungeon dungeon;
 	protected EditorTool cursor;
 	
@@ -47,6 +52,7 @@ public class WorldEditor extends SwingFramework
 	protected JTextField tagField; 
 	private JPanel mainPanel;
 	private JPanel centerPanel;
+	private JPanel toolPanel;
 	
 	public WorldEditor()
 	{
@@ -54,7 +60,9 @@ public class WorldEditor extends SwingFramework
 		objects = Collections.synchronizedList(new ArrayList<GameObject>());
 		dungeon = new Dungeon("EditorDungeon");
 		objects.add(dungeon);
-		cursor = new EditorTool(this);
+		cursor = new RoomSelectTool(this);
+		tools = new HashMap<String, EditorTool>();
+		tools.put("Room Select", cursor);
 	}
 	
 	@Override
@@ -103,20 +111,18 @@ public class WorldEditor extends SwingFramework
 	protected JMenu initModeMenu()
 	{
 		JMenu menu = new JMenu("Mode");
-		JMenuItem item = new JMenuItem(new AbstractAction("Room Select") {
-			public void actionPerformed(ActionEvent e) {
-				WorldEditor.this.cursor = new RoomSelectTool(WorldEditor.this);
-				WorldEditor.this.cursor.setColor(Color.BLUE);
-				
-			}
-		});
-		menu.add(item);
-		ArrayList<JMenuItem> items = new ArrayList<JMenuItem>();
-		//pointEditor.getCreateMenuItems(items);
-		//cellEditor.getCreateMenuItems(items);
-		for(JMenuItem jmi : items)
+		for(Map.Entry<String,EditorTool> entry : tools.entrySet())
 		{
-			menu.add(jmi);
+			JMenuItem item = new JMenuItem(new AbstractAction(entry.getKey()) {
+				public void actionPerformed(ActionEvent e) {
+					WorldEditor.this.cursor = entry.getValue();
+					getMainPanel().remove(WorldEditor.this.toolPanel);
+					WorldEditor.this.toolPanel = entry.getValue().toolPanel;
+					getMainPanel().add(WorldEditor.this.toolPanel, BorderLayout.EAST);
+					
+				}
+			});
+			menu.add(item);
 		}
 		return menu;
 	}
@@ -137,22 +143,8 @@ public class WorldEditor extends SwingFramework
 	
 	protected void initEditorBar()
 	{
-		JPanel p = new JPanel();
-		p.add(new JLabel("Room Tag"));
-		tagField = new JTextField(3);
-		tagField.setHorizontalAlignment(JTextField.CENTER);
-		tagField.setText("Tag");
-		p.add(tagField);
-
-		JButton button = new JButton("Add");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-
-		p.add(button);
-		getMainPanel().add(p, BorderLayout.SOUTH);
+		toolPanel = cursor.toolPanel;
+		getMainPanel().add(toolPanel, BorderLayout.EAST);
 	}
 	
 	
