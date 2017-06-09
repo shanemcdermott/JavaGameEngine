@@ -1,4 +1,4 @@
-package genesis.editor;
+package genesis.editor.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,60 +28,16 @@ import javax.swing.border.TitledBorder;
 import javagames.game.GameRoom;
 import javagames.util.Vector2f;
 
-public class RoomDetailsPanel extends JPanel 
+public class RoomDetailsPanel extends DetailsPanel
 {
-	TitledBorder title;
-	JTextArea namePane;
-	JTextArea locationPane;
 	JList contentList;
 	DefaultListModel<String> listModel;
-	
-	GameRoom room;
 	
 	public RoomDetailsPanel()
 	{
 		super();
 		
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		title = BorderFactory.createTitledBorder("Room Details");
 		
-		JLabel nameLabel = new JLabel("Name", JLabel.CENTER);
-		
-		namePane = new JTextArea();
-		namePane.setText("Name");
-		namePane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		nameLabel.setLabelFor(namePane);
-		
-		JButton saveButton = new JButton("Save");
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				room.setName(namePane.getText());
-			}
-		});
-		
-		JLabel locationLabel = new JLabel("Location", JLabel.CENTER);
-				
-		locationPane = new JTextArea();
-		locationPane.setText(new Vector2f().toString());
-		locationPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		locationPane.setEditable(false);
-		locationLabel.setLabelFor(locationPane);
-		
-		JPanel actorPanel = new JPanel();
-		actorPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		actorPanel.add(nameLabel);
-		actorPanel.add(namePane);
-		
-		setBorder(title);
-		add(actorPanel);
-
-		JPanel locPanel = new JPanel();
-		locPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		locPanel.add(locationLabel);
-		locPanel.add(locationPane);
-		add(locPanel);
-		
-	
 		listModel = new DefaultListModel<String>();
 		contentList = new JList<String>(listModel);
 		contentList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -101,7 +57,7 @@ public class RoomDetailsPanel extends JPanel
 		JButton submitButton = new JButton("Add");
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				room.setComponent(tagField.getText(),null);
+				getRoom().setComponent(tagField.getText(),null);
 				updateList();
 				tagField.setText("Add a tag");
 			}
@@ -113,13 +69,19 @@ public class RoomDetailsPanel extends JPanel
 		//add(locationLabel);
 		//add(locationPane);
 		
-		add(saveButton);
+
 		
 	}
 
+	public GameRoom getRoom()
+	{
+		return (GameRoom)object;
+	}
+	
 	public void setRoom(GameRoom room)
 	{
-		this.room = room;
+		object = room;
+		
 		if(room == null) return;
 		namePane.setText(room.getName());
 		locationPane.setText(room.getPosition().toString());
@@ -130,7 +92,7 @@ public class RoomDetailsPanel extends JPanel
 	public void updateList()
 	{
 		listModel.clear();
-		Set<String> tags = room.getComponentNames();
+		Set<String> tags = getRoom().getComponentNames();
 		for(String s : tags)
 		{
 			listModel.addElement(s);

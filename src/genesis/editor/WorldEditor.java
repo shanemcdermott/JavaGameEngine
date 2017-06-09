@@ -2,6 +2,7 @@ package genesis.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -17,6 +18,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -29,13 +31,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
-
+import genesis.cell.*;
+import genesis.editor.tool.EditorTool;
+import genesis.editor.tool.CellCreateTool;
+import genesis.editor.tool.CellSelectTool;
 import javagames.framework.SwingFramework;
 import javagames.game.GameObject;
-import javagames.state.LoadingState;
-import javagames.state.StateController;
 import javagames.util.Matrix3x3f;
-import javagames.world.Dungeon;
+
 
 
 public class WorldEditor extends SwingFramework
@@ -45,55 +48,42 @@ public class WorldEditor extends SwingFramework
 	protected HashMap<String,EditorTool> tools;
 	
 	
-	public	  Dungeon dungeon;
+	public	  CellManager cellManager;
 	protected EditorTool cursor;
 	
+	protected Random rng;
 	protected static String[] params;
 	protected JTextField tagField; 
-	private JPanel mainPanel;
-	private JPanel centerPanel;
-	private JPanel toolPanel;
+
+	private JPanel editorPanel;
 	
 	public WorldEditor()
 	{
 		super();
 		objects = Collections.synchronizedList(new ArrayList<GameObject>());
-		dungeon = new Dungeon("EditorDungeon");
-		objects.add(dungeon);
-		cursor = new RoomSelectTool(this);
+		cellManager = new CellManager(rng, new ArrayList<Cell>());
 		tools = new HashMap<String, EditorTool>();
-		tools.put("Room Select", cursor);
+
 	}
 	
 	@Override
 	public void initialize()
 	{
 		super.initialize();
-		processParams();
+		
+		cursor = new CellCreateTool(this);
+		tools.put("Create Cell", cursor);
+		tools.put("Edit Cell", new CellSelectTool(this));
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.add(initFileMenu());
+		menuBar.add(initModeMenu());
+		menuBar.add(initHelpMenu());
+		setJMenuBar(menuBar);
 		initEditorBar();
-	}
-	
-	public static void main(String[] args) 
-	{
-		params = args;
-		launchApp(new WorldEditor());
+		
 	}
 
-	protected void processParams()
-	{
-		if(params.length>0)
-		{
-			System.out.println(params[0]);
-		}
-		else
-		{
-			JMenuBar menuBar = new JMenuBar();
-			menuBar.add(initFileMenu());
-			menuBar.add(initModeMenu());
-			menuBar.add(initHelpMenu());
-			setJMenuBar(menuBar);
-		}
-	}
 
 	protected JMenu initFileMenu()
 	{
@@ -115,11 +105,11 @@ public class WorldEditor extends SwingFramework
 		{
 			JMenuItem item = new JMenuItem(new AbstractAction(entry.getKey()) {
 				public void actionPerformed(ActionEvent e) {
-					WorldEditor.this.cursor = entry.getValue();
-					getMainPanel().remove(WorldEditor.this.toolPanel);
-					WorldEditor.this.toolPanel = entry.getValue().toolPanel;
-					getMainPanel().add(WorldEditor.this.toolPanel, BorderLayout.EAST);
-					
+					cursor.deactivate();
+					cursor = entry.getValue();
+					CardLayout cl = (CardLayout)(editorPanel.getLayout());
+					cl.show(editorPanel, entry.getKey());
+				
 				}
 			});
 			menu.add(item);
@@ -143,14 +133,15 @@ public class WorldEditor extends SwingFramework
 	
 	protected void initEditorBar()
 	{
-		toolPanel = cursor.toolPanel;
-		getMainPanel().add(toolPanel, BorderLayout.EAST);
-	}
-	
-	
-	public void shutDownGame()
-	{
-		shutDown();
+		CardLayout cl = new CardLayout();
+		editorPanel = new JPanel(cl);
+		
+		for(Map.Entry<String,EditorTool> entry : tools.entrySet())
+		{
+			editorPanel.add(entry.getValue().toolPanel,entry.getKey());
+		}
+		add(editorPanel,BorderLayout.EAST);
+		
 	}
 	
 	@Override
@@ -169,7 +160,7 @@ public class WorldEditor extends SwingFramework
 			go.update(deltaTime);
 		
 	}
-
+	
 	@Override
 	protected void render(Graphics g)
 	{
@@ -183,6 +174,17 @@ public class WorldEditor extends SwingFramework
 		{
 			go.render(g, view);
 		}
+		
+		cellManager.render(g,view);
 	}
 	
+	
+	
+	
+	
+	public static void main(String[] args) 
+	{
+		params = args;
+		launchApp(new WorldEditor());
+	}
 }

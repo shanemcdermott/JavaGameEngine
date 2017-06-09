@@ -1,4 +1,4 @@
-package genesis.editor;
+package genesis.editor.tool;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 
+import genesis.editor.WorldEditor;
 import javagames.game.GameCursor;
 import javagames.game.GameObject;
 import javagames.util.MouseControls;
@@ -28,4 +29,9 @@ public class EditorTool extends GameCursor
 		toolPanel = new JPanel();
 	}
 
+	public void deactivate()
+	{
+		
+	}
+	
 }

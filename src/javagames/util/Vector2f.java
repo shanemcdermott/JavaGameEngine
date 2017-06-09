@@ -9,21 +9,23 @@ public class Vector2f {
 	public float w;
 
 	public Vector2f() {
-		this.x = 0.0f;
-		this.y = 0.0f;
-		this.w = 1.0f;
+		this(0.f);
 	}
 
+	public Vector2f(float v)
+	{
+		this(v,v);
+	}
+	
 	public Vector2f(Vector2f v) {
 		this.x = v.x;
 		this.y = v.y;
 		this.w = v.w;
 	}
 
-	public Vector2f(float x, float y) {
-		this.x = x;
-		this.y = y;
-		this.w = 1.0f;
+	public Vector2f(float x, float y) 
+	{
+		this(x,y,1.f);
 	}
 
 	public Vector2f(float x, float y, float w) {
@@ -32,6 +34,13 @@ public class Vector2f {
 		this.w = w;
 	}
 
+	public Vector2f(Point p)
+	{
+		this.x = p.x;
+		this.y = p.y;
+		this.w = 1.f;
+	}
+	
 	public void translate(float tx, float ty) {
 		x += tx;
 		y += ty;

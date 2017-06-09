@@ -13,6 +13,7 @@ import javagames.g2d.Drawable;
 import javagames.util.Matrix3x3f;
 import javagames.util.Sprite;
 import javagames.util.Vector2f;
+import javagames.util.geom.BoundingBox;
 import javagames.util.geom.BoundingShape;
 
 public class GameObject implements Drawable
@@ -76,6 +77,17 @@ public class GameObject implements Drawable
 	public Vector2f getPosition()
 	{
 		return position;
+	}
+	
+	public Vector2f getScale()
+	{
+		return scale;
+	}
+	
+	public void setScale(float width, float height)
+	{
+		scale.x = width;
+		scale.y = height;
 	}
 	
 	public String getName() 

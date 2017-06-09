@@ -79,6 +79,11 @@ public class BoundingBox extends BoundingShape
 		return new Vector2f(min.x, max.y);
 	}
 	
+	public Vector2f getSize()
+	{
+		return new Vector2f(width,height);
+	}
+	
 	public Vector2f getHalfSize()
 	{
 		return new Vector2f(width * 0.5f, height * 0.5f);

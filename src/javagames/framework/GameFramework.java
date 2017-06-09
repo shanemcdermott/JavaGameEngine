@@ -18,19 +18,19 @@ public abstract class GameFramework extends JFrame implements Runnable {
 	protected FrameRate frameRate;
 	protected RelativeMouseInput mouse;
 	protected KeyboardInput keyboard;
-	protected Color appBackground = Color.BLACK;
-	protected Color appBorder = Color.LIGHT_GRAY;
+	protected Color appBackground = GameConstants.APP_BACKGROUND;
+	protected Color appBorder = GameConstants.APP_BORDER;
 	protected Color appFPSColor = Color.GREEN;
 	protected Font appFont = new Font("Courier New", Font.PLAIN, 14);
-	protected String appTitle = "TBD-Title";
-	protected float appBorderScale = 0.8f;
-	protected int appWidth = 640;
-	protected int appHeight = 640;
-	protected float appWorldWidth = 2.0f;
-	protected float appWorldHeight = 2.0f;
-	protected long appSleep = 10L;
-	protected boolean appMaintainRatio = false;
-	protected boolean appDisableCursor = false;
+	protected String appTitle = GameConstants.APP_TITLE;
+	protected float appBorderScale = GameConstants.BORDER_SCALE;
+	protected int appWidth = GameConstants.APP_WIDTH;
+	protected int appHeight = GameConstants.APP_HEIGHT;
+	protected float appWorldWidth = GameConstants.WORLD_WIDTH;
+	protected float appWorldHeight = GameConstants.WORLD_HEIGHT;
+	protected long appSleep = GameConstants.APP_SLEEP;
+	protected boolean appMaintainRatio = GameConstants.MAINTAIN_RATIO;
+	protected boolean appDisableCursor = GameConstants.DISABLE_CURSOR;
 	protected int textPos = 0;
 
 	public GameFramework() {
