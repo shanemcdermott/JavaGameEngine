@@ -42,6 +42,12 @@ public class Dungeon extends GameRoom
 		return bottomLeft.abs().toPoint();
 	}
 	
+	public GameRoom[][] getRooms()
+	{
+		return rooms;
+	}
+	
+	
 	public GameRoom getRoomAt(Vector2f location)
 	{
 		if(!bounds.contains(location)) return null;
@@ -84,7 +90,11 @@ public class Dungeon extends GameRoom
 		{
 			for(int y = 0; y < numRoomsY; y++)
 			{
-				rooms[x][y] = new GameRoom(roomLoc);
+				if(rooms[x][y] == null)
+					rooms[x][y] = new GameRoom(roomLoc);
+				else
+					rooms[x][y].setPosition(roomLoc);
+				
 				rooms[x][y].resize(roomSize);
 				roomLoc.y += roomSize.y;
 			}

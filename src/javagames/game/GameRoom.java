@@ -15,6 +15,7 @@ import javagames.util.geom.BoundingBox;
 public class GameRoom extends GameObject 
 {
 	public Vector<GameObject> contents;
+	public Vector<GameRoom> neighbors;
 	
 	public GameRoom(Vector2f location)
 	{
@@ -23,11 +24,32 @@ public class GameRoom extends GameObject
 		bounds = new BoundingBox();
 		bounds.setPosition(position);
 		contents = new Vector<GameObject>();
+		neighbors = new Vector<GameRoom>();
 	}
 
+	public boolean isEmpty()
+	{
+		return contents.isEmpty();
+	}
+	
 	public boolean contains(Vector2f point)
 	{
 		return bounds.contains(point);
+	}
+	
+	public void setNeighbors(Vector<GameRoom> neighbors)
+	{
+		this.neighbors=neighbors;
+	}
+	
+	public Vector<GameRoom> getNeighbors()
+	{
+		return neighbors;
+	}
+	
+	public void addNeighbor(GameRoom neighbor)
+	{
+		neighbors.add(neighbor);
 	}
 	
 	public void addGameObject(GameObject o)
