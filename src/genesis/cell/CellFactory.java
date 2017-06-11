@@ -18,29 +18,33 @@ public class CellFactory
 		Vector2f edgeEnd = edgeStart.add(sizeX);
 		
 		/*Bottom edge*/
-		CellEdge edge = new CellEdge(cell,null,edgeStart,edgeEnd);
-		cell.addEdge(edge);
-		
+		CellEdge edge = new CellEdge(edgeStart,edgeEnd);
+		edge.setCells(cell, null);
+				
 		edgeStart = new Vector2f(edgeEnd);
 		edgeEnd = edgeStart.add(sizeY);
-		edge = new CellEdge(cell, null, edgeStart, edgeEnd);
-		cell.addEdge(edge);
+		edge = new CellEdge(edgeStart, edgeEnd);
+		edge.setCells(cell, null);
 		
 		edgeStart = new Vector2f(edgeEnd);
 		edgeEnd = edgeStart.sub(sizeX);
-		edge = new CellEdge(cell, null, edgeStart, edgeEnd);
-		cell.addEdge(edge);
+		edge = new CellEdge(edgeStart, edgeEnd);
+		edge.setCells(cell, null);
 		
 		edgeStart = new Vector2f(edgeEnd);
 		edgeEnd = edgeStart.sub(sizeY);
-		edge = new CellEdge(cell, null, edgeStart, edgeEnd);
-		cell.addEdge(edge);
+		edge = new CellEdge(edgeStart, edgeEnd);
+		edge.setCells(cell, null);
 		
 		return cell;
 	}
 	
 	public static Cell makeNeighborCell(Vector2f size, CellEdge neighborEdge, Cell neighbor)
 	{
+		if(!neighborEdge.isBorder())
+		{
+			System.out.println("Overriding cell edge!");
+		}
 		
 		Vector2f center = neighborEdge.midPoint();
 		Vector2f nPos = neighbor.getPosition();
@@ -79,22 +83,22 @@ public class CellFactory
 		
 		CellEdge[] edges = new CellEdge[4];
 		/*Bottom edge*/
-		edges[0] = new CellEdge(cell,null,edgeStart,edgeEnd);
+		edges[0] = new CellEdge(edgeStart,edgeEnd);
 		
 		edgeStart = new Vector2f(edgeEnd);
 		edgeEnd = edgeStart.add(sizeY);
 		
-		edges[1] = new CellEdge(cell, null, edgeStart, edgeEnd);
+		edges[1] = new CellEdge(edgeStart, edgeEnd);
 		
 		edgeStart = new Vector2f(edgeEnd);
 		edgeEnd = edgeStart.sub(sizeX);
 		
-		edges[2]= new CellEdge(cell, null, edgeStart, edgeEnd);
+		edges[2]= new CellEdge(edgeStart, edgeEnd);
 		
 		edgeStart = new Vector2f(edgeEnd);
 		edgeEnd = edgeStart.sub(sizeY);
 		
-		edges[3] = new CellEdge(cell, null, edgeStart, edgeEnd);
+		edges[3] = new CellEdge(edgeStart, edgeEnd);
 		
 		Vector2f z = new Vector2f();
 		for(int i = 0; i < edges.length; i++)
@@ -102,10 +106,10 @@ public class CellFactory
 			if(edges[i].compare(z,neighborEdge) == 0)
 			{
 				System.out.printf("Edge %d linked.\n", i);
-				neighborEdge.setOtherCell(neighbor,cell);
-				edges[i] = neighborEdge;
+				neighborEdge.setCells(neighbor, cell);
 			}
-			cell.addEdge(edges[i]);
+			else
+				edges[i].setCells(cell, null);
 		}
 		
 		return cell;

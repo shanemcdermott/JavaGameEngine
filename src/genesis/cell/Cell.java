@@ -31,6 +31,10 @@ public class Cell implements Comparator, Drawable
 {
 
 	private ArrayList<CellEdge> edges;
+	public ArrayList<CellEdge> getEdges() {
+		return edges;
+	}
+
 	//private Map<CellEdge, Color> edges;
 	private boolean bIsBorderCell;
 	public Vector2f center;
@@ -102,7 +106,13 @@ public class Cell implements Comparator, Drawable
 	
 	public int numNeighbors()
 	{
-		return edges.size() - getBorderEdges().size();
+		int num = 0;
+		for(CellEdge e : edges)
+		{
+			if(!e.isBorder())
+				num++;
+		}
+		return num;
 	}
 	
 	public int countNeighborsWithAttribute(String key, Object... values)
@@ -117,19 +127,6 @@ public class Cell implements Comparator, Drawable
 					sum++;
 		}
 		return sum;
-	}
-	
-	public ArrayList<CellEdge> getBorderEdges()
-	{
-		ArrayList<CellEdge> borders = new ArrayList<CellEdge>();
-		for(int i = 0; i < edges.size(); i++)
-		{
-			CellEdge e = edges.get(i);
-			if(e.isBorder())
-				borders.add(e);
-		}
-		
-		return borders;
 	}
 	
 	public ArrayList<Cell> getNeighbors()

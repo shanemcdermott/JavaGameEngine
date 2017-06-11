@@ -30,10 +30,15 @@ public class ExtendRule
 	
 	public void execute()
 	{
-		ArrayList<CellEdge> edges = root.getBorderEdges();
-		if(edges.isEmpty()) return;
+		ArrayList<CellEdge> edges = root.getEdges();
+		if(edges.isEmpty() || edges.size() == root.numNeighbors()) return;
 		
-		leaf = CellFactory.makeNeighborCell(size, edges.get(rng.nextInt(edges.size())), root);
+		int index = rng.nextInt(edges.size());
+		
+		while(!edges.get(index).isBorder())
+			index = rng.nextInt(edges.size());
+		
+		leaf = CellFactory.makeNeighborCell(size, edges.get(index), root);
 		
 	}
 	

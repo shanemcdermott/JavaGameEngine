@@ -89,24 +89,7 @@ public class CellEdge implements Comparator
 			return cell2;
 		return cell1;
 	}
-	
-	public void setOtherCell(Cell c, Cell other)
-	{
-		if(c.equals(cell1))
-		{
-			if(cell2 != null)
-			{
-				cell2 = other;
-			}
-		}
-		else if(c.equals(cell2))
-		{
-			if(cell1 != null)
-			{
-				cell1 = other;
-			}
-		}
-	}
+
 	
 	public boolean isBorder()
 	{

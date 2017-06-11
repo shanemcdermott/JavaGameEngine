@@ -91,6 +91,10 @@ public class CellCreateTool extends EditorTool
 					cellManager.addCell(c);
 					System.out.printf("Created cell: %s\n",createdCell.toStringVerbose());
 				}
+				else
+				{
+					System.out.println("Failed to create cell!");
+				}
 			}
 			
 		});
