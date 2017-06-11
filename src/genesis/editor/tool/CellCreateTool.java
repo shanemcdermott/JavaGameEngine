@@ -29,6 +29,7 @@ import genesis.cell.CellManager;
 import genesis.editor.WorldEditor;
 import genesis.editor.swing.DetailsPanel;
 import genesis.editor.swing.SizePanel;
+import genesis.grammar.ExtendRule;
 import javagames.util.Matrix3x3f;
 import javagames.player.RelativeMouseInput;
 import javagames.util.Vector2f;
@@ -71,6 +72,30 @@ public class CellCreateTool extends EditorTool
 			
 		});
 		toolPanel.add(colorChooser, BorderLayout.SOUTH);
+		
+		JButton extendButton = new JButton("Extend");
+		extendButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(createdCell == null) return;
+				
+				ExtendRule rule = new ExtendRule(createdCell, aabb().getSize(), editor.rng);
+				rule.execute();
+				Cell c = rule.getResults();
+				if(c != null)
+				{
+					createdCell = c;
+					createdCell.setColor(getColor());
+					cellManager.addCell(c);
+					System.out.printf("Created cell: %s\n",createdCell.toStringVerbose());
+				}
+			}
+			
+		});
+		
+		toolPanel.add(extendButton, BorderLayout.SOUTH);
 	}
 
 	

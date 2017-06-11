@@ -100,6 +100,11 @@ public class Cell implements Comparator, Drawable
 		return closest;
 	}
 	
+	public int numNeighbors()
+	{
+		return edges.size() - getBorderEdges().size();
+	}
+	
 	public int countNeighborsWithAttribute(String key, Object... values)
 	{
 		ArrayList<Cell> neighbors = getNeighbors();
@@ -112,6 +117,19 @@ public class Cell implements Comparator, Drawable
 					sum++;
 		}
 		return sum;
+	}
+	
+	public ArrayList<CellEdge> getBorderEdges()
+	{
+		ArrayList<CellEdge> borders = new ArrayList<CellEdge>();
+		for(int i = 0; i < edges.size(); i++)
+		{
+			CellEdge e = edges.get(i);
+			if(e.isBorder())
+				borders.add(e);
+		}
+		
+		return borders;
 	}
 	
 	public ArrayList<Cell> getNeighbors()

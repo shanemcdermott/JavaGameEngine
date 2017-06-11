@@ -51,7 +51,7 @@ public class WorldEditor extends SwingFramework
 	public	  CellManager cellManager;
 	protected EditorTool cursor;
 	
-	protected Random rng;
+	public Random rng;
 	protected static String[] params;
 	protected JTextField tagField; 
 
@@ -63,7 +63,7 @@ public class WorldEditor extends SwingFramework
 		objects = Collections.synchronizedList(new ArrayList<GameObject>());
 		cellManager = new CellManager(rng, new ArrayList<Cell>());
 		tools = new HashMap<String, EditorTool>();
-
+		rng = new Random();
 	}
 	
 	@Override
