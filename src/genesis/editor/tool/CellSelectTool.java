@@ -10,7 +10,7 @@ import genesis.editor.WorldEditor;
 import genesis.editor.swing.CellDetailsPanel;
 import genesis.editor.swing.RoomDetailsPanel;
 import javagames.util.Matrix3x3f;
-import javagames.util.RelativeMouseInput;
+import javagames.player.RelativeMouseInput;
 import javagames.world.Dungeon;
 import javagames.world.InfluenceObject;
 

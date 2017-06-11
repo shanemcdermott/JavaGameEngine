@@ -84,7 +84,7 @@ public class Dungeon extends GameRoom
 		rooms = new GameRoom[numRoomsX][numRoomsY];
 		updateRoomSize(getDimensions());
 		
-		Vector2f roomLoc = position.sub(getDimensions().mul(0.5f)).add(roomSize.mul(0.5f));
+		Vector2f roomLoc = getPosition().sub(getDimensions().mul(0.5f)).add(roomSize.mul(0.5f));
 		
 		for(int x = 0; x < numRoomsX; x++)
 		{

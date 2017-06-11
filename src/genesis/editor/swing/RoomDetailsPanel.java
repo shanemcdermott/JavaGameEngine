@@ -57,7 +57,7 @@ public class RoomDetailsPanel extends DetailsPanel
 		JButton submitButton = new JButton("Add");
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				getRoom().setComponent(tagField.getText(),null);
+				//getRoom().setComponent(tagField.getText(),null);
 				updateList();
 				tagField.setText("Add a tag");
 			}
@@ -92,10 +92,11 @@ public class RoomDetailsPanel extends DetailsPanel
 	public void updateList()
 	{
 		listModel.clear();
-		Set<String> tags = getRoom().getComponentNames();
+		/*Set<String> tags = getRoom().getComponentNames();
 		for(String s : tags)
 		{
 			listModel.addElement(s);
 		}
+		*/
 	}
 }

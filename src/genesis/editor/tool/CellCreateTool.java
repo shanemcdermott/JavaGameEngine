@@ -29,7 +29,7 @@ import genesis.editor.WorldEditor;
 import genesis.editor.swing.DetailsPanel;
 import genesis.editor.swing.SizePanel;
 import javagames.util.Matrix3x3f;
-import javagames.util.RelativeMouseInput;
+import javagames.player.RelativeMouseInput;
 import javagames.util.Vector2f;
 import javagames.util.geom.BoundingBox;
 
@@ -50,7 +50,7 @@ public class CellCreateTool extends EditorTool
 		createdCell = null;
 		
 		int boxSize = 20;
-		bounds = new BoundingBox(position, new Vector2f(boxSize,boxSize));
+		bounds = new BoundingBox(getPosition(), new Vector2f(boxSize,boxSize));
 		bounds.fill=true;
 		
 		initToolPanel();
@@ -59,7 +59,7 @@ public class CellCreateTool extends EditorTool
 	private void initToolPanel()
 	{
 		toolPanel = new SizePanel((BoundingBox)bounds);
-		JColorChooser colorChooser = new JColorChooser(color);
+		JColorChooser colorChooser = new JColorChooser(getColor());
 		colorChooser.getSelectionModel().addChangeListener(new ChangeListener(){
 
 			@Override
@@ -82,7 +82,7 @@ public class CellCreateTool extends EditorTool
 		{
 			createdCell = CellFactory.makeCell(getPosition(), aabb().getSize());
 			System.out.printf("Created cell at %s.\n%s\n",getPosition().toString(), createdCell.toString());
-			createdCell.setColor(color);
+			createdCell.setColor(getColor());
 			cellManager.addCell(createdCell);
 		}
 		if(mouse.getNotches()!=0)

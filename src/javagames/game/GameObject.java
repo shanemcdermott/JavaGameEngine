@@ -1,5 +1,6 @@
 package javagames.game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ public class GameObject implements Drawable
 	private Transform transform;
 	private float rotationDelta;
 	private Vector2f velocity;
+	private String name;
+	private Color color;
 
 	public GameObject()
 	{
@@ -32,6 +35,7 @@ public class GameObject implements Drawable
 	public void setPosition(Vector2f pos)
 	{
 		transform.translation=pos;
+		bounds.setPosition(pos);
 	}
 	
 	public Vector2f getPosition()
@@ -69,6 +73,28 @@ public class GameObject implements Drawable
 	@Override
 	public void render(Graphics g, Matrix3x3f view) 
 	{
-		sprite.render((Graphics2D)g, view, transform.translation, transform.rotation);
+		if(sprite != null)
+			sprite.render((Graphics2D)g, view, transform.translation, transform.rotation);
+		else
+		{
+			g.setColor(getColor());
+			bounds.render(g, view);
+		}
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

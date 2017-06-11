@@ -9,6 +9,7 @@ import javagames.util.Vector2f;
 
 public abstract class BoundingShape implements Drawable
 {
+	public boolean fill=false;
 	protected Vector2f position;
 	
 	/**
@@ -22,7 +23,7 @@ public abstract class BoundingShape implements Drawable
 	
 	public void setPosition(Vector2f point)
 	{
-		this.position=new Vector2f(point);
+		this.position= point;
 	}
 	
 	public abstract void render(Graphics g, Matrix3x3f view);

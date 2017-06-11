@@ -1,7 +1,6 @@
-package javagames.game;
+package javagames.player;
 
-import javagames.util.MouseControls;
-import javagames.util.RelativeMouseInput;
+import javagames.game.GameObject;
 
 public class GameCursor extends GameObject implements MouseControls 
 {
