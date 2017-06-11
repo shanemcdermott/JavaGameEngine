@@ -123,6 +123,18 @@ public class Vector2f {
 	}
 	
 	@Override
+	public boolean equals(Object v)
+	{
+		Vector2f v2 = (Vector2f)v;
+		if(v2 != null)
+		{
+			return x==v2.x && y == v2.y;
+		}
+		
+		return false;
+	}
+	
+	@Override
 	public String toString() {
 		return String.format("(%.2f,%.2f)", x, y);
 	}

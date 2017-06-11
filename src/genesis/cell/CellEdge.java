@@ -148,6 +148,11 @@ public class CellEdge implements Comparator
 		return (start.x - p.x) * (start.x - p.x) + (start.y - p.y) * (start.y - p.y) + (end.x - p.x) * (end.x - p.x) + (end.y - p.y) * (end.y - p.y);
 	}
 	
+	public Vector2f midPoint()
+	{
+		return start.add(end).mul(0.5f);
+	}
+	
 	@Override
 	public String toString()
 	{

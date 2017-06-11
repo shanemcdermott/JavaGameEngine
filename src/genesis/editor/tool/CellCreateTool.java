@@ -23,6 +23,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import genesis.cell.Cell;
+import genesis.cell.CellEdge;
 import genesis.cell.CellFactory;
 import genesis.cell.CellManager;
 import genesis.editor.WorldEditor;
@@ -92,7 +93,25 @@ public class CellCreateTool extends EditorTool
 			newSize = newSize.add(notchWeight.mul(notches));
 			getPanel().resizeBox(newSize);
 		}
+		if(mouse.buttonDownOnce(MouseEvent.BUTTON3))
+		{
+			createNeighbor();
+		}
 
+	}
+	
+	public void createNeighbor()
+	{
+		if(createdCell == null) return;
+		
+		CellEdge nEdge = createdCell.getClosestEdge(getPosition());
+		if(nEdge.isBorder())
+		{
+			createdCell = CellFactory.makeNeighborCell(aabb().getSize(), nEdge, createdCell);
+			System.out.printf("Created cell at %s.\n%s\n",createdCell.getPosition().toString(), createdCell.toString());
+			createdCell.setColor(getColor());
+			cellManager.addCell(createdCell);
+		}
 	}
 	
 	public SizePanel getPanel()

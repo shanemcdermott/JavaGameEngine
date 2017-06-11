@@ -83,6 +83,23 @@ public class Cell implements Comparator, Drawable
 		}
 	}
 	
+	public CellEdge getClosestEdge(Vector2f point)
+	{
+		CellEdge closest = edges.get(0);
+		float dist = closest.distFromPointSq(point);
+		for(CellEdge e : edges)
+		{
+			float d = e.distFromPointSq(point);
+			if(d < dist)
+			{
+				dist = d;
+				closest = e;
+			}
+		}
+		
+		return closest;
+	}
+	
 	public int countNeighborsWithAttribute(String key, Object... values)
 	{
 		ArrayList<Cell> neighbors = getNeighbors();
