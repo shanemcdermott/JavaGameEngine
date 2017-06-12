@@ -87,10 +87,20 @@ public class CellCreateTool extends EditorTool
 				Cell c = rule.getResults();
 				if(c != null)
 				{
-					createdCell = c;
-					createdCell.setColor(getColor());
-					cellManager.addCell(c);
-					System.out.printf("Created cell: %s\n",createdCell.toStringVerbose());
+					Cell existing = cellManager.getCellAt(c.getPosition());
+					if(existing == null)
+					{
+						createdCell = c;
+						createdCell.setColor(getColor());
+						cellManager.addCell(c);
+						System.out.printf("Created cell: %s\n",createdCell.toStringVerbose());
+					}
+					else
+					{
+						existing.merge(c);
+						System.out.println("Merged cells.");
+						createdCell = existing;
+					}
 				}
 				else
 				{

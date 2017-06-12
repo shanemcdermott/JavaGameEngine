@@ -167,7 +167,8 @@ public class WorldEditor extends SwingFramework
 	
 	protected void initEditorBar()
 	{
-		JPanel sidePanel = new JPanel(new GridLayout(0,1));
+		JPanel sidePanel = new JPanel();
+		sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
 		
 		CardLayout cl = new CardLayout();
 		editorPanel = new JPanel(cl);

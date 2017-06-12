@@ -76,6 +76,7 @@ public class CellManager implements Drawable
 		return cells.size();
 	}
 	
+	
 	public void addCell(Cell c)
 	{
 		Cell existing = getCellAt(c.getPosition().toPoint());
@@ -99,6 +100,11 @@ public class CellManager implements Drawable
 				return i;
 		}
 		return -1;
+	}
+	
+	public Cell getCellAt(Vector2f v)
+	{
+		return getCellAt(v.toPoint());
 	}
 	
 	public Cell getCellAt(Point p)
