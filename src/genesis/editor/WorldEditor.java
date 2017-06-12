@@ -7,12 +7,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.swing.AbstractAction;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -28,11 +31,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import genesis.cell.*;
 import genesis.editor.tool.EditorTool;
+import genesis.editor.swing.SwingConsole;
+import genesis.editor.swing.TextAreaOutputStream;
 import genesis.editor.tool.CellCreateTool;
 import genesis.editor.tool.CellSelectTool;
 import javagames.framework.SwingFramework;
@@ -44,6 +50,7 @@ import javagames.util.Matrix3x3f;
 public class WorldEditor extends SwingFramework
 {
 
+	
 	protected List<GameObject> objects;
 	protected HashMap<String,EditorTool> tools;
 	
@@ -56,6 +63,7 @@ public class WorldEditor extends SwingFramework
 	protected JTextField tagField; 
 
 	private JPanel editorPanel;
+	private SwingConsole c;
 	
 	public WorldEditor()
 	{
@@ -81,7 +89,7 @@ public class WorldEditor extends SwingFramework
 		menuBar.add(initHelpMenu());
 		setJMenuBar(menuBar);
 		initEditorBar();
-		
+		initTopBar();
 	}
 
 
@@ -105,11 +113,7 @@ public class WorldEditor extends SwingFramework
 		{
 			JMenuItem item = new JMenuItem(new AbstractAction(entry.getKey()) {
 				public void actionPerformed(ActionEvent e) {
-					cursor.deactivate();
-					cursor = entry.getValue();
-					CardLayout cl = (CardLayout)(editorPanel.getLayout());
-					cl.show(editorPanel, entry.getKey());
-				
+						changeTool(entry.getKey(), entry.getValue());
 				}
 			});
 			menu.add(item);
@@ -131,8 +135,40 @@ public class WorldEditor extends SwingFramework
 		return menu;
 	}
 	
+	protected void initTopBar()
+	{
+		JPanel topPanel = new JPanel();
+		JButton clearButton = new JButton("Clear");
+		clearButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				cellManager.reset();	
+			}
+			
+		});
+		topPanel.add(clearButton);
+		
+		JButton createButton = new JButton("Create");
+		createButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changeTool("Create Cell", tools.get("Create Cell"));
+			}
+			
+		});
+		topPanel.add(createButton);
+		
+		add(topPanel, BorderLayout.NORTH);
+		
+	}
+	
 	protected void initEditorBar()
 	{
+		JPanel sidePanel = new JPanel(new GridLayout(0,1));
+		
 		CardLayout cl = new CardLayout();
 		editorPanel = new JPanel(cl);
 		
@@ -140,8 +176,23 @@ public class WorldEditor extends SwingFramework
 		{
 			editorPanel.add(entry.getValue().toolPanel,entry.getKey());
 		}
-		add(editorPanel,BorderLayout.EAST);
+		int maxLines = 4;
+		JTextArea textArea = new JTextArea();
+		PrintStream con=new PrintStream(new TextAreaOutputStream(textArea,maxLines));
+		System.setOut(con);
+		System.setErr(con);
+		sidePanel.add(editorPanel);
+		sidePanel.add(textArea);
+		add(sidePanel,BorderLayout.EAST);
 		
+	}
+	
+	public void changeTool(String toolName, EditorTool newTool)
+	{
+		cursor.deactivate();
+		cursor = newTool;
+		CardLayout cl = (CardLayout)(editorPanel.getLayout());
+		cl.show(editorPanel, toolName);
 	}
 	
 	@Override

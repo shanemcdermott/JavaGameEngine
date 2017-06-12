@@ -18,6 +18,7 @@ import java.util.Set;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
 
+import genesis.editor.swing.SwingConsole;
 import javagames.g2d.Drawable;
 import javagames.util.Matrix3x3f;
 import javagames.util.Utility;
@@ -202,6 +203,32 @@ public class Cell implements Comparator, Drawable
 		return convexHull;
 	}
 
+	/**
+	 * Only works with square cells made with factory atm
+	 * 
+	 * 
+	 **/
+	public boolean merge(Cell other)
+	{
+		ArrayList<CellEdge> otherEdges = other.getEdges();
+		//if(otherEdges.size()==edges.size())
+		if(other.getPosition().equals(getPosition()))
+		{
+			for(int i = 0; i < otherEdges.size(); i++)
+			{
+				Cell c = otherEdges.get(i).getOtherCell(other);
+				if(c != null && edges.get(i).isBorder())
+				{
+					edges.get(i).setCells(this, c);
+				}
+			}
+			return true;
+		}
+		
+		System.out.printf("Edges: %d | Other Edges: %d", edges.size(), other.edges.size());
+		return false;
+	}
+	
 	public int distance(Point A, Point B, Point C)
 	{
 		int ABx = B.x - A.x;

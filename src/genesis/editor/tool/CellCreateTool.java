@@ -29,6 +29,7 @@ import genesis.cell.CellManager;
 import genesis.editor.WorldEditor;
 import genesis.editor.swing.DetailsPanel;
 import genesis.editor.swing.SizePanel;
+import genesis.editor.swing.SwingConsole;
 import genesis.grammar.ExtendRule;
 import javagames.util.Matrix3x3f;
 import javagames.player.RelativeMouseInput;

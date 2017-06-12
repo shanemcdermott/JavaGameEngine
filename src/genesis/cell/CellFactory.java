@@ -1,5 +1,6 @@
 package genesis.cell;
 
+import genesis.editor.swing.SwingConsole;
 import javagames.util.Vector2f;
 
 public class CellFactory 
@@ -43,7 +44,7 @@ public class CellFactory
 	{
 		if(!neighborEdge.isBorder())
 		{
-			System.out.println("Overriding cell edge!");
+			SwingConsole.log("Overriding cell edge!");
 		}
 		
 		Vector2f center = neighborEdge.midPoint();
@@ -105,7 +106,7 @@ public class CellFactory
 		{
 			if(edges[i].compare(z,neighborEdge) == 0)
 			{
-				System.out.printf("Edge %d linked.\n", i);
+				SwingConsole.log(String.format("Edge %d linked.\n", i));
 				neighborEdge.setCells(neighbor, cell);
 			}
 			else
@@ -115,4 +116,6 @@ public class CellFactory
 		return cell;
 		
 	}
+
+
 }

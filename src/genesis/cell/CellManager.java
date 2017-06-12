@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
+import genesis.editor.WorldEditor;
+import genesis.editor.swing.SwingConsole;
 import javagames.g2d.Drawable;
 import javagames.util.GMath;
 import javagames.util.Matrix3x3f;
@@ -34,6 +36,7 @@ public class CellManager implements Drawable
 		this.random = random;
 		this.cells = cells;
 	}
+	
 	
 	public void reset()
 	{
@@ -75,7 +78,16 @@ public class CellManager implements Drawable
 	
 	public void addCell(Cell c)
 	{
-		cells.add(c);
+		Cell existing = getCellAt(c.getPosition().toPoint());
+		if(existing == null) 
+			cells.add(c);
+		else if(existing.merge(c))
+			System.out.println("merged");
+		else
+		{
+			System.out.println("Failed to merge.");
+			cells.add(c);
+		}
 	}
 	
 	public int getCellIndexContainingPoint(Point p)
