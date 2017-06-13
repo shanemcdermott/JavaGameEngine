@@ -80,7 +80,15 @@ public class Cell implements Comparator, Drawable
 	
 	public void addEdge(CellEdge edge)
 	{
-		edges.add(edge);
+		int index = edges.indexOf(edge);
+		if(index == -1)
+			edges.add(edge);
+		else
+		{
+			edges.get(index).cell2 = edge.getOtherCell(this);
+		
+			System.out.println("Merged Edges.");
+		}
 		//edges.put(edge, Color.BLACK);
 		if(edge.isBorder())
 		{
@@ -375,9 +383,9 @@ public class Cell implements Comparator, Drawable
 			vectors.add(view.mul(new Vector2f(points.get(i))));
 		}
 		Utility.fillPolygon((Graphics2D)g, vectors);
-		g.setColor(Color.BLACK);
-		Utility.drawPolygon(g,vectors);
-		//drawEdges(g,view);
+		//g.setColor(Color.BLACK);
+		//Utility.drawPolygon(g,vectors);
+		drawEdges(g,view);
 	}
 	
 	public void render(Graphics g)

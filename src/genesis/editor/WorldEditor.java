@@ -177,7 +177,7 @@ public class WorldEditor extends SwingFramework
 		{
 			editorPanel.add(entry.getValue().toolPanel,entry.getKey());
 		}
-		int maxLines = 4;
+		int maxLines = 10;
 		JTextArea textArea = new JTextArea();
 		PrintStream con=new PrintStream(new TextAreaOutputStream(textArea,maxLines));
 		System.setOut(con);

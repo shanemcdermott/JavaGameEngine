@@ -106,7 +106,7 @@ public class CellFactory
 		{
 			if(edges[i].compare(z,neighborEdge) == 0)
 			{
-				SwingConsole.log(String.format("Edge %d linked.\n", i));
+				System.out.printf("Edge %d linked.\n", i);
 				neighborEdge.setCells(neighbor, cell);
 			}
 			else

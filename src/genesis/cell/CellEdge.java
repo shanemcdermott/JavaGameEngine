@@ -1,5 +1,6 @@
 package genesis.cell;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Comparator;
@@ -82,7 +83,7 @@ public class CellEdge implements Comparator
 		start = end;
 		end = temp;
 	}
-	
+
 	public Cell getOtherCell(Cell c)
 	{
 		if(c.equals(cell1))
@@ -99,8 +100,15 @@ public class CellEdge implements Comparator
 	public void render(Graphics g, Matrix3x3f view)
 	{
 		if(start == null || end == null) return;
+		g.setColor(Color.BLACK);
 		Point p1 = view.mul(start).toPoint();
 		Point p2 = view.mul(end).toPoint();
+		g.drawLine(p1.x,p1.y,p2.x,p2.y);
+		
+		if(cell1 == null || cell2 == null) return;
+		
+		p1 = view.mul(cell1.getPosition()).toPoint();
+		p2 = view.mul(midPoint()).toPoint();
 		g.drawLine(p1.x,p1.y,p2.x,p2.y);
 	}
 	
@@ -133,8 +141,9 @@ public class CellEdge implements Comparator
 	
 	public Vector2f midPoint()
 	{
-		return start.add(end).mul(0.5f);
+		return start.mid(end);
 	}
+	
 	
 	@Override
 	public String toString()
