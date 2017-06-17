@@ -22,6 +22,11 @@ public abstract class BoundingShape implements Drawable
 	
 	public abstract boolean contains(Vector2f point);
 	
+	public Vector2f getPosition()
+	{
+		return position;
+	}
+	
 	public void setPosition(Vector2f point)
 	{
 		this.position= point;

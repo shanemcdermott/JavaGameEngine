@@ -20,10 +20,9 @@ public class GameRoom extends GameObject
 	public GameRoom(Vector2f location)
 	{
 		super();
-		
+		bounds = new BoundingBox();	
 		setPosition(new Vector2f(location));
-		bounds = new BoundingBox();
-		bounds.setPosition(location);
+		bounds.fill=true;
 		contents = new Vector<GameObject>();
 		neighbors = new Vector<GameRoom>();
 	}
@@ -98,6 +97,7 @@ public class GameRoom extends GameObject
 	public void render(Graphics g, Matrix3x3f viewport)
 	{
 		super.render(g, viewport);
+	
 		for(GameObject o : contents)
 			o.render(g, viewport);
 	}

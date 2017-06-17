@@ -68,7 +68,7 @@ public class GameObject implements Drawable
 	
 	public void update(float deltaTime)
 	{
-		transform.translation = transform.translation.add(velocity.mul(deltaTime));
+		setPosition(transform.translation.add(velocity.mul(deltaTime)));
 		transform.rotation += rotationDelta * deltaTime;
 	}
 

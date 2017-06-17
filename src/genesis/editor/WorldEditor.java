@@ -13,6 +13,7 @@ import genesis.cell.Cell;
 import genesis.cell.CellManager;
 import genesis.editor.tool.CellCreateTool;
 import genesis.editor.tool.CellSelectTool;
+import genesis.editor.tool.EditorTool;
 import javagames.world.Dungeon;
 
 public class WorldEditor extends EditorFramework 
@@ -22,15 +23,19 @@ public class WorldEditor extends EditorFramework
 	public WorldEditor()
 	{
 		super();
-		world = new Dungeon("World");
 		appTitle = "World Editor";
-		addObject(world);
+		
 	}
 
 	@Override
 	protected void initTools()
 	{
 		super.initTools();
+		world = new Dungeon("World",appWorldWidth, 32,32);
+		cursor = new EditorTool(this);
+		tools.put("Default", cursor);
+		//world.resize(appWorldWidth, appWorldHeight);
+		addObject(world);
 		//cursor = new CellCreateTool(this);
 		//tools.put("Create Cell", cursor);
 		//tools.put("Edit Cell", new CellSelectTool(this));

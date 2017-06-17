@@ -1,9 +1,11 @@
 package javagames.world;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javagames.game.GameRoom;
 import javagames.util.Matrix3x3f;
@@ -15,6 +17,15 @@ public class Dungeon extends GameRoom
 	protected Vector2f roomSize;
 	
 	protected GameRoom[][] rooms;
+	
+	public Dungeon(String name, float size, int xRooms, int yRooms)
+	{
+		super(new Vector2f());
+		setName(name);
+		bounds = new BoundingBox(size);
+		roomSize = new Vector2f(xRooms/size, yRooms/size);
+		setRoomCounts(xRooms,yRooms);
+	}
 	
 	public Dungeon(String name) 
 	{
@@ -80,7 +91,7 @@ public class Dungeon extends GameRoom
 	
 	public void setRoomCounts(int numRoomsX, int numRoomsY)
 	{
-		
+		Random r = new Random();
 		rooms = new GameRoom[numRoomsX][numRoomsY];
 		updateRoomSize(getDimensions());
 		
@@ -94,8 +105,9 @@ public class Dungeon extends GameRoom
 					rooms[x][y] = new GameRoom(roomLoc);
 				else
 					rooms[x][y].setPosition(roomLoc);
-				
+			
 				rooms[x][y].resize(roomSize);
+				rooms[x][y].setColor(new Color(r.nextInt(250), r.nextInt(250), r.nextInt(250)));
 				roomLoc.y += roomSize.y;
 			}
 			roomLoc.x += roomSize.x;
@@ -112,8 +124,8 @@ public class Dungeon extends GameRoom
 			for(int y = 0; y < rooms[x].length; y++)
 			{
 				rooms[x][y].render(g, viewport);
-				Vector2f p = viewport.mul(rooms[x][y].getPosition());
-				g.drawString(String.format("%d,%d", x,y), (int)p.x, (int)p.y);
+				Point p = viewport.mul(rooms[x][y].getPosition()).toPoint();
+				g.drawString(String.format("%d,%d", x,y), p.x, p.y);
 			}
 		}
 	}

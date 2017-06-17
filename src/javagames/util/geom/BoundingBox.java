@@ -194,17 +194,16 @@ public class BoundingBox extends BoundingShape
 	public void render(Graphics g, Matrix3x3f viewport)
 	{
 
-		// TODO Auto-generated method stub
 		Vector2f size = new Vector2f(width,height);
 		Vector2f topLeft = getTopLeft();
 		topLeft = viewport.mul(topLeft);
 		Vector2f sc = viewport.getScale().abs();
 		size.scale(sc.x, sc.y);
 	
+		g.drawRect((int)topLeft.x, (int)topLeft.y, (int)size.x, (int)size.y);
 	
 		if(fill)
 			g.fillRect((int)topLeft.x, (int)topLeft.y, (int)size.x, (int)size.y);
-		else
-			g.drawRect((int)topLeft.x, (int)topLeft.y, (int)size.x, (int)size.y);
+		
 	}
 }
