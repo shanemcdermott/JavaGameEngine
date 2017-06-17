@@ -41,6 +41,7 @@ public class Cell implements Comparator, Drawable
 	public Vector2f center;
 	public Color color;
 	private Map<String, Object> attributes;
+	private int zOrder;
 	
 	public Cell(Point center)
 	{
@@ -456,4 +457,22 @@ public class Cell implements Comparator, Drawable
 		return -1;
 	}
 
+	@Override
+	public int compareTo(Drawable arg0) 
+	{
+		return getZOrder() - arg0.getZOrder();
+	}
+
+	@Override
+	public void setZOrder(int order) 
+	{
+		zOrder = order;
+		
+	}
+
+	@Override
+	public int getZOrder() 
+	{
+		return zOrder;
+	}
 }

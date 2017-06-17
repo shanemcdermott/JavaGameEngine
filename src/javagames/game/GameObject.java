@@ -18,6 +18,7 @@ import javagames.util.geom.BoundingShape;
 public class GameObject implements Drawable
 {
 	private Sprite sprite;
+	private int zOrder;
 	protected BoundingShape bounds;
 	private Transform transform;
 	private float rotationDelta;
@@ -30,6 +31,7 @@ public class GameObject implements Drawable
 		bounds = new BoundingBox();
 		velocity = new Vector2f();
 		transform = new Transform();
+		zOrder = 0;
 	}
 	
 	public void setPosition(Vector2f pos)
@@ -96,5 +98,24 @@ public class GameObject implements Drawable
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public int compareTo(Drawable arg0) 
+	{
+		return getZOrder() - arg0.getZOrder();
+	}
+
+	@Override
+	public void setZOrder(int order) 
+	{
+		zOrder = order;
+		
+	}
+
+	@Override
+	public int getZOrder() 
+	{
+		return zOrder;
 	}
 }

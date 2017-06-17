@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
-import genesis.editor.WorldEditor;
+import genesis.editor.EditorFramework;
 import genesis.editor.swing.SwingConsole;
 import javagames.g2d.Drawable;
 import javagames.util.GMath;
@@ -29,6 +29,7 @@ public class CellManager implements Drawable
 	
 	private int currentCellIndex = 0;
 	private int neighborRange = 0;
+	private int zOrder;
 	
 
 	public CellManager(Random random, ArrayList<Cell> cells)
@@ -171,5 +172,24 @@ public class CellManager implements Drawable
 		{
 			cells.get(index).drawOutline(g, Color.CYAN);
 		}
+	}
+	
+	@Override
+	public int compareTo(Drawable arg0) 
+	{
+		return getZOrder() - arg0.getZOrder();
+	}
+
+	@Override
+	public void setZOrder(int order) 
+	{
+		zOrder = order;
+		
+	}
+
+	@Override
+	public int getZOrder() 
+	{
+		return zOrder;
 	}
 }

@@ -9,6 +9,7 @@ import javagames.util.Vector2f;
 
 public abstract class BoundingShape implements Drawable
 {
+	private int zOrder;
 	public boolean fill=false;
 	protected Vector2f position;
 	
@@ -25,6 +26,26 @@ public abstract class BoundingShape implements Drawable
 	{
 		this.position= point;
 	}
+
+	@Override
+	public int compareTo(Drawable arg0) 
+	{
+		return getZOrder() - arg0.getZOrder();
+	}
+
+	@Override
+	public void setZOrder(int order) 
+	{
+		zOrder = order;
+		
+	}
+
+	@Override
+	public int getZOrder() 
+	{
+		return zOrder;
+	}
+	
 	
 	public abstract void render(Graphics g, Matrix3x3f view);
 }

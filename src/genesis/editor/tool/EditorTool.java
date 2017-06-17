@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 
-import genesis.editor.WorldEditor;
+import genesis.editor.EditorFramework;
 import javagames.game.GameObject;
 import javagames.player.GameCursor;
 import javagames.player.MouseControls;
@@ -17,10 +17,10 @@ import javagames.world.InfluenceObject;
 
 public class EditorTool extends GameCursor
 {
-	public WorldEditor editor;
+	public EditorFramework editor;
 	public JPanel	toolPanel;
 	
-	public EditorTool(WorldEditor editor)
+	public EditorTool(EditorFramework editor)
 	{
 		super();
 		bounds=new BoundingCircle(new Vector2f(), 0.1f);

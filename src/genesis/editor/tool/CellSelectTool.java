@@ -6,7 +6,8 @@ import java.awt.event.MouseEvent;
 
 import genesis.cell.Cell;
 import genesis.cell.CellManager;
-import genesis.editor.WorldEditor;
+import genesis.editor.CellEditor;
+import genesis.editor.EditorFramework;
 import genesis.editor.swing.CellDetailsPanel;
 import genesis.editor.swing.RoomDetailsPanel;
 import javagames.util.Matrix3x3f;
@@ -26,10 +27,10 @@ public class CellSelectTool extends EditorTool
 	public Color hoverColorOG = Color.WHITE;
 	public Color selectColorOG = Color.WHITE;
 	
-	public CellSelectTool(WorldEditor editor) 
+	public CellSelectTool(CellEditor editor) 
 	{
 		super(editor);
-		cellManager = editor.cellManager;
+		cellManager = editor.getCellManager();
 		toolPanel = new CellDetailsPanel();
 	}
 

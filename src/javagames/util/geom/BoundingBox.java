@@ -28,9 +28,7 @@ public class BoundingBox extends BoundingShape
 	
 	public BoundingBox(float width, float height)
 	{
-		position = new Vector2f();
-		this.width = width;
-		this.height = height;
+		this(new Vector2f(), new Vector2f(width,height));
 	}
 	
 	public BoundingBox(Vector2f position, Vector2f size)
@@ -74,9 +72,7 @@ public class BoundingBox extends BoundingShape
 	
 	public Vector2f getTopLeft()
 	{
-		Vector2f min = getMin();
-		Vector2f max = getMax();
-		return new Vector2f(min.x, max.y);
+		return getMin().add(new Vector2f(0.f,height));
 	}
 	
 	public Vector2f getSize()

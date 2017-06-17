@@ -3,6 +3,8 @@ package javagames.framework;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
+import java.util.Random;
+
 import javax.swing.*;
 import javagames.util.*;
 
@@ -35,8 +37,10 @@ public abstract class GameFramework extends JFrame implements Runnable {
 	protected boolean appMaintainRatio = GameConstants.MAINTAIN_RATIO;
 	protected boolean appDisableCursor = GameConstants.DISABLE_CURSOR;
 	protected int textPos = 0;
-
+	public	  Random rng;
+	
 	public GameFramework() {
+		rng = new Random();
 	}
 
 	protected abstract void createFramework();
@@ -90,6 +94,11 @@ public abstract class GameFramework extends JFrame implements Runnable {
 		vy = y + (h - vh) / 2;
 	}
 
+	public Vector2f getWorldSize()
+	{
+		return new Vector2f(appWorldWidth, appWorldHeight);
+	}
+	
 	protected Matrix3x3f getViewportTransform() {
 		return Utility.createViewport(appWorldWidth, appWorldHeight,
 				getScreenWidth(), getScreenHeight());

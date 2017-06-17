@@ -26,7 +26,8 @@ import genesis.cell.Cell;
 import genesis.cell.CellEdge;
 import genesis.cell.CellFactory;
 import genesis.cell.CellManager;
-import genesis.editor.WorldEditor;
+import genesis.editor.CellEditor;
+import genesis.editor.EditorFramework;
 import genesis.editor.swing.DetailsPanel;
 import genesis.editor.swing.SizePanel;
 import genesis.editor.swing.SwingConsole;
@@ -44,12 +45,12 @@ public class CellCreateTool extends EditorTool
 	
 	private Vector2f notchWeight = new Vector2f(-1.1f);
 	
-	public CellCreateTool(WorldEditor editor) 
+	public CellCreateTool(CellEditor editor) 
 	{
 		super(editor);
 		
 		
-		cellManager = editor.cellManager;	
+		cellManager = editor.getCellManager();	
 		createdCell = null;
 		
 		int boxSize = 20;
