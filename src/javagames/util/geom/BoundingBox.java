@@ -200,10 +200,11 @@ public class BoundingBox extends BoundingShape
 		Vector2f sc = viewport.getScale().abs();
 		size.scale(sc.x, sc.y);
 	
-		g.drawRect((int)topLeft.x, (int)topLeft.y, (int)size.x, (int)size.y);
-	
 		if(fill)
 			g.fillRect((int)topLeft.x, (int)topLeft.y, (int)size.x, (int)size.y);
+		
+		g.setColor(Color.BLACK);
+		g.drawRect((int)topLeft.x, (int)topLeft.y, (int)size.x, (int)size.y);
 		
 	}
 }

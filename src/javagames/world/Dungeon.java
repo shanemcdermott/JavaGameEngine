@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import genesis.world.Biome;
 import javagames.game.GameRoom;
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
@@ -91,7 +92,7 @@ public class Dungeon extends GameRoom
 	
 	public void setRoomCounts(int numRoomsX, int numRoomsY)
 	{
-		Random r = new Random();
+		
 		rooms = new GameRoom[numRoomsX][numRoomsY];
 		updateRoomSize(getDimensions());
 		
@@ -107,12 +108,41 @@ public class Dungeon extends GameRoom
 					rooms[x][y].setPosition(roomLoc);
 			
 				rooms[x][y].resize(roomSize);
-				rooms[x][y].setColor(new Color(r.nextInt(250), r.nextInt(250), r.nextInt(250)));
+				if(x==0 || x == rooms.length-1 || y==0 || y==rooms.length-1)
+				{
+					rooms[x][y].setBiome(Biome.OCEAN);
+				}
+				else
+				{
+					rooms[x][y].setBiome(Biome.INTERTIDAL);
+				}
 				roomLoc.y += roomSize.y;
 			}
 			roomLoc.x += roomSize.x;
 			roomLoc.y -= roomSize.y*numRoomsY;
 		}
+		
+		recurseFill();
+	}
+	
+	public void recurseFill()
+	{
+		recurseFill(0, rooms.length-1);
+	}
+	
+	private void recurseFill(int min, int max)
+	{
+		for(int i = min; i <=max; i++)
+		{
+			for(int j =min; j <= max; j++)
+			{
+				rooms[i][j].transform(this);
+			}
+		}
+		
+		if(min>=max) return;
+		
+		recurseFill(min+1,max-1);
 	}
 	
 	@Override
@@ -124,8 +154,9 @@ public class Dungeon extends GameRoom
 			for(int y = 0; y < rooms[x].length; y++)
 			{
 				rooms[x][y].render(g, viewport);
-				Point p = viewport.mul(rooms[x][y].getPosition()).toPoint();
-				g.drawString(String.format("%d,%d", x,y), p.x, p.y);
+				//Point p = viewport.mul(rooms[x][y].getPosition()).toPoint();
+				//g.setColor(Color.BLACK);
+				//g.drawString(String.format("%d,%d", x,y), p.x, p.y);
 			}
 		}
 	}
