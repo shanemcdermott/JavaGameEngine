@@ -127,16 +127,18 @@ public class Dungeon extends GameRoom
 	
 	public void recurseFill()
 	{
-		recurseFill(0, rooms.length-1);
+		recurseFill(2, rooms.length-3);
 	}
 	
 	private void recurseFill(int min, int max)
 	{
+		float elev = (float)(min) / rooms.length;
 		for(int i = min; i <=max; i++)
 		{
 			for(int j =min; j <= max; j++)
 			{
 				rooms[i][j].transform(this);
+				rooms[i][j].setElevation(elev);
 			}
 		}
 		
@@ -154,6 +156,22 @@ public class Dungeon extends GameRoom
 			for(int y = 0; y < rooms[x].length; y++)
 			{
 				rooms[x][y].render(g, viewport);
+				//Point p = viewport.mul(rooms[x][y].getPosition()).toPoint();
+				//g.setColor(Color.BLACK);
+				//g.drawString(String.format("%d,%d", x,y), p.x, p.y);
+			}
+		}
+	}
+	
+	@Override
+	public void renderHeight(Graphics g, Matrix3x3f view)
+	{
+		super.renderHeight(g, view);
+		for(int x = 0; x < rooms.length; x++)
+		{
+			for(int y = 0; y < rooms[x].length; y++)
+			{
+				rooms[x][y].renderHeight(g, view);
 				//Point p = viewport.mul(rooms[x][y].getPosition()).toPoint();
 				//g.setColor(Color.BLACK);
 				//g.drawString(String.format("%d,%d", x,y), p.x, p.y);

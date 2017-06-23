@@ -16,6 +16,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import genesis.editor.WorldEditor;
+import genesis.editor.swing.RoomDetailsPanel;
 import javagames.game.GameRoom;
 import javagames.player.RelativeMouseInput;
 import javagames.util.Matrix3x3f;
@@ -36,7 +37,7 @@ public class RoomEditorTool extends EditorTool
 
 	private void initToolPanel()
 	{
-		toolPanel = new JPanel();
+		toolPanel = new   RoomDetailsPanel();
 		toolPanel.setLayout(new BoxLayout(toolPanel, BoxLayout.Y_AXIS));
 		toolPanel.setBorder(BorderFactory.createTitledBorder("Room Details"));
 		JColorChooser colorChooser = new JColorChooser(getColor());
@@ -61,6 +62,8 @@ public class RoomEditorTool extends EditorTool
 				transformSelected();
 			}});
 		toolPanel.add(extendButton);
+		
+		
 	}
 	
 	@Override
@@ -86,7 +89,10 @@ public class RoomEditorTool extends EditorTool
 	protected void selectRoom(GameRoom room)
 	{
 		deselectRoom();
+		RoomDetailsPanel p = (RoomDetailsPanel)toolPanel;
 		selectedRoom = room;
+		p.setRoom(selectedRoom);
+		
 	}
 	
 	protected void deselectRoom()

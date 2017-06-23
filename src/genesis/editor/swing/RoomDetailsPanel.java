@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
 import java.util.List;
 import java.util.Set;
 
@@ -18,12 +20,15 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import javagames.game.GameRoom;
 import javagames.util.Vector2f;
@@ -32,6 +37,9 @@ public class RoomDetailsPanel extends DetailsPanel
 {
 	JList contentList;
 	DefaultListModel<String> listModel;
+	
+
+	ElevationPanel elevPanel;
 	
 	public RoomDetailsPanel()
 	{
@@ -69,7 +77,8 @@ public class RoomDetailsPanel extends DetailsPanel
 		//add(locationLabel);
 		//add(locationPane);
 		
-
+		elevPanel = new ElevationPanel(0.01f);
+		add(elevPanel);
 		
 	}
 
@@ -85,13 +94,14 @@ public class RoomDetailsPanel extends DetailsPanel
 		if(room == null) return;
 		namePane.setText(room.getName());
 		locationPane.setText(room.getPosition().toString());
-		
+		elevPanel.setRoom(room);
 		updateList();
 	}
 	
 	public void updateList()
 	{
 		listModel.clear();
+		listModel.addElement(((GameRoom)object).getBiome().toString());
 		/*Set<String> tags = getRoom().getComponentNames();
 		for(String s : tags)
 		{

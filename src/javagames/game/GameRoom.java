@@ -1,5 +1,6 @@
 package javagames.game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Vector;
 
@@ -18,6 +19,8 @@ public class GameRoom extends GameObject implements Transformable <Dungeon>
 	private Biome biome;
 	public Vector<GameObject> contents;
 	public Vector<GameRoom> neighbors;
+	private Color elevColor;
+	private float elevation;
 	
 	public GameRoom(Vector2f location)
 	{
@@ -29,8 +32,14 @@ public class GameRoom extends GameObject implements Transformable <Dungeon>
 		neighbors = new Vector<GameRoom>();
 		state = RoomState.NULL;
 		biome = Biome.NULL;
+		setElevation(0.f);
 	}
 
+	public Biome getBiome()
+	{
+		return biome;
+	}
+	
 	public void setBiome(Biome biome)
 	{
 		this.biome=biome;
@@ -170,5 +179,25 @@ public class GameRoom extends GameObject implements Transformable <Dungeon>
 	
 		for(GameObject o : contents)
 			o.render(g, viewport);
+	}
+	
+
+
+	
+	public float getElevation()
+	{
+		return elevation;
+	}
+	
+	public void setElevation(float elevation)
+	{
+		this.elevation=elevation;
+		elevColor = new Color(elevation,elevation,elevation);
+	}
+	
+	public void renderHeight(Graphics g, Matrix3x3f view)
+	{
+		g.setColor(elevColor);
+		bounds.render(g, view);
 	}
 }

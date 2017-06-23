@@ -71,7 +71,7 @@ public class GridLines extends EditorTool
 			p1.x+=line.x;
 		}
 		
-		g.drawString(str.toString(), p.x, p.y);
+		//g.drawString(str.toString(), p.x, p.y);
 	}
 
 }
