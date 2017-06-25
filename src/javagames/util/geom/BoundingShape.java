@@ -1,5 +1,6 @@
 package javagames.util.geom;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -51,6 +52,10 @@ public abstract class BoundingShape implements Drawable
 		return zOrder;
 	}
 	
-	
+	public void render(Graphics g, Matrix3x3f view, Color c)
+	{
+		g.setColor(c);
+		render(g,view);
+	}
 	public abstract void render(Graphics g, Matrix3x3f view);
 }

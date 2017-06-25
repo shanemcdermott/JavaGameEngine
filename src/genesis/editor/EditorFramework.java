@@ -1,31 +1,20 @@
 package genesis.editor;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
 import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
-
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -33,26 +22,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
-
-import genesis.cell.*;
 import genesis.editor.tool.EditorTool;
 import genesis.editor.swing.SwingConsole;
 import genesis.editor.swing.TextAreaOutputStream;
-import genesis.editor.tool.CellCreateTool;
-import genesis.editor.tool.CellSelectTool;
 import javagames.framework.SwingFramework;
 import javagames.g2d.Drawable;
 import javagames.g2d.GridLines;
 import javagames.game.GameObject;
 import javagames.util.Matrix3x3f;
-import javagames.util.Vector2f;
 
 
 
 public class EditorFramework extends SwingFramework
 {
 
+	private final int maxLines = 100;
 	protected ArrayList<Drawable> objects;
 	protected HashMap<String,EditorTool> tools;
 	
@@ -64,6 +48,7 @@ public class EditorFramework extends SwingFramework
 	private JPanel editorPanel;
 	private SwingConsole c;
 	
+	
 	public EditorFramework()
 	{
 		super();
@@ -71,9 +56,8 @@ public class EditorFramework extends SwingFramework
 		objects = new ArrayList<Drawable>();
 		objects.add(new GridLines(this));
 		tools = new HashMap<String, EditorTool>();
-	
 	}
-	
+
 	public void addObject(Drawable drawable)
 	{
 		objects.add(drawable);
@@ -88,7 +72,8 @@ public class EditorFramework extends SwingFramework
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(initFileMenu());
-		menuBar.add(initModeMenu());
+		menuBar.add(initToolMenu());
+		menuBar.add(initViewMenu());
 		menuBar.add(initHelpMenu());
 		setJMenuBar(menuBar);
 		add(initEditorBar(), BorderLayout.EAST);
@@ -114,9 +99,9 @@ public class EditorFramework extends SwingFramework
 		return menu;
 	}
 	
-	protected JMenu initModeMenu()
+	protected JMenu initToolMenu()
 	{
-		JMenu menu = new JMenu("Mode");
+		JMenu menu = new JMenu("Tools");
 		for(Map.Entry<String,EditorTool> entry : tools.entrySet())
 		{
 			JMenuItem item = new JMenuItem(new AbstractAction(entry.getKey()) {
@@ -129,13 +114,19 @@ public class EditorFramework extends SwingFramework
 		return menu;
 	}
 	
+	protected JMenu initViewMenu()
+	{
+		JMenu menu = new JMenu("View");
+		return menu;
+	}
+	
 	protected JMenu initHelpMenu()
 	{
 		JMenu menu = new JMenu("Help");
 		JMenuItem item = new JMenuItem(new AbstractAction("About") {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(EditorFramework.this,
-						"About this app!!!", "About",
+						"Author: Shane McDermott\n2017\nAll Rights Reserved.", "About",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -201,7 +192,6 @@ public class EditorFramework extends SwingFramework
 		{
 			editorPanel.add(entry.getValue().toolPanel,entry.getKey());
 		}
-		int maxLines = 10;
 		JTextArea textArea = new JTextArea();
 		PrintStream con=new PrintStream(new TextAreaOutputStream(textArea,maxLines));
 		System.setOut(con);
@@ -261,11 +251,15 @@ public class EditorFramework extends SwingFramework
 		g2d.setRenderingHint(
 				RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON
 			);
+		renderObjects(g2d,view);
 		cursor.render(g2d, view);
+	}
+	
+	protected void renderObjects(Graphics2D g2d, Matrix3x3f view)
+	{
 		for(Drawable go : objects)
 		{
-			go.render(g, view);
+			go.render(g2d, view);
 		}
-	
 	}
 }

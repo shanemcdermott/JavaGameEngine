@@ -112,11 +112,11 @@ public class RoomEditorTool extends EditorTool
 		super.render(g,view);
 		if(selectedRoom!=null)
 		{
-			g.setColor(Color.BLACK);
+			
 			BoundingBox aabb = selectedRoom.getAABB();
 			boolean bFill = aabb.fill;
 			aabb.fill=false;
-			aabb.render(g,view);
+			aabb.render(g,view,Color.CYAN);
 			aabb.fill= bFill;
 		}
 	}

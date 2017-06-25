@@ -84,6 +84,22 @@ public class Dungeon extends GameRoom
 		}
 	}
 	
+	public void getHeightmap(float[][] heightmap)
+	{
+		for(int x =0; x < rooms.length; x++)
+		{
+			for(int y = 0; y < rooms.length; y++)
+			{
+				heightmap[x][y] = rooms[x][y].getElevation();
+			}
+		}
+	}
+	
+	public Point getNumRooms()
+	{
+		return new Point(rooms.length, rooms[0].length);
+	}
+	
 	private void updateRoomSize(Vector2f dungeonBounds)
 	{
 		roomSize.x = dungeonBounds.x / rooms.length;
@@ -138,13 +154,24 @@ public class Dungeon extends GameRoom
 			for(int j =min; j <= max; j++)
 			{
 				rooms[i][j].transform(this);
-				rooms[i][j].setElevation(elev);
 			}
 		}
 		
 		if(min>=max) return;
 		
 		recurseFill(min+1,max-1);
+	}
+	
+	public void setHeightMap(float[][] heightmap)
+	{
+		if(heightmap.length < rooms.length || heightmap[0].length < rooms[0].length) return;
+		for(int x = 0; x < rooms.length; x++)
+		{
+			for(int y = 0; y < rooms.length; y++)
+			{
+				rooms[x][y].setElevation(heightmap[x][y]);
+			}
+		}
 	}
 	
 	@Override
