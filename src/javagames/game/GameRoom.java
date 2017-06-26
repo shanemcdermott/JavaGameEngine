@@ -182,7 +182,10 @@ public class GameRoom extends GameObject implements Transformable <Dungeon>
 	}
 	
 
-
+	public Color getElevColor()
+	{
+		return elevColor;
+	}
 	
 	public float getElevation()
 	{

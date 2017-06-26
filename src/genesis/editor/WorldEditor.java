@@ -4,17 +4,20 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.util.Map;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import genesis.editor.tool.EditorTool;
 import genesis.editor.tool.RoomEditorTool;
 import genesis.noise.DiamondSquare;
+import javagames.game.GameRoom;
 import javagames.util.Matrix3x3f;
 import javagames.world.Dungeon;
 
@@ -32,6 +35,43 @@ public class WorldEditor extends EditorFramework
 		randy = new Random();
 	}
 
+	@Override
+	protected JMenu initFileMenu()
+	{
+		JMenu menu = super.initFileMenu();
+		
+		JMenuItem item = new JMenuItem(new AbstractAction("Export Heightmap"){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				try
+				{
+					GameRoom[][] rooms = world.getRooms();
+					BufferedImage bi = new BufferedImage(rooms.length, rooms[0].length,BufferedImage.TYPE_INT_ARGB);
+					for(int x = 0; x< rooms.length; x++)
+					{
+						for(int y = 0; y < rooms[x].length; y++)
+						{
+							bi.setRGB(x,y,rooms[x][y].getElevColor().getRGB());
+						}
+					}
+					File outputfile = new File("world.png");
+					ImageIO.write(bi, "png", outputfile);
+					System.out.println("Heightmap exported.");
+				} 
+				catch (IOException e) 
+				{
+					e.printStackTrace(System.err);
+				}
+			}
+			
+		});
+		
+		menu.add(item);
+		return menu;
+	}
+	
 	@Override
 	protected JMenu initToolMenu()
 	{
