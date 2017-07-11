@@ -3,6 +3,9 @@ package genesis.noise;
 import java.awt.Point;
 import java.util.Random;
 
+import javagames.util.Vector2f;
+import javagames.util.geom.BoundingPoly;
+
 public abstract class NoiseFunction 
 {
 	protected float min;
@@ -61,6 +64,14 @@ public abstract class NoiseFunction
 		this.name = name;
 	}
 
+	public void addMask(BoundingPoly polyMask)
+	{
+		for(int x = 0; x < getWidth(); x++)
+			for(int y = 0; y < getDepth(); y++)
+				if(polyMask.contains(new Vector2f(x,y)))
+					mask[x][y]=true;
+	}
+	
 	public void setIgnored(boolean[][] mask)
 	{
 		this.mask = mask;
@@ -98,10 +109,15 @@ public abstract class NoiseFunction
 	{
 		return mask[x][y];
 	}
+
+	public boolean isInBounds(int x, int y)
+	{
+		return x>= 0 && x < heightmap.length && y >= 0 && y < heightmap[x].length;
+	}
 	
 	public boolean isValid(int x, int y)
 	{
-		return x>= 0 && x < heightmap.length && y >= 0 && y < heightmap[x].length && !isIgnored(x,y);
+		return isInBounds(x,y) && !isIgnored(x,y);
 	}
 	
 	protected void resetMinMax()

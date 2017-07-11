@@ -12,6 +12,7 @@ import javagames.game.GameRoom;
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
 import javagames.util.geom.BoundingBox;
+import javagames.util.geom.BoundingPoly;
 
 public class Dungeon extends GameRoom 
 {
@@ -106,6 +107,14 @@ public class Dungeon extends GameRoom
 			}
 		}
 		return flagmap;
+	}
+	
+	public void addMask(String maskName, BoundingPoly polyMask)
+	{
+		for(int x = 0; x < rooms.length; x++)
+			for(int y = 0; y < rooms[x].length; y++)
+				if(polyMask.contains(rooms[x][y].getPosition()))
+					rooms[x][y].setFlag(maskName, true);
 	}
 	
 	

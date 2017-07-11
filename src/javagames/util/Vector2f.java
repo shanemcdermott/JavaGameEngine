@@ -139,6 +139,16 @@ public class Vector2f {
 		return false;
 	}
 	
+	public static float distance(Vector2f A, Vector2f B, Vector2f C)
+	{
+		float ABx = B.x - A.x;
+		float ABy = B.y - A.y;
+		float num = ABx * (A.y - C.y) - ABy * (A.x - C.x);
+		if (num < 0)
+			num = -num;
+		return num;
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("(%.2f,%.2f)", x, y);

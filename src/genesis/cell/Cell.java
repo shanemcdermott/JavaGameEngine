@@ -9,20 +9,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
 
-import genesis.editor.swing.SwingConsole;
 import javagames.g2d.Drawable;
 import javagames.util.Matrix3x3f;
-import javagames.util.Utility;
 import javagames.util.Vector2f;
+import javagames.util.geom.GeomUtility;
 
 
 //Quickhull source: Alexander Hrishov's website
@@ -383,7 +378,7 @@ public class Cell implements Comparator, Drawable
 		{
 			vectors.add(view.mul(new Vector2f(points.get(i))));
 		}
-		Utility.fillPolygon((Graphics2D)g, vectors);
+		GeomUtility.fillPolygon((Graphics2D)g, vectors);
 		//g.setColor(Color.BLACK);
 		//Utility.drawPolygon(g,vectors);
 		drawEdges(g,view);
