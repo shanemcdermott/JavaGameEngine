@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -15,17 +16,23 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import genesis.editor.tool.FlagBrushTool;
+import genesis.editor.tool.HeightBrushTool;
 import genesis.editor.tool.RoomEditorTool;
 import genesis.noise.DiamondSquare;
+import genesis.noise.NoiseFunction;
+import genesis.noise.SeaLevel;
+import genesis.noise.WhiteNoise;
 import javagames.game.GameRoom;
 import javagames.util.Matrix3x3f;
 import javagames.world.Dungeon;
 
 public class WorldEditor extends EditorFramework 
 {
-	
+
 	public Random randy;
 	public Dungeon world;
+	private NoiseFunction[] noise;
 	private boolean bRenderHeight;
 	
 	public WorldEditor()
@@ -77,42 +84,36 @@ public class WorldEditor extends EditorFramework
 	{
 		JMenu menu = super.initToolMenu();
 		
-		JMenuItem item = new JMenuItem(new AbstractAction("White Noise"){
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) 
-			{
-				Point p = world.getNumRooms();
-				float[][] heightmap = new float[p.x][p.y];
-				world.getHeightmap(heightmap);
-				for(int x = 0; x < p.x;  x++)
-				{
-					for(int y = 0; y < p.y; y++)
-					{
-						heightmap[x][y] = randy.nextFloat();
-					}
-				}
-				world.setHeightMap(heightmap);
-			}
-			
-		});
-		menu.add(item);
+		Point p = world.getNumRooms();
+		float[][] height = new float[p.x][p.y];
 		
-		item = new JMenuItem(new AbstractAction("Diamond-Square"){
+		world.getHeightmap(height);
+		noise = new NoiseFunction[]{
+				new WhiteNoise(randy, height),
+				new DiamondSquare(randy,height),
+				new SeaLevel(randy,height,world)
+		};
+		
+		for(NoiseFunction nf : noise)
+		{
+			JMenuItem item = new JMenuItem(new AbstractAction(nf.getName()){
 
-			@Override
-			public void actionPerformed(ActionEvent arg0) 
-			{
-				Point p = world.getNumRooms();
-				float[][] heightmap = new float[p.x][p.y];
-				world.getHeightmap(heightmap);
-				DiamondSquare d = new DiamondSquare(heightmap);
-				d.exec();
-				world.setHeightMap(heightmap);
-			}
+				@Override
+				public void actionPerformed(ActionEvent arg0) 
+				{
+					Point p = world.getNumRooms();
+					float[][] heightmap = new float[p.x][p.y];
+					boolean[][] flags = world.getFlagmap(nf.getName());
+					world.getHeightmap(heightmap);
+					nf.setHeightmap(heightmap);
+					nf.setIgnored(flags);
+					nf.exec();
+					world.setHeightMap(heightmap);
+				}
 			
-		});
-		menu.add(item);
+			});
+			menu.add(item);
+		}
 		
 		return menu;
 	}
@@ -141,6 +142,8 @@ public class WorldEditor extends EditorFramework
 		//tools.put("Default", cursor);
 		cursor = new RoomEditorTool(this);
 		tools.put("Room Editor", cursor);
+		tools.put("Height Editor", new HeightBrushTool(this));
+		tools.put("Flag Editor", new FlagBrushTool(this));
 		//world.resize(appWorldWidth, appWorldHeight);
 		addObject(world);
 		//cursor = new CellCreateTool(this);

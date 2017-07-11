@@ -1,6 +1,7 @@
 package genesis.editor.swing;
 
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
@@ -11,6 +12,7 @@ import javagames.game.GameRoom;
 public class ElevationPanel extends JPanel 
 {
 	private JSlider elevSlider;
+	private JCheckBox[] noiseMasks;
 	private final int minSize = 0;
 	private final int maxSize = 100;
 	private float elevationScale;
@@ -41,9 +43,26 @@ public class ElevationPanel extends JPanel
 		elevSlider.setPaintTicks(true);
 		elevSlider.setPaintLabels(true);
 		
-	
 		setBorder(BorderFactory.createTitledBorder("Elevation"));
 		add(elevSlider);
+		
+		noiseMasks = new JCheckBox[]{
+				new JCheckBox("White Noise"),
+				new JCheckBox("Diamond Square"),
+				new JCheckBox("Sea Level")
+		};
+		for(JCheckBox cb : noiseMasks)
+		{
+			cb.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e)
+				{
+					JCheckBox source = (JCheckBox)e.getSource();
+					getRoom().setFlag(source.getText(), source.isSelected());
+				}
+			});
+			add(cb);
+		}
+		
 	}
 	
 	public GameRoom getRoom()
@@ -55,5 +74,7 @@ public class ElevationPanel extends JPanel
 	{
 		this.room = room;
 		elevSlider.setValue(Math.round(room.getElevation()*maxSize));
+		for(JCheckBox b : noiseMasks)
+			b.setSelected(room.getFlag(b.getText()));
 	}
 }

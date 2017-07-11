@@ -95,6 +95,20 @@ public class Dungeon extends GameRoom
 		}
 	}
 	
+	public boolean[][] getFlagmap(String name)
+	{
+		boolean[][] flagmap = new boolean[rooms.length][rooms[0].length];
+		for(int x =0; x < rooms.length; x++)
+		{
+			for(int y = 0; y < rooms.length; y++)
+			{
+				flagmap[x][y] = rooms[x][y].getFlag(name);
+			}
+		}
+		return flagmap;
+	}
+	
+	
 	public Point getNumRooms()
 	{
 		return new Point(rooms.length, rooms[0].length);
@@ -137,8 +151,23 @@ public class Dungeon extends GameRoom
 			roomLoc.x += roomSize.x;
 			roomLoc.y -= roomSize.y*numRoomsY;
 		}
-		
-		recurseFill();
+	}
+	
+	public void markOceanCells(float seaLevel)
+	{
+		Point p = getNumRooms();
+		for(int x = 0; x < p.x; x++)
+		{
+			for(int y= 0; y < p.y; y++)
+			{
+				if(rooms[x][y].getElevation()< seaLevel)
+					rooms[x][y].setBiome(Biome.OCEAN);
+				else if(rooms[x][y].getElevation() < seaLevel + seaLevel * 0.1)
+					rooms[x][y].setBiome(Biome.INTERTIDAL);
+				else
+					rooms[x][y].setBiome(Biome.WETLAND);
+			}
+		}
 	}
 	
 	public void recurseFill()
@@ -205,4 +234,5 @@ public class Dungeon extends GameRoom
 			}
 		}
 	}
+	
 }

@@ -2,6 +2,7 @@ package javagames.game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.HashMap;
 import java.util.Vector;
 
 import genesis.grammar.RoomState;
@@ -19,6 +20,7 @@ public class GameRoom extends GameObject implements Transformable <Dungeon>
 	private Biome biome;
 	public Vector<GameObject> contents;
 	public Vector<GameRoom> neighbors;
+	public HashMap<String, Boolean> flags;
 	private Color elevColor;
 	private float elevation;
 	
@@ -33,8 +35,22 @@ public class GameRoom extends GameObject implements Transformable <Dungeon>
 		state = RoomState.NULL;
 		biome = Biome.NULL;
 		setElevation(0.f);
+		flags = new HashMap<String,Boolean>();
+		
 	}
 
+	public boolean getFlag(String name)
+	{
+		if(flags.containsKey(name))
+			return flags.get(name);
+		return false;
+	}
+	
+	public void setFlag(String name, boolean value)
+	{
+		flags.put(name, value);
+	}
+	
 	public Biome getBiome()
 	{
 		return biome;
