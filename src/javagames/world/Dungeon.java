@@ -45,6 +45,17 @@ public class Dungeon extends GameRoom
 		waterRatio=0.3f;
 	}
 
+	public Dungeon(GameRoom room)
+	{
+		super(room.getPosition());
+		setName(room.getName());
+		bounds = room.getAABB();
+		roomSize = new Vector2f(0.2f, 0.2f);
+		setRoomCounts(10,10);
+		seaLevel = 0.2f;
+		waterRatio = 0.3f;
+	}
+	
 	public void resize(Vector2f newSize)
 	{
 		BoundingBox aabb = getAABB();
