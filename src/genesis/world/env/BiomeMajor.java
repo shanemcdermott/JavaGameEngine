@@ -1,4 +1,4 @@
-package genesis.world;
+package genesis.world.env;
 
 public enum BiomeMajor 
 {

@@ -24,6 +24,7 @@ public class DiamondSquare
 	{
 		exec(0,0,heightmap.length-1, heightmap[0].length-1);
 	}
+	
 	private void normalize()
 	{
 		float diff = max-min;

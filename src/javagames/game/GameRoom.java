@@ -6,7 +6,7 @@ import java.util.Vector;
 
 import genesis.grammar.RoomState;
 import genesis.grammar.Transformable;
-import genesis.world.Biome;
+import genesis.world.env.Biome;
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
 import javagames.util.geom.BoundingBox;

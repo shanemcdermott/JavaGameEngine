@@ -2,7 +2,7 @@ package genesis.grammar;
 
 import java.awt.Color;
 
-import genesis.world.Biome;
+import genesis.world.env.Biome;
 
 public enum RoomState 
 {

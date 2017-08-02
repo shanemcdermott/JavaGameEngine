@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import genesis.world.Biome;
+import genesis.world.env.Biome;
 import javagames.game.GameRoom;
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
 import javagames.util.geom.BoundingBox;
 
-public class Dungeon extends GameRoom 
+public class Dungeon <T extends GameRoom> extends GameRoom 
 {
 	protected Vector2f roomSize;
 	
-	protected GameRoom[][] rooms;
+	protected T[][] rooms;
 	
 	public Dungeon(String name, float size, int xRooms, int yRooms)
 	{
@@ -54,20 +54,20 @@ public class Dungeon extends GameRoom
 		return bottomLeft.abs().toPoint();
 	}
 	
-	public GameRoom[][] getRooms()
+	public T[][] getRooms()
 	{
 		return rooms;
 	}
 	
 	
-	public GameRoom getRoomAt(Vector2f location)
+	public T getRoomAt(Vector2f location)
 	{
 		if(!bounds.contains(location)) return null;
 		Point p = getRoomIndices(location);
 		return rooms[p.x][p.y];
 	}
 	
-	public void setRoomAt(Vector2f location, GameRoom inRoom)
+	public void setRoomAt(Vector2f location, T inRoom)
 	{
 		if(!bounds.contains(location)) return;
 		
@@ -106,10 +106,11 @@ public class Dungeon extends GameRoom
 		roomSize.y = dungeonBounds.y / rooms[0].length;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void setRoomCounts(int numRoomsX, int numRoomsY)
 	{
 		
-		rooms = new GameRoom[numRoomsX][numRoomsY];
+		rooms = (T[][]) new GameRoom[numRoomsX][numRoomsY];
 		updateRoomSize(getDimensions());
 		
 		Vector2f roomLoc = getPosition().sub(getDimensions().mul(0.5f)).add(roomSize.mul(0.5f));
@@ -119,7 +120,7 @@ public class Dungeon extends GameRoom
 			for(int y = 0; y < numRoomsY; y++)
 			{
 				if(rooms[x][y] == null)
-					rooms[x][y] = new GameRoom(roomLoc);
+					rooms[x][y] = (T) new GameRoom(roomLoc);
 				else
 					rooms[x][y].setPosition(roomLoc);
 			
