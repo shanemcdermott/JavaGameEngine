@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import genesis.world.Biome;
+import genesis.world.BiomeMajor;
 import javagames.game.GameRoom;
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
@@ -19,6 +20,8 @@ public class Dungeon extends GameRoom
 	protected Vector2f roomSize;
 	
 	protected GameRoom[][] rooms;
+	public float seaLevel;
+	public float waterRatio;
 	
 	public Dungeon(String name, float size, int xRooms, int yRooms)
 	{
@@ -27,6 +30,8 @@ public class Dungeon extends GameRoom
 		bounds = new BoundingBox(size);
 		roomSize = new Vector2f(xRooms/size, yRooms/size);
 		setRoomCounts(xRooms,yRooms);
+		seaLevel = 0.2f;
+		waterRatio = 0.3f;
 	}
 	
 	public Dungeon(String name) 
@@ -36,6 +41,8 @@ public class Dungeon extends GameRoom
 		bounds = new BoundingBox(2.f);
 		roomSize = new Vector2f(0.2f,0.2f);
 		setRoomCounts(10,10);
+		seaLevel = 0.2f;
+		waterRatio=0.3f;
 	}
 
 	public void resize(Vector2f newSize)
@@ -162,19 +169,38 @@ public class Dungeon extends GameRoom
 		}
 	}
 	
+	public float getCurrentWaterRatio()
+	{
+		int waterCount=0;
+		Point p = getNumRooms();
+		for(int x=0;x<p.x; x++)
+		{
+			for(int y=0; y<p.y; y++)
+			{
+				if(rooms[x][y].getBiome().getMajorType()==BiomeMajor.AQUATIC)
+					waterCount++;
+			}
+		}
+		
+		return waterCount / (float)(p.x + p.y);
+	}
+	
 	public void markOceanCells(float seaLevel)
 	{
+		
 		Point p = getNumRooms();
 		for(int x = 0; x < p.x; x++)
 		{
 			for(int y= 0; y < p.y; y++)
 			{
-				if(rooms[x][y].getElevation()< seaLevel)
+				/*if(rooms[x][y].getElevation()< seaLevel)
 					rooms[x][y].setBiome(Biome.OCEAN);
 				else if(rooms[x][y].getElevation() < seaLevel + seaLevel * 0.1)
 					rooms[x][y].setBiome(Biome.INTERTIDAL);
 				else
 					rooms[x][y].setBiome(Biome.WETLAND);
+				*/
+				rooms[x][y].transform(this);
 			}
 		}
 	}

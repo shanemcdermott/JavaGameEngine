@@ -101,7 +101,7 @@ public class RoomDetailsPanel extends DetailsPanel
 	public void updateList()
 	{
 		listModel.clear();
-		listModel.addElement(((GameRoom)object).getBiome().toString());
+		listModel.addElement(((GameRoom)object).getEcosystem().toString());
 		/*Set<String> tags = getRoom().getComponentNames();
 		for(String s : tags)
 		{

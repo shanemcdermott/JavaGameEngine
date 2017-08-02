@@ -62,26 +62,7 @@ public class WorldEditor extends EditorFramework
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				BufferedImage img = null;
-				try
-				{
-					img = ImageIO.read(new File("world.png"));
-					world.setRoomCounts(img.getWidth(), img.getHeight());
-					GameRoom[][] rooms = world.getRooms();
-					for(int x = 0; x< rooms.length; x++)
-					{
-						for(int y = 0; y < rooms[x].length; y++)
-						{
-							float elevation = (img.getRGB(x, y) & 0xFF) / 255.f;
-							rooms[x][y].setElevation(elevation);
-						}
-					}
-				}
-				catch(IOException e)
-				{
-					e.printStackTrace(System.err);
-				}
-				System.out.println("Heightmap imported.");
+				importHeightmap();
 			}
 			
 		});
@@ -96,25 +77,7 @@ public class WorldEditor extends EditorFramework
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				try
-				{
-					GameRoom[][] rooms = world.getRooms();
-					BufferedImage bi = new BufferedImage(rooms.length, rooms[0].length,BufferedImage.TYPE_INT_ARGB);
-					for(int x = 0; x< rooms.length; x++)
-					{
-						for(int y = 0; y < rooms[x].length; y++)
-						{
-							bi.setRGB(x,y,rooms[x][y].getElevColor().getRGB());
-						}
-					}
-					File outputfile = new File("world.png");
-					ImageIO.write(bi, "png", outputfile);
-					System.out.println("Heightmap exported.");
-				} 
-				catch (IOException e) 
-				{
-					e.printStackTrace(System.err);
-				}
+				exportHeightmap();
 			}
 			
 		});
@@ -191,7 +154,8 @@ public class WorldEditor extends EditorFramework
 	protected void initTools()
 	{
 		super.initTools();
-		world = new Dungeon("World",appWorldWidth, 64,64);
+		world = new Dungeon("World",appWorldWidth, 128,128);
+		importHeightmap();
 		//cursor = new EditorTool(this);
 		//tools.put("Default", cursor);
 		cursor = new RoomEditorTool(this);
@@ -204,6 +168,54 @@ public class WorldEditor extends EditorFramework
 		//cursor = new CellCreateTool(this);
 		//tools.put("Create Cell", cursor);
 		//tools.put("Edit Cell", new CellSelectTool(this));
+	}
+	
+	public void importHeightmap()
+	{
+		BufferedImage img = null;
+		try
+		{
+			img = ImageIO.read(new File("world.png"));
+			world.setRoomCounts(img.getWidth(), img.getHeight());
+			GameRoom[][] rooms = world.getRooms();
+			for(int x = 0; x< rooms.length; x++)
+			{
+				for(int y = 0; y < rooms[x].length; y++)
+				{
+					float elevation = (img.getRGB(x, y) & 0xFF) / 255.f;
+					rooms[x][y].setElevation(elevation);
+				}
+			}
+			System.out.println("Heightmap imported.");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace(System.err);
+			System.err.println("Failed to import.");
+		}	
+	}
+	
+	public void exportHeightmap()
+	{
+		try
+		{
+			GameRoom[][] rooms = world.getRooms();
+			BufferedImage bi = new BufferedImage(rooms.length, rooms[0].length,BufferedImage.TYPE_INT_ARGB);
+			for(int x = 0; x< rooms.length; x++)
+			{
+				for(int y = 0; y < rooms[x].length; y++)
+				{
+					bi.setRGB(x,y,rooms[x][y].getElevColor().getRGB());
+				}
+			}
+			File outputfile = new File("world.png");
+			ImageIO.write(bi, "png", outputfile);
+			System.out.println("Heightmap exported.");
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace(System.err);
+		}
 	}
 	
 	@Override

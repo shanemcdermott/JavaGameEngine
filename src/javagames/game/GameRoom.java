@@ -3,11 +3,13 @@ package javagames.game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Vector;
 
-import genesis.grammar.RoomState;
 import genesis.grammar.Transformable;
 import genesis.world.Biome;
+import genesis.world.BiomeMajor;
+import genesis.world.Ecosystem;
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
 import javagames.util.geom.BoundingBox;
@@ -16,8 +18,7 @@ import javagames.world.Dungeon;
 public class GameRoom extends GameObject implements Transformable <Dungeon> 
 {
 	
-	private RoomState state;
-	private Biome biome;
+	private Ecosystem ecosystem;
 	public Vector<GameObject> contents;
 	public Vector<GameRoom> neighbors;
 	public HashMap<String, Boolean> flags;
@@ -32,8 +33,7 @@ public class GameRoom extends GameObject implements Transformable <Dungeon>
 		bounds.fill=true;
 		contents = new Vector<GameObject>();
 		neighbors = new Vector<GameRoom>();
-		state = RoomState.NULL;
-		biome = Biome.NULL;
+		ecosystem = new Ecosystem();
 		setElevation(0.f);
 		flags = new HashMap<String,Boolean>();
 		
@@ -51,74 +51,40 @@ public class GameRoom extends GameObject implements Transformable <Dungeon>
 		flags.put(name, value);
 	}
 	
+	public Ecosystem getEcosystem()
+	{
+		return ecosystem;
+	}
+	
 	public Biome getBiome()
 	{
-		return biome;
+		return ecosystem.getBiome();
 	}
 	
 	public void setBiome(Biome biome)
 	{
-		this.biome=biome;
-		setColor(biome.getColor());
-	}
-	
-	public void setState(RoomState state)
-	{
-		this.state = state;
-		setColor(state.color());
+		this.ecosystem.setBiome(biome);
+		setColor(ecosystem.getColor());
 	}
 	
 	public void transform(Dungeon context)
-	{
-		/*	
-		switch(state)
+	{	
+		Biome[] options = ecosystem.getBiomeOptions(elevation);
+		if(options.length>0)
 		{
-			case NULL:
-				setState(RoomState.WATER);
-				break;
-			case WATER:
-				setState(RoomState.LAND);
-				break;
-			case LAND:
-				setState(RoomState.WATER);
-				break;
-		}
-		*/
-		switch(biome)
-		{
-		case BOREAL_FOREST:
+			Random r = new Random();
+			if(elevation>0.25f)
+			{
+				for(int i =0; i < options.length;i++)
+				{
+					if(options[i].getMajorType()==BiomeMajor.AQUATIC)
+					{
+						options[i] = options[r.nextInt(options.length)];
+					}
+				}
+			}
 			
-			break; 
-		case CORAL_REEF: case ESTUARY: case OCEAN: case NULL:
-			break;
-	
-		case INTERTIDAL:
-			setBiome(Biome.WETLAND);
-			break;
-		case LAKE:
-			setBiome(Biome.POND);
-			break;
-		case POND:
-			setBiome(Biome.LAKE);
-			break;
-		case RIVER:
-			setBiome(Biome.STREAM);
-			break;
-		case STREAM:
-			setBiome(Biome.RIVER);
-			break;
-		case TEMPERATE_FOREST:
-			setBiome(Biome.BOREAL_FOREST);
-			break;
-		case TROPICAL_FOREST:
-			setBiome(Biome.TEMPERATE_FOREST);
-			break;
-		case WETLAND:
-			setBiome(Biome.TROPICAL_FOREST);
-			break;
-		default:
-			break;
-		
+			setBiome(options[r.nextInt(options.length)]);
 		}
 	}
 	
