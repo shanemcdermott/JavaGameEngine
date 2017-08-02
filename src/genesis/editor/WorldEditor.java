@@ -156,6 +156,7 @@ public class WorldEditor extends EditorFramework
 		super.initTools();
 		world = new Dungeon("World",appWorldWidth, 128,128);
 		importHeightmap();
+		world.markOceanCells(0.2f);
 		//cursor = new EditorTool(this);
 		//tools.put("Default", cursor);
 		cursor = new RoomEditorTool(this);

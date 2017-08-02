@@ -12,8 +12,8 @@ public class Ecosystem
 	
 	public Ecosystem()
 	{
-		this.climate=Climate.CONTINENTAL;
-		this.biome=Biome.NULL;
+		this.climate=Climate.MILD;
+		this.biome=Biome.OCEAN;
 	}
 	
 	public Ecosystem(Climate climate, Biome biome)
@@ -67,6 +67,7 @@ public class Ecosystem
 		List<Biome> options = new ArrayList<Biome>();
 		for(Biome b : Biome.values())
 		{
+			if(b.getMajorType()==BiomeMajor.DESERT) continue;
 			if(b.canExistIn(height))
 				options.add(b);
 		}
