@@ -34,6 +34,16 @@ public class GameObject implements Drawable
 		zOrder = 0;
 	}
 	
+	public BoundingShape getBounds()
+	{
+		return bounds;
+	}
+	
+	public void setBounds(BoundingShape inBounds)
+	{
+		bounds = inBounds;
+	}
+	
 	public void setPosition(Vector2f pos)
 	{
 		transform.translation=pos;

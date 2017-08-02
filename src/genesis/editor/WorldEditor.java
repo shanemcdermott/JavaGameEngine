@@ -25,10 +25,11 @@ import genesis.noise.NoiseFunction;
 import genesis.noise.SeaLevel;
 import genesis.noise.Smoothing;
 import genesis.noise.WhiteNoise;
-import javagames.game.GameRoom;
+import javagames.room.ChildRoomsComponent;
+import javagames.room.Dungeon;
+import javagames.room.GameRoom;
 import javagames.util.Matrix3x3f;
 import javagames.util.geom.BoundingPoly;
-import javagames.world.Dungeon;
 
 public class WorldEditor extends EditorFramework 
 {
@@ -157,6 +158,8 @@ public class WorldEditor extends EditorFramework
 		world = new Dungeon("World",appWorldWidth, 128,128);
 		importHeightmap();
 		world.markOceanCells(0.2f);
+		ChildRoomsComponent crc = new ChildRoomsComponent(world);
+		world.addComponent(crc);
 		//cursor = new EditorTool(this);
 		//tools.put("Default", cursor);
 		cursor = new RoomEditorTool(this);

@@ -30,7 +30,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import javagames.game.GameRoom;
+import javagames.room.GameRoom;
 import javagames.util.Vector2f;
 
 public class RoomDetailsPanel extends DetailsPanel

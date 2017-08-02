@@ -12,7 +12,7 @@ import genesis.editor.swing.CellDetailsPanel;
 import genesis.editor.swing.RoomDetailsPanel;
 import javagames.util.Matrix3x3f;
 import javagames.player.RelativeMouseInput;
-import javagames.world.Dungeon;
+import javagames.room.Dungeon;
 import javagames.world.InfluenceObject;
 
 public class CellSelectTool extends EditorTool 

@@ -26,7 +26,7 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import genesis.cell.Cell;
-import javagames.game.GameRoom;
+import javagames.room.GameRoom;
 import javagames.util.Vector2f;
 
 public class CellDetailsPanel extends JPanel

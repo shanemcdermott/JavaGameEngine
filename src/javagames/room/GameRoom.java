@@ -1,19 +1,19 @@
-package javagames.game;
+package javagames.room;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Vector;
-
 import genesis.grammar.Transformable;
 import genesis.world.Biome;
 import genesis.world.BiomeMajor;
 import genesis.world.Ecosystem;
+import javagames.game.GameObject;
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
 import javagames.util.geom.BoundingBox;
-import javagames.world.Dungeon;
 
 public class GameRoom extends GameObject implements Transformable <Dungeon> 
 {
@@ -21,6 +21,7 @@ public class GameRoom extends GameObject implements Transformable <Dungeon>
 	private Ecosystem ecosystem;
 	public Vector<GameObject> contents;
 	public Vector<GameRoom> neighbors;
+	private Vector<RoomComponent> components;
 	public HashMap<String, Boolean> flags;
 	private Color elevColor;
 	private float elevation;
@@ -36,9 +37,45 @@ public class GameRoom extends GameObject implements Transformable <Dungeon>
 		ecosystem = new Ecosystem();
 		setElevation(0.f);
 		flags = new HashMap<String,Boolean>();
-		
+		components = new Vector<RoomComponent>();
 	}
 
+	public boolean hasComponent(Class<?> componentClass)
+	{
+		for(RoomComponent rc : components)
+		{
+			if(componentClass.isInstance(rc))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public void addUniqueComponent(RoomComponent component)
+	{
+		if(hasComponent(component.getClass())) return;
+		addComponent(component);
+	}
+	
+	public void addComponent(RoomComponent component)
+	{
+			
+		try
+		{
+			Method[] compMethods = component.getClass().getMethods();
+			System.out.print("Methods: ");
+			for(Method m : compMethods)
+			{
+				System.out.println(m.getName());
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		components.add(component);                                                                       
+	}
+	
 	public boolean getFlag(String name)
 	{
 		if(flags.containsKey(name))

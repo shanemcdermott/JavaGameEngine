@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import javagames.game.GameRoom;
+import javagames.room.GameRoom;
 import javagames.util.Vector2f;
 
 public class AddRoomRule implements GrammarRule 

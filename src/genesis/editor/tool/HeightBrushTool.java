@@ -17,11 +17,11 @@ import javax.swing.event.ChangeListener;
 
 import genesis.editor.WorldEditor;
 import genesis.editor.swing.RoomDetailsPanel;
-import javagames.game.GameRoom;
 import javagames.player.RelativeMouseInput;
+import javagames.room.Dungeon;
+import javagames.room.GameRoom;
 import javagames.util.Matrix3x3f;
 import javagames.util.geom.BoundingBox;
-import javagames.world.Dungeon;
 
 public class HeightBrushTool extends EditorTool {
 

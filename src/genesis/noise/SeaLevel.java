@@ -2,7 +2,7 @@ package genesis.noise;
 
 import java.util.Random;
 
-import javagames.world.Dungeon;
+import javagames.room.Dungeon;
 
 public class SeaLevel extends NoiseFunction 
 {

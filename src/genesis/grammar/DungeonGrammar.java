@@ -5,9 +5,9 @@ import java.util.Random;
 import java.util.Vector;
 
 import genesis.cell.Cell;
-import javagames.game.GameRoom;
+import javagames.room.Dungeon;
+import javagames.room.GameRoom;
 import javagames.util.Vector2f;
-import javagames.world.Dungeon;
 
 public class DungeonGrammar 
 {

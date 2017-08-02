@@ -7,7 +7,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import javagames.game.GameRoom;
+import javagames.room.GameRoom;
 
 public class ElevationPanel extends JPanel 
 {
