@@ -7,8 +7,8 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 
 import javagames.g2d.Sprite;
+import javagames.game.GameObject;
 import javagames.player.GameCursor;
-import javagames.player.RelativeMouseInput;
 import javagames.sound.SoundCue;
 import javagames.sound.SoundLooper;
 import javagames.util.GameConstants;
@@ -21,8 +21,8 @@ public class TitleMenuState extends AttractState
 	protected Color fontColor = Color.GREEN;
 	protected GameCursor cursor = new GameCursor();
 	protected SoundCue laser;
-	protected Matrix3x3f viewport;
 	protected SoundLooper thruster;
+	protected AttractState nextState;
 	private boolean bShouldLoopPlay = false;
 	
 	@Override
@@ -32,31 +32,31 @@ public class TitleMenuState extends AttractState
 		laser = (SoundCue) controller.getAttribute("fire-clip");
 		thruster = (SoundLooper) controller.getAttribute("thruster");
 		cursor.setSprite((Sprite)controller.getAttribute("spr_cursor"));
-		viewport = (Matrix3x3f)controller.getAttribute("viewport");
+		addGameObject((GameObject)controller.getAttribute("tree"));
+		addGameObject((GameObject)controller.getAttribute("tree_1"));
+		nextState = null;
 	}
 	
 	@Override
-	protected AttractState getState() 
+	protected AttractState getNextState() 
 	{
-		TitleMenuState s = new TitleMenuState();
-		if(fontColor == Color.GREEN)
-		{
-			s.fontColor = Color.BLUE;
-		}
-		return s;
+		return nextState;
 	}
 
 	
 	@Override
 	protected boolean shouldChangeState()
 	{
-		return false;
+		return nextState != null;
 	}
 	
 	@Override
 	public void processInput(float deltaTime)
 	{
 		super.processInput(deltaTime);
+		
+		if(keys.keyDownOnce(KeyEvent.VK_ENTER))
+			nextState = new GeneratorState(getGameObjects());
 		
 		//Sound Cue Example
 		if(keys.keyDownOnce(KeyEvent.VK_SPACE))
@@ -92,7 +92,6 @@ public class TitleMenuState extends AttractState
 	}
 	
 	public void render(Graphics2D g, Matrix3x3f view) {
-		view = viewport.mul(view);
 		super.render(g, view);
 		int width = app.getScreenWidth();
 		int height = app.getScreenHeight();
@@ -104,12 +103,13 @@ public class TitleMenuState extends AttractState
 			GameConstants.APP_TITLE,
 			"", 
 			"", 
-			"",
 			"P R E S S  S P A C E  T O  P L A Y  S O U N D",
 			"",
-			"H O L D  'W'  T O P L A Y  L O O P I N G  S O U N D",
+			"H O L D  'W'  T O  P L A Y  L O O P I N G  S O U N D",
 			"",
-			"P R E S S  E S C  T O  E X I T" 
+			"P R E S S  ESC  T O  E X I T",
+			"",
+			"P R E S S  ENTER  T O  G E N E R A T E"
 		};
 		Utility.drawCenteredString(g, width, height / 3, msg);
 		cursor.render(g, view);

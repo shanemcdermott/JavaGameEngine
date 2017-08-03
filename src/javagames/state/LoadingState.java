@@ -22,6 +22,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import javagames.g2d.Sprite;
+import javagames.game.GameObject;
 import javagames.sound.BlockingClip;
 import javagames.sound.BlockingDataLine;
 import javagames.sound.LoopEvent;
@@ -43,6 +44,7 @@ public class LoadingState extends State
 	private Map<String, String> soundCues;
 	private Map<String, String> soundLoops;
 	private Map<String, JSONObject> sprites;
+	private Map<String, JSONObject> gameObjects;
 	
 	private ExecutorService threadPool;
 	private List<Callable<Boolean>> loadTasks;
@@ -57,6 +59,7 @@ public class LoadingState extends State
 		soundCues = Collections.synchronizedMap(new HashMap<String, String>());
 		soundLoops = Collections.synchronizedMap(new HashMap<String, String>());
 		sprites = Collections.synchronizedMap(new HashMap<String,JSONObject>());
+		gameObjects = Collections.synchronizedMap(new HashMap<String, JSONObject>());
 		
 		JSONParser parser = new JSONParser();
 		try
@@ -80,6 +83,13 @@ public class LoadingState extends State
             for(Object o : spr.keySet())
             	sprites.put((String)o, (JSONObject)spr.get(o));
            
+            
+            JSONObject gobj = (JSONObject) obj.get("game objects");
+            for(Object o : gobj.keySet())
+            {
+            	gameObjects.put((String)o, (JSONObject)gobj.get(o));
+            }
+            
             textColor = Color.decode((String)obj.get("text color"));
             
 		}
@@ -118,14 +128,14 @@ public class LoadingState extends State
 			
 				Vector2f worldTopLeft = new Vector2f
 				(
-					-GameConstants.WORLD_WIDTH,// / 2.0f,
-					GameConstants.WORLD_HEIGHT// / 2.0f 
+					-GameConstants.WORLD_WIDTH / 2.0f,
+					GameConstants.WORLD_HEIGHT / 2.0f 
 				);
 				
 				Vector2f worldBottomRight = new Vector2f
 				(
-					GameConstants.WORLD_WIDTH,// / 2.0f,
-					-GameConstants.WORLD_HEIGHT// / 2.0f 
+					GameConstants.WORLD_WIDTH / 2.0f,
+					-GameConstants.WORLD_HEIGHT / 2.0f 
 				);
 				
 				Sprite sprite =	new Sprite( image, worldTopLeft, worldBottomRight );
@@ -214,6 +224,22 @@ public class LoadingState extends State
 					});
 			}
 		
+		//Load Objects
+			for(Map.Entry<String,JSONObject> entry : gameObjects.entrySet())
+			{
+				loadTasks.add(new Callable<Boolean>() 
+				{
+					@Override
+					public Boolean call() throws Exception 
+					{
+					
+						controller.setAttribute( entry.getKey(), loadObject(entry.getValue()));
+						System.out.println(entry.getKey() + " loaded.");
+						return Boolean.TRUE;
+					}
+				});
+			}
+			
 		loadResults = new ArrayList<Future<Boolean>>();
 		for(Callable<Boolean> task : loadTasks)
 		{
@@ -227,6 +253,22 @@ public class LoadingState extends State
 		}
 	}
 
+	protected GameObject loadObject(JSONObject json) throws Exception
+	{
+		if(json.get("Class").equals("GameObject"))
+		{
+			GameObject g = new GameObject();
+			g.setSprite(ResourceLoader.loadSprite(getClass(), (JSONObject)json.get("Sprite")));
+			Vector2f pos = new Vector2f();
+			JSONArray p = (JSONArray)json.get("Location");
+			pos.x = (float)(double)p.get(0);
+			pos.y = (float)(double)p.get(1);
+			g.setPosition(pos);
+			return g;
+		}
+		
+		return null;
+	}
 
 	@Override
 	public void updateObjects(float delta)

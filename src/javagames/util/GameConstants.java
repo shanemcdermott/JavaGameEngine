@@ -10,8 +10,8 @@ public class GameConstants
 	public static final int APP_HEIGHT = 1050;
 	public static final long APP_SLEEP = 10L;
 	public static final String APP_TITLE = "Genesis";
-	public static final float WORLD_WIDTH = 200.0f;
-	public static final float WORLD_HEIGHT = 200.0f;
+	public static final float WORLD_WIDTH = 100.0f;
+	public static final float WORLD_HEIGHT = 100.0f;
 	public static final float BORDER_SCALE = 0.95f;
 	public static final boolean DISABLE_CURSOR = true;
 	public static final boolean MAINTAIN_RATIO = true;

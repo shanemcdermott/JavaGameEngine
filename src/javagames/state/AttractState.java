@@ -16,16 +16,14 @@ import javagames.util.Matrix3x3f;
 public abstract class AttractState extends State 
 {
 	private List<GameObject> gameObjects;
-	protected float waitTime = 5.0f;
 	private float time;
 	private Sprite background;
 	protected KeyboardInput keys;
 	protected RelativeMouseInput mouse;
+	protected Matrix3x3f viewport;
 	protected PlayerControls player;
 	
-	public AttractState() {
-		
-	}
+	public AttractState() {}
 
 	public AttractState(List<GameObject> gameObjects)
 	{
@@ -39,6 +37,7 @@ public abstract class AttractState extends State
 		mouse = (RelativeMouseInput) controller.getAttribute("mouse");
 		background = (Sprite) controller.getAttribute("background");
 		player = (PlayerControls) controller.getAttribute("player");
+		viewport = (Matrix3x3f)controller.getAttribute("viewport");
 		if(gameObjects == null)
 		{
 			gameObjects = new Vector<GameObject>();
@@ -51,37 +50,42 @@ public abstract class AttractState extends State
 	public void updateObjects(float delta) 
 	{
 		time += delta;
-		if (shouldChangeState()) 
-		{
-			AttractState state = getState();
-			state.setGameObjects(gameObjects);
-			getController().setState(state);
-			return;
-		}
-		for (GameObject g : gameObjects) 
+
+		Vector<GameObject> gameCopies = new Vector<GameObject>(gameObjects);
+		for (GameObject g : gameCopies) 
 		{
 			g.update(delta);
 		}
+		gameObjects = gameCopies;
+		
+		if (shouldChangeState()) 
+		{
+			State state = getNextState();
+			if(state instanceof AttractState)
+				((AttractState)state).setGameObjects(gameObjects);
+			
+			getController().setState(state);
+		}
 	}
 
-	protected boolean shouldChangeState() 
-	{
-		return time > getWaitTime();
-	}
 
-	protected float getWaitTime() 
-	{
-		return waitTime;
-	}
+	protected abstract boolean shouldChangeState(); 
 
 	private void setGameObjects(List<GameObject> gameObjects) 
 	{
 		this.gameObjects = gameObjects;
 	}
 
-	/*Return the next State to switch to*/
-	protected abstract AttractState getState();
+	/**
+	 * Return the next State to switch to
+	 * */
+	protected abstract State getNextState();
 
+	protected void addGameObject(GameObject gameObject)
+	{
+		gameObjects.add(gameObject);
+	}
+	
 	public List<GameObject> getGameObjects() 
 	{
 		return gameObjects;
@@ -99,6 +103,7 @@ public abstract class AttractState extends State
 
 	@Override
 	public void render(Graphics2D g, Matrix3x3f view) {
+		view = viewport.mul(view);
 		background.render(g, view);
 		for (GameObject o : gameObjects) {
 			o.render(g, view);
