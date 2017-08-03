@@ -29,7 +29,7 @@ public class GameRoom extends GameObject implements Transformable <Dungeon>
 	public GameRoom(Vector2f location)
 	{
 		super();
-		bounds = new BoundingBox();	
+		bounds = new BoundingBox(2.f);	
 		setPosition(new Vector2f(location));
 		bounds.fill=true;
 		contents = new Vector<GameObject>();
@@ -153,7 +153,12 @@ public class GameRoom extends GameObject implements Transformable <Dungeon>
 	public void addGameObject(GameObject o)
 	{
 		if(bounds.contains(o.getPosition()))
+		{
 			contents.add(o);
+			System.out.println(o.getName() + " added.");
+		}
+		else
+			System.out.println(o.getName() + " not added.");
 	}
 	
 	public void resize(Vector2f dimensions)

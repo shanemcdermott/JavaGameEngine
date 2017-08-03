@@ -1,35 +1,37 @@
 package javagames.state;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-import javax.imageio.ImageIO;
-import javax.xml.parsers.ParserConfigurationException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
-
-import javagames.sound.SoundCue;
-import javagames.sound.SoundLooper;
 import javagames.sound.BlockingClip;
 import javagames.sound.BlockingDataLine;
 import javagames.sound.LoopEvent;
+import javagames.sound.SoundCue;
+import javagames.sound.SoundLooper;
 import javagames.util.GameConstants;
 import javagames.util.Matrix3x3f;
 import javagames.util.ResourceLoader;
 import javagames.util.Sprite;
 import javagames.util.Utility;
 import javagames.util.Vector2f;
-import javagames.util.XMLUtility;
-
 
 //TODO: XML/ GameObject Loading
 public class LoadingState extends State 
@@ -47,6 +49,35 @@ public class LoadingState extends State
 	private int numberOfTasks;
 	private float percent;
 	private float wait;
+	
+	public LoadingState(String levelName)
+	{
+		soundCues = Collections.synchronizedMap(new HashMap<String, String>());
+		soundLoops = Collections.synchronizedMap(new HashMap<String, String>());
+		
+		JSONParser parser = new JSONParser();
+		try
+		{
+			JSONObject obj = (JSONObject) parser.parse(new FileReader(String.format("res/assets/json/%s.json",levelName)));
+			backgroundFileName = (String)obj.get("background");
+            ambienceFileName = (String)obj.get("ambience");
+            JSONObject scues = (JSONObject) obj.get("sound cues");
+            for(Object o : scues.keySet())
+            {
+            	soundCues.put((String)o, (String)scues.get(o));
+            }
+            
+            JSONObject sloops = (JSONObject) obj.get("sound loops");
+            for(Object o : sloops.keySet())
+            {
+            	soundLoops.put((String)o, (String)sloops.get(o));
+            }
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 	
 	public LoadingState()
 	{

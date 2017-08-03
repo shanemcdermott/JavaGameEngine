@@ -151,8 +151,8 @@ public class Dungeon extends GameRoom
 	@Override
 	public void render(Graphics g, Matrix3x3f viewport) 
 	{
-		super.render(g, viewport);
 		children.render(g, viewport);
+		super.render(g, viewport);
 	}
 	
 	@Override

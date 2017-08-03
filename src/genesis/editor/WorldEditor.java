@@ -1,13 +1,12 @@
 package genesis.editor;
 
-import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -29,13 +28,17 @@ import javagames.room.ChildRoomsComponent;
 import javagames.room.Dungeon;
 import javagames.room.GameRoom;
 import javagames.util.Matrix3x3f;
+import javagames.util.Sprite;
+import javagames.util.Vector2f;
 import javagames.util.geom.BoundingPoly;
+import javagames.world.Construct;
 
 public class WorldEditor extends EditorFramework 
 {
 
 	public Random randy;
 	public Dungeon world;
+	public GameRoom room;
 	private NoiseFunction[] noise;
 
 	private boolean bRenderHeight;
@@ -156,7 +159,10 @@ public class WorldEditor extends EditorFramework
 	{
 		super.initTools();
 		world = new Dungeon("World",appWorldWidth, 128,128);
+		room = new GameRoom(new Vector2f());
 		importHeightmap();
+		Construct c = new Construct();
+		room.addGameObject(c);
 		world.markOceanCells(0.2f);
 		ChildRoomsComponent crc = new ChildRoomsComponent(world);
 		world.addComponent(crc);
@@ -176,10 +182,15 @@ public class WorldEditor extends EditorFramework
 	
 	public void importHeightmap()
 	{
+		importHeightmap("world_x64_y64.png");
+	}
+	
+	public void importHeightmap(String fileName)
+	{
 		BufferedImage img = null;
 		try
 		{
-			img = ImageIO.read(new File("world.png"));
+			img = ImageIO.read(new File(fileName));
 			world.setRoomCounts(img.getWidth(), img.getHeight());
 			GameRoom[][] rooms = world.getRooms();
 			for(int x = 0; x< rooms.length; x++)
@@ -188,8 +199,11 @@ public class WorldEditor extends EditorFramework
 				{
 					float elevation = (img.getRGB(x, y) & 0xFF) / 255.f;
 					rooms[x][y].setElevation(elevation);
+					Color c = new Color(0, (int)(elevation * 200),0);
+					img.setRGB(x,y, c.getRGB());
 				}
 			}
+			room.setSprite(new Sprite(img,new Vector2f(-appWorldWidth, -appWorldHeight), new Vector2f(appWorldWidth, appWorldHeight)));
 			System.out.println("Heightmap imported.");
 		}
 		catch(Exception e)
@@ -200,6 +214,11 @@ public class WorldEditor extends EditorFramework
 	}
 	
 	public void exportHeightmap()
+	{
+		exportHeightmap("world_x64_y64.png");
+	}
+	
+	public void exportHeightmap(String fileName)
 	{
 		try
 		{
@@ -212,7 +231,7 @@ public class WorldEditor extends EditorFramework
 					bi.setRGB(x,y,rooms[x][y].getElevColor().getRGB());
 				}
 			}
-			File outputfile = new File("world.png");
+			File outputfile = new File(fileName);
 			ImageIO.write(bi, "png", outputfile);
 			System.out.println("Heightmap exported.");
 		} 
@@ -236,12 +255,15 @@ public class WorldEditor extends EditorFramework
 	@Override
 	protected void renderObjects(Graphics2D g2d, Matrix3x3f view)
 	{
+		room.render(g2d, view);
+		/*
 		if(bRenderHeight)
 		{
 			world.renderHeight(g2d, view);
 		}
 		else
 			super.renderObjects(g2d,view);
+		*/
 	}
 	
 	public static void main(String[] args)

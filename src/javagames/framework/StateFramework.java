@@ -35,7 +35,7 @@ public class StateFramework extends WindowFramework
 		controller.setAttribute("app", this);
 		controller.setAttribute("keys", keyboard);
 		controller.setAttribute("viewport", getViewportTransform());
-		controller.setState(new LoadingState());
+		controller.setState(new LoadingState("Genesis"));
 	}
 	
 	public void shutDownGame()

@@ -1,0 +1,13 @@
+{
+    "background":"Tree.png",
+    "ambience":"AMBIENCE_alien.wav",
+    "sound cues":
+    {
+        "explosion":"EXPLOSION_large_01.wav",
+        "fire-clip": "WEAPON_scifi_fire_02.wav"
+    },
+    "sound loops":
+    {
+        "thruster": "DRONE9RE.WAV"
+    }
+}
