@@ -1,6 +1,8 @@
 package javagames.framework;
 
 import javagames.util.GameConstants;
+import javagames.util.Matrix3x3f;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -34,7 +36,8 @@ public class StateFramework extends WindowFramework
 		controller = new StateController();
 		controller.setAttribute("app", this);
 		controller.setAttribute("keys", keyboard);
-		controller.setAttribute("viewport", getViewportTransform());
+		controller.setAttribute("viewport", Matrix3x3f.identity());
+		controller.setAttribute("mouse", mouse);
 		controller.setState(new LoadingState("Genesis"));
 	}
 	

@@ -2,9 +2,9 @@ package javagames.world;
 
 import java.awt.Color;
 
+import javagames.g2d.Sprite;
 import javagames.game.GameObject;
 import javagames.util.ResourceLoader;
-import javagames.util.Sprite;
 import javagames.util.Vector2f;
 import javagames.util.geom.BoundingBox;
 

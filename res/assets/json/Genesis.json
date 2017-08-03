@@ -1,6 +1,7 @@
 {
-    "background":"Tree.png",
+    "background":"PalletTown.png",
     "ambience":"AMBIENCE_alien.wav",
+    "text color":  "#fff8dc",
     "sound cues":
     {
         "explosion":"EXPLOSION_large_01.wav",
@@ -9,5 +10,14 @@
     "sound loops":
     {
         "thruster": "DRONE9RE.WAV"
+    },
+    "sprites":
+    {
+        "spr_cursor" : 
+        {
+            "file": "cursor.png",
+            "width": 10.0,
+            "height": 10.0
+        }
     }
 }

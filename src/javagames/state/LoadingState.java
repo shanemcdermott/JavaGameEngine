@@ -21,6 +21,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import javagames.g2d.Sprite;
 import javagames.sound.BlockingClip;
 import javagames.sound.BlockingDataLine;
 import javagames.sound.LoopEvent;
@@ -29,7 +30,6 @@ import javagames.sound.SoundLooper;
 import javagames.util.GameConstants;
 import javagames.util.Matrix3x3f;
 import javagames.util.ResourceLoader;
-import javagames.util.Sprite;
 import javagames.util.Utility;
 import javagames.util.Vector2f;
 
@@ -42,6 +42,7 @@ public class LoadingState extends State
 	//AttributeName, FileName
 	private Map<String, String> soundCues;
 	private Map<String, String> soundLoops;
+	private Map<String, JSONObject> sprites;
 	
 	private ExecutorService threadPool;
 	private List<Callable<Boolean>> loadTasks;
@@ -49,11 +50,13 @@ public class LoadingState extends State
 	private int numberOfTasks;
 	private float percent;
 	private float wait;
+	private Color textColor = Color.GREEN;
 	
 	public LoadingState(String levelName)
 	{
 		soundCues = Collections.synchronizedMap(new HashMap<String, String>());
 		soundLoops = Collections.synchronizedMap(new HashMap<String, String>());
+		sprites = Collections.synchronizedMap(new HashMap<String,JSONObject>());
 		
 		JSONParser parser = new JSONParser();
 		try
@@ -72,6 +75,13 @@ public class LoadingState extends State
             {
             	soundLoops.put((String)o, (String)sloops.get(o));
             }
+        
+            JSONObject spr = (JSONObject) obj.get("sprites");
+            for(Object o : spr.keySet())
+            	sprites.put((String)o, (JSONObject)spr.get(o));
+           
+            textColor = Color.decode((String)obj.get("text color"));
+            
 		}
 		catch(Exception e)
 		{
@@ -108,14 +118,14 @@ public class LoadingState extends State
 			
 				Vector2f worldTopLeft = new Vector2f
 				(
-					-GameConstants.WORLD_WIDTH / 2.0f,
-					GameConstants.WORLD_HEIGHT / 2.0f 
+					-GameConstants.WORLD_WIDTH,// / 2.0f,
+					GameConstants.WORLD_HEIGHT// / 2.0f 
 				);
 				
 				Vector2f worldBottomRight = new Vector2f
 				(
-					GameConstants.WORLD_WIDTH / 2.0f,
-					-GameConstants.WORLD_HEIGHT / 2.0f 
+					GameConstants.WORLD_WIDTH,// / 2.0f,
+					-GameConstants.WORLD_HEIGHT// / 2.0f 
 				);
 				
 				Sprite sprite =	new Sprite( image, worldTopLeft, worldBottomRight );
@@ -188,6 +198,22 @@ public class LoadingState extends State
 			});
 		}
 		
+		//Load Sprites
+			for (Map.Entry<String, JSONObject> entry : sprites.entrySet())
+			{
+					loadTasks.add(new Callable<Boolean>() 
+					{
+						@Override
+						public Boolean call() throws Exception 
+						{
+						
+							controller.setAttribute( entry.getKey(), ResourceLoader.loadSprite(this.getClass(), entry.getValue()));
+							
+							return Boolean.TRUE;
+						}
+					});
+			}
+		
 		loadResults = new ArrayList<Future<Boolean>>();
 		for(Callable<Boolean> task : loadTasks)
 		{
@@ -249,7 +275,7 @@ public class LoadingState extends State
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setFont(new Font("Arial", Font.PLAIN, 20));
-		g.setColor(Color.GREEN);
+		g.setColor(textColor);
 		Utility.drawCenteredString(g, app.getScreenWidth(),
 				app.getScreenHeight() / 3, GameConstants.APP_TITLE);
 		int vw = (int) (app.getScreenWidth() * .9f);

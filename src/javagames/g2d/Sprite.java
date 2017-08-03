@@ -5,6 +5,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import javagames.util.Matrix3x3f;
+import javagames.util.Utility;
 import javagames.util.Vector2f;
 
 public class Sprite {
@@ -32,7 +33,7 @@ public class Sprite {
 			int height = (int) Math.abs(br.y - tl.y);
 			if (scaled == null || width != scaled.getWidth() || 
 				height != scaled.getHeight()) {
-				scaled = ImageUtility.scaleImage(image, width, height);
+				scaled = Utility.scaleImage(image, width, height);
 			}
 			g.setRenderingHint(
 				RenderingHints.KEY_INTERPOLATION,
@@ -52,6 +53,6 @@ public class Sprite {
 		Vector2f screenBottomRight = view.mul(bottomRight);
 		int scaledWidth = (int) Math.abs(screenBottomRight.x - screenTopLeft.x);
 		int scaledHeight = (int) Math.abs(screenBottomRight.y - screenTopLeft.y);
-		scaled = ImageUtility.scaleImage(image, scaledWidth, scaledHeight);
+		scaled = Utility.scaleImage(image, scaledWidth, scaledHeight);
 	}
 }

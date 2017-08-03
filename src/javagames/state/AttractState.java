@@ -5,10 +5,12 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Vector;
 
+import javagames.g2d.Sprite;
 import javagames.game.GameObject;
 import javagames.player.KeyboardInput;
+import javagames.player.PlayerControls;
+import javagames.player.RelativeMouseInput;
 import javagames.util.Matrix3x3f;
-import javagames.util.Sprite;
 
 /*State that cycles to another State */
 public abstract class AttractState extends State 
@@ -18,7 +20,9 @@ public abstract class AttractState extends State
 	private float time;
 	private Sprite background;
 	protected KeyboardInput keys;
-
+	protected RelativeMouseInput mouse;
+	protected PlayerControls player;
+	
 	public AttractState() {
 		
 	}
@@ -32,7 +36,9 @@ public abstract class AttractState extends State
 	public void enter() 
 	{
 		keys = (KeyboardInput) controller.getAttribute("keys");
+		mouse = (RelativeMouseInput) controller.getAttribute("mouse");
 		background = (Sprite) controller.getAttribute("background");
+		player = (PlayerControls) controller.getAttribute("player");
 		if(gameObjects == null)
 		{
 			gameObjects = new Vector<GameObject>();
@@ -87,7 +93,8 @@ public abstract class AttractState extends State
 		if (keys.keyDownOnce(KeyEvent.VK_ESCAPE)) {
 			app.shutDownGame();
 		}
-
+		if(player != null)
+			player.processInput(mouse, keys, delta);
 	}
 
 	@Override

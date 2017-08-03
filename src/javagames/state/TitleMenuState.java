@@ -6,18 +6,22 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 
+import javagames.g2d.Sprite;
+import javagames.player.GameCursor;
+import javagames.player.RelativeMouseInput;
 import javagames.sound.SoundCue;
 import javagames.sound.SoundLooper;
 import javagames.util.GameConstants;
 import javagames.util.Matrix3x3f;
 import javagames.util.Utility;
+import javagames.util.Vector2f;
 
 public class TitleMenuState extends AttractState 
 {
 	protected Color fontColor = Color.GREEN;
-	
+	protected GameCursor cursor = new GameCursor();
 	protected SoundCue laser;
-	
+	protected Matrix3x3f viewport;
 	protected SoundLooper thruster;
 	private boolean bShouldLoopPlay = false;
 	
@@ -27,6 +31,8 @@ public class TitleMenuState extends AttractState
 		super.enter();
 		laser = (SoundCue) controller.getAttribute("fire-clip");
 		thruster = (SoundLooper) controller.getAttribute("thruster");
+		cursor.setSprite((Sprite)controller.getAttribute("spr_cursor"));
+		viewport = (Matrix3x3f)controller.getAttribute("viewport");
 	}
 	
 	@Override
@@ -40,6 +46,13 @@ public class TitleMenuState extends AttractState
 		return s;
 	}
 
+	
+	@Override
+	protected boolean shouldChangeState()
+	{
+		return false;
+	}
+	
 	@Override
 	public void processInput(float deltaTime)
 	{
@@ -53,6 +66,7 @@ public class TitleMenuState extends AttractState
 		//Looping Sound Example
 		if (keys.keyDown(KeyEvent.VK_W)) 
 		{
+			viewport = viewport.mul(Matrix3x3f.translate(new Vector2f(0,2 * deltaTime)));
 			if (!bShouldLoopPlay) 
 			{
 				thruster.fire();
@@ -67,9 +81,18 @@ public class TitleMenuState extends AttractState
 				bShouldLoopPlay = false;
 			}
 		}
+		cursor.processInput(mouse, deltaTime);
+	}
+	
+	@Override
+	public void updateObjects(float deltaTime)
+	{
+		super.updateObjects(deltaTime);
+		cursor.update(deltaTime);
 	}
 	
 	public void render(Graphics2D g, Matrix3x3f view) {
+		view = viewport.mul(view);
 		super.render(g, view);
 		int width = app.getScreenWidth();
 		int height = app.getScreenHeight();
@@ -89,5 +112,6 @@ public class TitleMenuState extends AttractState
 			"P R E S S  E S C  T O  E X I T" 
 		};
 		Utility.drawCenteredString(g, width, height / 3, msg);
+		cursor.render(g, view);
 	}
 }

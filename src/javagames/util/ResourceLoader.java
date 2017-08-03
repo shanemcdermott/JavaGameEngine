@@ -11,9 +11,13 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.simple.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import javagames.g2d.Sprite;
+import javagames.state.LoadingState;
 
 public class ResourceLoader {
 	
@@ -45,12 +49,24 @@ public class ResourceLoader {
 		Document document = XMLUtility.parseDocument(model);
 		return document.getDocumentElement();
 	}
-
+	
 	public static BufferedImage loadImage(Class<?> clazz, String fileName) throws Exception
 	{
 		InputStream stream = ResourceLoader.load(clazz, "/images/" + fileName);
 		return ImageIO.read( stream );
 	}
+	
+	public static Sprite loadSprite(Class<?> clazz, JSONObject json) throws Exception
+	{
+		BufferedImage image = ResourceLoader.loadImage(LoadingState.class, (String)json.get("file"));
+		float width = (float)(double)json.get("width");
+		float height = (float)(double)json.get("height");
+		Vector2f worldTopLeft = new Vector2f(-width,height);
+		Vector2f worldBottomRight = new Vector2f(width,-height);
+		Sprite sprite =	new Sprite( image, worldTopLeft, worldBottomRight );
+		return sprite;
+	}
+	
 	
 	public static byte[] loadSound(Class<?> clazz, String fileName)
 	{
