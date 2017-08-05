@@ -17,12 +17,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import javagames.g2d.Sprite;
 import javagames.game.GameObject;
+import javagames.player.Viewport;
 import javagames.sound.BlockingClip;
 import javagames.sound.BlockingDataLine;
 import javagames.sound.LoopEvent;
@@ -140,9 +140,9 @@ public class LoadingState extends State
 				
 				Sprite sprite =	new Sprite( image, worldTopLeft, worldBottomRight );
 				
-				Matrix3x3f viewport =(Matrix3x3f)controller.getAttribute( "viewport" );
+				Viewport viewport =(Viewport)controller.getAttribute( "viewport" );
 				
-				sprite.scaleImage( viewport );
+				sprite.scaleImage( viewport.asMatrix() );
 				
 				controller.setAttribute( "background", sprite );
 				
@@ -256,17 +256,11 @@ public class LoadingState extends State
 	protected GameObject loadObject(JSONObject json) throws Exception
 	{
 		if(json.get("Class").equals("GameObject"))
-		{
-			GameObject g = new GameObject();
-			g.setSprite(ResourceLoader.loadSprite(getClass(), (JSONObject)json.get("Sprite")));
-			Vector2f pos = new Vector2f();
-			JSONArray p = (JSONArray)json.get("Location");
-			pos.x = (float)(double)p.get(0);
-			pos.y = (float)(double)p.get(1);
-			g.setPosition(pos);
-			return g;
-		}
-		
+			return ResourceLoader.loadObject(getClass(), json);
+		if(json.get("Class").equals("GameMap"))
+			return ResourceLoader.loadMap(getClass(), json);
+		if(json.get("Class").equals(   "PlayerController"))
+			return ResourceLoader.loadPlayer(getClass(), json);
 		return null;
 	}
 

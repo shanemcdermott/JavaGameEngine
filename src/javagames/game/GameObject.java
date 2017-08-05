@@ -3,14 +3,12 @@ package javagames.game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-
-import com.sun.corba.se.impl.orbutil.graph.Graph;
 
 import javagames.g2d.Drawable;
 import javagames.g2d.Sprite;
+import javagames.g2d.SpriteSheet;
+import javagames.util.Direction;
 import javagames.util.Matrix3x3f;
-import javagames.util.Transform;
 import javagames.util.Vector2f;
 import javagames.util.geom.BoundingBox;
 import javagames.util.geom.BoundingShape;
@@ -22,6 +20,7 @@ public class GameObject implements Drawable
 	protected BoundingShape bounds;
 	private float rotation;
 	private float rotationDelta;
+	protected Direction direction;
 	private Vector2f velocity;
 	private Vector2f scale;
 	private String name;
@@ -50,6 +49,14 @@ public class GameObject implements Drawable
 		velocity = vel;
 	}
 	
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+
 	public void setPosition(Vector2f pos)
 	{
 		bounds.setPosition(pos);
@@ -85,6 +92,15 @@ public class GameObject implements Drawable
 	{
 		setPosition(getPosition().add(velocity.mul(deltaTime)));
 		rotation += rotationDelta * deltaTime;
+		if(sprite != null && sprite instanceof SpriteSheet)
+		{
+			SpriteSheet spr = (SpriteSheet)sprite;
+			if(velocity.equals(new Vector2f()))
+				spr.startAnimation("Idle");
+			else
+				spr.startAnimation(getDirection().getAnim());
+			spr.update(deltaTime);
+		}
 	}
 
 	@Override

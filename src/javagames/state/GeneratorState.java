@@ -22,6 +22,12 @@ public class GeneratorState extends AttractState
 	}
 
 	@Override
+	public void enter()
+	{
+		super.enter();
+	}
+	
+	@Override
 	protected boolean shouldChangeState()
 	{
 		return finished;

@@ -18,7 +18,7 @@ public class Transform
 		this.rotation=rotation;
 	}
 	
-	public Matrix3x3f get()
+	public Matrix3x3f asMatrix()
 	{		
 		Matrix3x3f wTransform = Matrix3x3f.scale(scale);
 		wTransform = wTransform.mul(Matrix3x3f.rotate(rotation));

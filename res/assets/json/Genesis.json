@@ -1,7 +1,7 @@
 {
     "background":"PalletTown.png",
-    "ambience":"AMBIENCE_alien.wav",
-    "text color":  "#fff8dc",
+    "ambience":"pallet_town.wav",
+    "text color":  "#00f8dc",
     "sound cues":
     {
         "explosion":"EXPLOSION_large_01.wav",
@@ -22,12 +22,97 @@
     },
      "game objects" :
     {
+        "map":{
+            "Class": "GameMap",
+            "Tiles":
+            {
+                "grass_short":
+                {
+                "file": "PGTileseti.png",
+                    "x": 32,
+                    "y": 0,
+                    "w": 16,
+                    "h": 16,
+                    "width": 10.0,
+                    "height": 10.0
+                },
+                "grass_long":
+                {
+                    "file": "PGTileseti.png",
+                    "x":0,
+                    "y":16,
+                    "w":16,
+                    "h":16,
+                    "width": 10.0,
+                    "height": 10.0
+                }                
+            }
+        },
+        "player":
+        {
+            "Class": "PlayerController",
+            "Location": [0.0,0.0],
+            "Sprite":
+            {
+                "file": "p_150.PNG",
+                "width": 10.0,
+                "height": 10.0,
+                "Anims":
+                {
+                    "Idle":
+                    {
+                        "frames":[0.0],
+                        "x":[0],
+                        "y": [64],
+                        "w": 32,
+                        "h": 32
+                    },
+                    "Move_Down":
+                    {
+                        "frames":[0.5, 0.5],
+                        "x":[0,0],
+                        "y":[64,96],
+                        "w":32,
+                        "h":32
+                    },
+                    "Move_Up":
+                    {
+                        "frames":[0.5,0.5],
+                        "x":[0,0],
+                        "y":[0,32],
+                        "w":32,
+                        "h":32
+                    },
+                    "Move_Left":
+                    {
+                         "frames":[0.5,0.5],
+                        "x":[32,32],
+                        "y":[0,32],
+                        "w":32,
+                        "h":32
+
+                    },
+                    "Move_Right":
+                    {
+                        "frames":[0.5,0.5],
+                        "x":[32,32],
+                        "y":[64,96],
+                        "w":32,
+                        "h":32
+                    }
+                }
+            }
+        },
         "tree":{
-        "Class": "GameObject",
+            "Class": "GameObject",
             "Location": [-5.0, 5.0],
             "Sprite": 
             {
-                "file": "tree.png",
+                "file": "PGTileseti.png",
+                "x": 32,
+                "y": 16,
+                "w": 16,
+                "h": 16,
                 "width": 10.0,
                 "height": 10.0
             }

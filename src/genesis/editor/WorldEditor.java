@@ -31,7 +31,6 @@ import javagames.room.GameRoom;
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
 import javagames.util.geom.BoundingPoly;
-import javagames.world.Construct;
 
 public class WorldEditor extends EditorFramework 
 {
@@ -161,8 +160,6 @@ public class WorldEditor extends EditorFramework
 		world = new Dungeon("World",appWorldWidth, 128,128);
 		room = new GameRoom(new Vector2f());
 		importHeightmap();
-		Construct c = new Construct();
-		room.addGameObject(c);
 		world.markOceanCells(0.2f);
 		ChildRoomsComponent crc = new ChildRoomsComponent(world);
 		world.addComponent(crc);

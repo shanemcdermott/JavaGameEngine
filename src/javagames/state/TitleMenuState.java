@@ -32,8 +32,10 @@ public class TitleMenuState extends AttractState
 		laser = (SoundCue) controller.getAttribute("fire-clip");
 		thruster = (SoundLooper) controller.getAttribute("thruster");
 		cursor.setSprite((Sprite)controller.getAttribute("spr_cursor"));
+		addGameObject((GameObject)controller.getAttribute("map"));
 		addGameObject((GameObject)controller.getAttribute("tree"));
 		addGameObject((GameObject)controller.getAttribute("tree_1"));
+		addGameObject((GameObject)controller.getAttribute("player"));
 		nextState = null;
 	}
 	
@@ -66,7 +68,6 @@ public class TitleMenuState extends AttractState
 		//Looping Sound Example
 		if (keys.keyDown(KeyEvent.VK_W)) 
 		{
-			viewport = viewport.mul(Matrix3x3f.translate(new Vector2f(0,2 * deltaTime)));
 			if (!bShouldLoopPlay) 
 			{
 				thruster.fire();

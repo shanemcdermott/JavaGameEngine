@@ -1,14 +1,12 @@
 package javagames.framework;
 
-import javagames.util.GameConstants;
-import javagames.util.Matrix3x3f;
-
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javagames.player.Viewport;
 import javagames.state.LoadingState;
 import javagames.state.StateController;
+import javagames.util.GameConstants;
 
 public class StateFramework extends WindowFramework 
 {
@@ -36,7 +34,7 @@ public class StateFramework extends WindowFramework
 		controller = new StateController();
 		controller.setAttribute("app", this);
 		controller.setAttribute("keys", keyboard);
-		controller.setAttribute("viewport", Matrix3x3f.identity());
+		controller.setAttribute("viewport", new Viewport());
 		controller.setAttribute("mouse", mouse);
 		controller.setState(new LoadingState("Genesis"));
 	}
@@ -58,11 +56,12 @@ public class StateFramework extends WindowFramework
 	{
 		controller.updateObjects(deltaTime);
 	}
-
+                                   
 	@Override
 	protected void render(Graphics g)
 	{
 		controller.render((Graphics2D) g, getViewportTransform());
+		super.render(g);
 	}
 	
 	public static void main(String[] args)

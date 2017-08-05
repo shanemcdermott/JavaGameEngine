@@ -38,9 +38,8 @@ public class StateController
 	}
 
 	public void render(Graphics2D g, Matrix3x3f view) {
-		g.setRenderingHint(
-			RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON
-		);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		//g.setRenderingHint(	RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		currentState.render(g, view);
 	}
 

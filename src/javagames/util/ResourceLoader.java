@@ -7,17 +7,26 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import javagames.g2d.Animation;
+import javagames.g2d.ImageUtility;
 import javagames.g2d.Sprite;
+import javagames.g2d.SpriteSheet;
+import javagames.game.GameObject;
+import javagames.player.PlayerController;
 import javagames.state.LoadingState;
+import javagames.world.GameMap;
 
 public class ResourceLoader {
 	
@@ -58,15 +67,80 @@ public class ResourceLoader {
 	
 	public static Sprite loadSprite(Class<?> clazz, JSONObject json) throws Exception
 	{
+		if(json.containsKey("Anims")) return loadSpriteSheet(clazz, json);
+		
 		BufferedImage image = ResourceLoader.loadImage(LoadingState.class, (String)json.get("file"));
-		float width = (float)(double)json.get("width");
-		float height = (float)(double)json.get("height");
-		Vector2f worldTopLeft = new Vector2f(-width,height);
-		Vector2f worldBottomRight = new Vector2f(width,-height);
+		
+		if(json.containsKey("x"))
+		{
+			int x = (int)(long)json.get("x");
+			int y = (int)(long)json.get("y");
+			int w = (int)(long)json.get("w");
+			int h = (int)(long)json.get("h");
+			image = image.getSubimage(x, y, w, h);
+			
+		}
+		float halfWidth = 0.5f * (float)(double)json.get("width");
+		float halfHeight = 0.5f * (float)(double)json.get("height");
+		Vector2f worldTopLeft = new Vector2f(-halfWidth,halfHeight);
+		Vector2f worldBottomRight = new Vector2f(halfWidth,-halfHeight);
 		Sprite sprite =	new Sprite( image, worldTopLeft, worldBottomRight );
 		return sprite;
 	}
 	
+	
+	public static SpriteSheet loadSpriteSheet(Class<?> clazz, JSONObject json) throws Exception
+	{
+		SpriteSheet sheet = null;
+		Map<String, Animation> anims = new HashMap<String, Animation>();
+		JSONObject animsjson = (JSONObject)json.get("Anims");
+		BufferedImage source = ResourceLoader.loadImage(clazz, (String)json.get("file"));
+		for(Object o : animsjson.keySet())
+		{
+			anims.put((String)o,ImageUtility.createAnim(source, (JSONObject)animsjson.get(o)));
+		}
+		
+		float halfWidth = 0.5f * (float)(double)json.get("width");
+		float halfHeight = 0.5f * (float)(double)json.get("height");
+		Vector2f worldTopLeft = new Vector2f(-halfWidth,halfHeight);
+		Vector2f worldBottomRight = new Vector2f(halfWidth,-halfHeight);
+		sheet =	new SpriteSheet(source, worldTopLeft, worldBottomRight, anims);
+		return sheet;
+	}
+	
+	
+	public static GameMap loadMap(Class<?> clazz, JSONObject json) throws Exception
+	{
+		JSONObject tileobj = (JSONObject)json.get("Tiles");
+		Sprite[] tiles = new Sprite[tileobj.size()];
+		
+		int i = 0;
+		for(Object o : tileobj.values())
+		{
+			tiles[i++] = ResourceLoader.loadSprite(clazz, (JSONObject)o);
+		}
+		GameMap map = new GameMap(tiles,10.f);
+		
+		return map;
+	}
+	
+	public static GameObject loadObject(Class<?> clazz, JSONObject json) throws Exception
+	{
+			GameObject g = new GameObject();
+			g.setSprite(ResourceLoader.loadSprite(clazz, (JSONObject)json.get("Sprite")));
+			Vector2f pos = new Vector2f();
+			JSONArray p = (JSONArray)json.get("Location");
+			pos.x = (float)(double)p.get(0);
+			pos.y = (float)(double)p.get(1);
+			g.setPosition(pos);
+			return g;
+	}
+	public static PlayerController loadPlayer(Class<?> clazz, JSONObject json) throws Exception
+	{
+		PlayerController p = new PlayerController();
+		p.setSprite(ResourceLoader.loadSprite(clazz, (JSONObject)json.get("Sprite")));
+		return p;
+	}
 	
 	public static byte[] loadSound(Class<?> clazz, String fileName)
 	{
