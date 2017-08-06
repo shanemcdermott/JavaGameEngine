@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,9 +19,7 @@ import java.util.concurrent.Future;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import javagames.g2d.Sprite;
 import javagames.game.GameObject;
-import javagames.player.Viewport;
 import javagames.sound.BlockingClip;
 import javagames.sound.BlockingDataLine;
 import javagames.sound.LoopEvent;
@@ -32,12 +29,11 @@ import javagames.util.GameConstants;
 import javagames.util.Matrix3x3f;
 import javagames.util.ResourceLoader;
 import javagames.util.Utility;
-import javagames.util.Vector2f;
 
 //TODO: XML/ GameObject Loading
 public class LoadingState extends State 
 {
-	private String backgroundFileName = "space_background_600x600.png";
+	//private String backgroundFileName = "space_background_600x600.png";
 	private String ambienceFileName = "AMBIENCE_alien.wav";
 	
 	//AttributeName, FileName
@@ -65,8 +61,10 @@ public class LoadingState extends State
 		try
 		{
 			JSONObject obj = (JSONObject) parser.parse(new FileReader(String.format("res/assets/json/%s.json",levelName)));
+		/*
 			backgroundFileName = (String)obj.get("background");
-            ambienceFileName = (String)obj.get("ambience");
+       
+			ambienceFileName = (String)obj.get("ambience");
             JSONObject scues = (JSONObject) obj.get("sound cues");
             for(Object o : scues.keySet())
             {
@@ -78,7 +76,7 @@ public class LoadingState extends State
             {
             	soundLoops.put((String)o, (String)sloops.get(o));
             }
-        
+        */
             JSONObject spr = (JSONObject) obj.get("sprites");
             for(Object o : spr.keySet())
             	sprites.put((String)o, (JSONObject)spr.get(o));
@@ -118,6 +116,7 @@ public class LoadingState extends State
 		loadTasks = new ArrayList<Callable<Boolean>>();
 		
 		//Load Background Image
+		/*
 		loadTasks.add( new Callable<Boolean>() 
 		{
 			@Override
@@ -149,25 +148,8 @@ public class LoadingState extends State
 				return Boolean.TRUE;
 			}
 		});
-		
-		//Load Ambience
-		loadTasks.add( new Callable<Boolean>() 
-		{
-			@Override
-			public Boolean call() throws Exception {
-				byte[] soundBytes = ResourceLoader.loadSound(this.getClass(), ambienceFileName);
-				// Java 7.0
-				LoopEvent loopEvent = new LoopEvent(
-					new BlockingClip( soundBytes ) );
-				// Java 6.0
-				// LoopEvent loopEvent = new LoopEvent(
-				// new BlockingDataLine(
-				// soundBytes ) );
-				loopEvent.initialize();
-				controller.setAttribute( "ambience", loopEvent );
-				return Boolean.TRUE;
-			} 
-		});
+		*/
+		// queueAmbience();
 		
 		//Load Sound FX
 		for (Map.Entry<String, String> entry : soundCues.entrySet())
@@ -253,14 +235,38 @@ public class LoadingState extends State
 		}
 	}
 
+	protected void queueAmbience()
+	{
+		//Load Ambience
+		loadTasks.add( new Callable<Boolean>() 
+		{
+			@Override
+			public Boolean call() throws Exception {
+				byte[] soundBytes = ResourceLoader.loadSound(this.getClass(), ambienceFileName);
+				// Java 7.0
+				LoopEvent loopEvent = new LoopEvent(
+					new BlockingClip( soundBytes ) );
+				// Java 6.0
+						// LoopEvent loopEvent = new LoopEvent(
+						// new BlockingDataLine(
+						// soundBytes ) );
+				loopEvent.initialize();
+				controller.setAttribute( "ambience", loopEvent );
+				return Boolean.TRUE;
+			} 
+		});
+	}
+	
 	protected GameObject loadObject(JSONObject json) throws Exception
 	{
 		if(json.get("Class").equals("GameObject"))
 			return ResourceLoader.loadObject(getClass(), json);
 		if(json.get("Class").equals("GameMap"))
 			return ResourceLoader.loadMap(getClass(), json);
-		if(json.get("Class").equals(   "PlayerController"))
+		if(json.get("Class").equals("PlayerController"))
 			return ResourceLoader.loadPlayer(getClass(), json);
+		if(json.get("Class").equals("Construct"))
+			return ResourceLoader.loadConstruct(getClass(),json);
 		return null;
 	}
 
@@ -298,8 +304,8 @@ public class LoadingState extends State
 		//Finished Loading
 		if(wait > 1.0f && threadPool.isShutdown())
 		{
-			LoopEvent loop = (LoopEvent) controller.getAttribute("ambience");
-			loop.fire();
+			//LoopEvent loop = (LoopEvent) controller.getAttribute("ambience");
+			//loop.fire();
 			getController().setState(new TitleMenuState());
 		}
 	}

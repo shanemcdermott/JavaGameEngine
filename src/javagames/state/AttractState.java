@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Vector;
 
-import javagames.g2d.Sprite;
+import javagames.game.Construct;
 import javagames.game.GameObject;
 import javagames.player.KeyboardInput;
 import javagames.player.PlayerController;
@@ -13,17 +13,19 @@ import javagames.player.PlayerControls;
 import javagames.player.RelativeMouseInput;
 import javagames.player.Viewport;
 import javagames.util.Matrix3x3f;
+import javagames.world.GameMap;
 
 /*State that cycles to another State */
 public abstract class AttractState extends State 
 {
 	private List<GameObject> gameObjects;
 	private float time;
-	private Sprite background;
+	//private Sprite background;
 	protected KeyboardInput keys;
 	protected RelativeMouseInput mouse;
 	protected Viewport viewport;
 	protected PlayerControls player;
+	protected GameMap map;
 	
 	public AttractState() {}
 
@@ -37,13 +39,15 @@ public abstract class AttractState extends State
 	{
 		keys = (KeyboardInput) controller.getAttribute("keys");
 		mouse = (RelativeMouseInput) controller.getAttribute("mouse");
-		background = (Sprite) controller.getAttribute("background");
+		map = (GameMap)controller.getAttribute("map");
+		//background = (Sprite) controller.getAttribute("background");
 		player = (PlayerControls) controller.getAttribute("player");
 		viewport = (Viewport)controller.getAttribute("viewport");
 		PlayerController pc = (PlayerController)player;
 		pc.setViewport(viewport);
+		pc.setGameState(this);
 		player = pc;
-		
+		pc.testItem = (Construct) controller.getAttribute("item");
 		if(gameObjects == null)
 		{
 			gameObjects = new Vector<GameObject>();
@@ -86,7 +90,7 @@ public abstract class AttractState extends State
 	 * */
 	protected abstract State getNextState();
 
-	protected void addGameObject(GameObject gameObject)
+	public void addGameObject(GameObject gameObject)
 	{
 		gameObjects.add(gameObject);
 	}
@@ -109,10 +113,13 @@ public abstract class AttractState extends State
 	@Override
 	public void render(Graphics2D g, Matrix3x3f view) {
 		view = viewport.asMatrix().mul(view);
-		background.render(g, view);
+		map.render(g, view);
+		//background.render(g, view);
 		for (GameObject o : gameObjects) {
-			o.render(g, view);
+			if(viewport.contains(o))
+				o.render(g, view);
 		}
 		
+		viewport.bounds.render(g, view);
 	}
 }

@@ -23,10 +23,13 @@ import javagames.g2d.Animation;
 import javagames.g2d.ImageUtility;
 import javagames.g2d.Sprite;
 import javagames.g2d.SpriteSheet;
+import javagames.game.Construct;
 import javagames.game.GameObject;
 import javagames.player.PlayerController;
 import javagames.state.LoadingState;
 import javagames.world.GameMap;
+import javagames.world.Ingredient;
+import javagames.world.IngredientObject;
 
 public class ResourceLoader {
 	
@@ -135,6 +138,33 @@ public class ResourceLoader {
 			g.setPosition(pos);
 			return g;
 	}
+	
+	public static IngredientObject loadIngredients(Class<?> clazz, JSONObject json) throws Exception
+	{
+		IngredientObject resource = null;
+		HashMap<Ingredient, Integer> res = new HashMap<Ingredient, Integer>();
+		for(Object o : json.keySet())
+		{
+			Ingredient r = Ingredient.valueOf((String)o);
+			res.put(r, (int)(long)json.get(o));
+		}
+		
+		resource = new IngredientObject(res);
+		return resource;
+	}
+	
+	public static Construct loadConstruct(Class<?> clazz, JSONObject json) throws Exception
+	{
+		Construct g = new Construct(ResourceLoader.loadIngredients(clazz, (JSONObject)json.get("Ingredients")));
+		g.setSprite(ResourceLoader.loadSprite(clazz, (JSONObject)json.get("Sprite")));
+		Vector2f pos = new Vector2f();
+		JSONArray p = (JSONArray)json.get("Location");
+		pos.x = (float)(double)p.get(0);
+		pos.y = (float)(double)p.get(1);
+		g.setPosition(pos);
+		return g;
+	}
+	
 	public static PlayerController loadPlayer(Class<?> clazz, JSONObject json) throws Exception
 	{
 		PlayerController p = new PlayerController();

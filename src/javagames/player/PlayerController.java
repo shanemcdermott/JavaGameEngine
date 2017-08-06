@@ -2,8 +2,11 @@ package javagames.player;
 
 import java.awt.event.KeyEvent;
 
+import javagames.game.Construct;
 import javagames.game.GameObject;
+import javagames.state.AttractState;
 import javagames.util.Direction;
+import javagames.util.GameConstants;
 import javagames.util.Vector2f;
 
 public class PlayerController extends GameObject implements PlayerControls
@@ -11,6 +14,8 @@ public class PlayerController extends GameObject implements PlayerControls
 
 	private Viewport viewport;
 	private float speed;
+	private AttractState gameState;
+	public Construct testItem;
 	
 	public PlayerController() 
 	{
@@ -26,28 +31,37 @@ public class PlayerController extends GameObject implements PlayerControls
 		// TODO Auto-generated method stub
 		if(keyboard.keyDown(KeyEvent.VK_W))
 		{
-			setDirection(Direction.UP);
-			setVelocity(getDirection().getV().mul(speed));
+			move(Direction.UP,speed);
 		}
 		else if(keyboard.keyDown(KeyEvent.VK_S))
 		{
-			setDirection(Direction.DOWN);
-			setVelocity(getDirection().getV().mul(speed));
+			move(Direction.DOWN, speed);
 		}
 		else if(keyboard.keyDown(KeyEvent.VK_A))
 		{
-			setDirection(Direction.LEFT);
-			setVelocity(getDirection().getV().mul(speed));
+			move(Direction.LEFT, speed);
 		}
 		else if(keyboard.keyDown(KeyEvent.VK_D))
 		{
-			setDirection(Direction.RIGHT);
-			setVelocity(getDirection().getV().mul(speed));
+			move(Direction.RIGHT, speed);
 		}
 		else
 		{
 			setVelocity(new Vector2f());
 		}
+		
+		if(keyboard.keyDownOnce(KeyEvent.VK_0))
+		{
+			if(testItem != null)
+			{
+				Construct c = new Construct(testItem.getIngredients());
+				c.setSprite(testItem.getSprite());
+				c.setPosition(getPosition().add(getDirection().getV().mul(GameConstants.UNIT_SIZE)));
+				gameState.addGameObject(c);
+			}
+		}
+		
+		viewport.setPostion(getPosition());
 	}
 	
 	public Viewport getViewport() 
@@ -58,6 +72,10 @@ public class PlayerController extends GameObject implements PlayerControls
 	public void setViewport(Viewport viewport) {
 		this.viewport = viewport;
 		this.speed = viewport.speed;
+	}
+
+	public void setGameState(AttractState gameState) {
+		this.gameState = gameState;
 	}
 
 

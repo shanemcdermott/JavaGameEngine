@@ -1,5 +1,4 @@
 {
-    "background":"PalletTown.png",
     "ambience":"pallet_town.wav",
     "text color":  "#00f8dc",
     "sound cues":
@@ -103,29 +102,92 @@
                 }
             }
         },
-        "tree":{
+        "item":
+        {
+            "Class": "Construct",
+            "Location": [0.0,0.0],
+            "Ingredients":
+            {
+                "IRON": 10
+            },
+            "Sprite":{
+            "file": "PGTileseti.png",
+                "width": 10.0,
+                "height": 10.0,
+                "x": 80,
+                "y": 48,
+                "w": 16,
+                "h": 16
+            }
+        },
+        "tree_top":
+        {
             "Class": "GameObject",
-            "Location": [-5.0, 5.0],
+            "Location": [-10.0, 15.0],
+            "Sprite":
+            {
+                "file": "PGTileseti.png",
+                    "x": 96,
+                    "y": 48,
+                    "w": 16,
+                    "h": 16,
+                    "width": 10.0,
+                    "height": 10.0
+            }
+        },
+        "tree_mid":{
+            "Class": "GameObject",
+            "Location": [-10.0, 5.0],
             "Sprite": 
             {
                 "file": "PGTileseti.png",
-                "x": 32,
-                "y": 16,
-                "w": 16,
+                "x": 80,
+                "y": 64,
+                "w": 48,
                 "h": 16,
-                "width": 10.0,
+                "width": 30.0,
                 "height": 10.0
             }
         },
-        "tree_1":{
-        "Class": "GameObject",
-            "Location": [20.0, 0.0],
-               "Sprite": 
+        "tree_base":
+        {
+            "Class": "GameObject",
+            "Location": [-10.0, -10.0],
+            "Sprite": 
             {
-                "file": "tree.png",
-                "width": 10.0,
-                "height": 10.0
+                "file": "PGTileseti.png",
+                "x": 80,
+                "y": 112,
+                "w": 48,
+                "h": 32,
+                "width": 30.0,
+                "height": 20.0
             } 
+        },
+        "shop":
+        {
+            "Class": "Construct",
+            "Location": [20.0, 40.0],
+            "Sprite":
+            {
+                "file": "PGTilesetii(d).png",
+                "width": 40.0,
+                "height": 40.0,
+                "x":0,
+                "y": 144,
+                "w":64,
+                "h":64
+            },
+            "Bounds":{
+                "type": "Box",
+                "size": [40.0,40.0],
+                "channel": "SOLID"
+            },
+            "Ingredients":
+            {
+                "CLAY": 10,
+                "IRON": 10
+            }
         }
     }
 }

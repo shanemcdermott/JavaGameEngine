@@ -29,12 +29,13 @@ public class TitleMenuState extends AttractState
 	public void enter()
 	{
 		super.enter();
-		laser = (SoundCue) controller.getAttribute("fire-clip");
-		thruster = (SoundLooper) controller.getAttribute("thruster");
+		//laser = (SoundCue) controller.getAttribute("fire-clip");
+		//thruster = (SoundLooper) controller.getAttribute("thruster");
 		cursor.setSprite((Sprite)controller.getAttribute("spr_cursor"));
-		addGameObject((GameObject)controller.getAttribute("map"));
-		addGameObject((GameObject)controller.getAttribute("tree"));
-		addGameObject((GameObject)controller.getAttribute("tree_1"));
+		addGameObject((GameObject)controller.getAttribute("tree_top"));
+		addGameObject((GameObject)controller.getAttribute("tree_mid"));
+		addGameObject((GameObject)controller.getAttribute("tree_base"));
+		addGameObject((GameObject)controller.getAttribute("shop"));
 		addGameObject((GameObject)controller.getAttribute("player"));
 		nextState = null;
 	}
@@ -59,7 +60,8 @@ public class TitleMenuState extends AttractState
 		
 		if(keys.keyDownOnce(KeyEvent.VK_ENTER))
 			nextState = new GeneratorState(getGameObjects());
-		
+	
+		/*
 		//Sound Cue Example
 		if(keys.keyDownOnce(KeyEvent.VK_SPACE))
 		{
@@ -82,6 +84,7 @@ public class TitleMenuState extends AttractState
 				bShouldLoopPlay = false;
 			}
 		}
+		*/
 		cursor.processInput(mouse, deltaTime);
 	}
 	

@@ -21,6 +21,11 @@ public class Sprite {
 		this.bottomRight = bottomRight;
 	}
 
+	public Vector2f getDimensions()
+	{
+		return new Vector2f(bottomRight.x-topLeft.x, topLeft.y-bottomRight.y);
+	}
+	
 	public void render(Graphics2D g, Matrix3x3f view) {
 		render(g, view, new Vector2f(), 0.0f);
 	}

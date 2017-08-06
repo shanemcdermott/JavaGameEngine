@@ -12,6 +12,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -22,9 +23,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import genesis.editor.tool.EditorTool;
+
 import genesis.editor.swing.SwingConsole;
 import genesis.editor.swing.TextAreaOutputStream;
+import genesis.editor.tool.EditorTool;
 import javagames.framework.SwingFramework;
 import javagames.g2d.Drawable;
 import javagames.g2d.GridLines;
