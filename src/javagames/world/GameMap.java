@@ -11,7 +11,7 @@ import javagames.util.Vector2f;
 
 public class GameMap extends GameObject 
 {
-	private final int SIZE = 100;
+	private final int DEF_SIZE = 10;
 	private float tileSize = 10.f;
 	private Vector2f offset;
 	protected Sprite[] tiles;
@@ -21,13 +21,13 @@ public class GameMap extends GameObject
 	{
 		super();
 		this.tileSize = tileSize;
-		offset = new Vector2f((1-SIZE) * tileSize * 0.5f);
-		grid = new int[SIZE][SIZE];
+		offset = new Vector2f((1-DEF_SIZE) * tileSize * 0.5f);
+		grid = new int[DEF_SIZE][DEF_SIZE];
 		this.tiles = tiles;
 		Random r = new Random();
-		for(int x = 0; x < SIZE; x++)
+		for(int x = 0; x < DEF_SIZE; x++)
 		{
-			for(int y = 0; y < SIZE; y++)
+			for(int y = 0; y < DEF_SIZE; y++)
 			{
 				grid[x][y] = r.nextInt(tiles.length);
 			}
@@ -37,6 +37,8 @@ public class GameMap extends GameObject
 	public void setGrid(int[][] grid)
 	{
 		this.grid = grid;
+		if(grid.length != DEF_SIZE)
+			offset = new Vector2f((1 - grid.length) * tileSize * 0.5f);
 	}
 	
 	@Override

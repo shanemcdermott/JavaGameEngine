@@ -158,7 +158,7 @@ public class BoundingBox extends BoundingShape
 		Vector2f min = getMin();
 		Vector2f max = getMax();
 		if(center.x < min.x) d+= (center.x - min.x) * (center.x - min.x);
-		if(center.x > max.x) d+= (center.x - max.x) *(center.x - max.x);
+		if(center.x > max.x) d+= (center.x - max.x) * (center.x - max.x);
 		if(center.y < min.y) d+= (center.y - min.y) * (center.y - min.y);
 		if(center.y > max.y) d+= (center.y - max.y) * (center.y - max.y);
 		

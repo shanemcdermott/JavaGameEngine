@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,6 +50,7 @@ public class LoadingState extends State
 	private float percent;
 	private float wait;
 	private Color textColor = Color.GREEN;
+	private BufferedImage overlay;
 	
 	public LoadingState(String levelName)
 	{
@@ -303,6 +305,7 @@ public class LoadingState extends State
 	public void render(Graphics2D g, Matrix3x3f view) 
 	{
 		super.render(g, view);
+		
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setFont(new Font("Arial", Font.PLAIN, 20));

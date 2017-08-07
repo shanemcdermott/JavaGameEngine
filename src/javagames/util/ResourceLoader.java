@@ -118,16 +118,25 @@ public class ResourceLoader {
 	
 	public static GameMap loadMap(Class<?> clazz, JSONObject json) throws Exception
 	{
-		JSONObject tileobj = (JSONObject)json.get("Tiles");
+		JSONArray tileobj = (JSONArray)json.get("tiles");
 		Sprite[] tiles = new Sprite[tileobj.size()];
 		
-		int i = 0;
-		for(Object o : tileobj.values())
+		for(int i = 0; i < tiles.length; i++)
 		{
-			tiles[i++] = ResourceLoader.loadSprite(clazz, (JSONObject)o);
+			tiles[i++] = ResourceLoader.loadSprite(clazz, (JSONObject)tileobj.get(i));
 		}
 		GameMap map = new GameMap(tiles,10.f);
-		
+		JSONArray jgrid = (JSONArray)json.get("grid");
+		int[][] grid = new int[jgrid.size()][jgrid.size()];
+		for(int y = 0; y < grid.length; y++)
+		{
+			JSONArray row = (JSONArray)jgrid.get(y);
+			for(int x =0; x < row.size(); x++)
+			{
+				grid[x][y] = (int)(long)row.get(x);
+			}
+		}
+		map.setGrid(grid);
 		return map;
 	}
 	
