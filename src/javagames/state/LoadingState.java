@@ -214,8 +214,9 @@ public class LoadingState extends State
 					@Override
 					public Boolean call() throws Exception 
 					{
-					
-						controller.setAttribute( entry.getKey(), loadObject(entry.getValue()));
+						GameObject g = ResourceLoader.loadObject(getClass(),entry.getValue());
+						g.setName(entry.getKey());
+						controller.setAttribute( entry.getKey(), g);
 						System.out.println(entry.getKey() + " loaded.");
 						return Boolean.TRUE;
 					}
@@ -256,19 +257,7 @@ public class LoadingState extends State
 			} 
 		});
 	}
-	
-	protected GameObject loadObject(JSONObject json) throws Exception
-	{
-		if(json.get("Class").equals("GameObject"))
-			return ResourceLoader.loadObject(getClass(), json);
-		if(json.get("Class").equals("GameMap"))
-			return ResourceLoader.loadMap(getClass(), json);
-		if(json.get("Class").equals("PlayerController"))
-			return ResourceLoader.loadPlayer(getClass(), json);
-		if(json.get("Class").equals("Construct"))
-			return ResourceLoader.loadConstruct(getClass(),json);
-		return null;
-	}
+
 
 	@Override
 	public void updateObjects(float delta)

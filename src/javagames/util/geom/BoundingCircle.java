@@ -8,7 +8,7 @@ import javagames.util.Vector2f;
 
 public class BoundingCircle extends BoundingShape
 {
-	public boolean fill = true;
+	public boolean fill = false;
 	public float radius;
 	
 	public BoundingCircle(float radius)
@@ -76,21 +76,22 @@ public class BoundingCircle extends BoundingShape
 	@Override
 	public void render(Graphics g, Matrix3x3f view)
 	{
+		Vector2f size = new Vector2f(radius * 2.f, radius * 2.f);
+		Vector2f topLeft = getPosition().add(new Vector2f(-radius, radius));
+		topLeft = view.mul(topLeft);
+		Vector2f sc = view.getScale().abs();
+		size.scale(sc.x, sc.y);
 		
-		Vector2f dim = new Vector2f(radius);
-		Vector2f tl = position.sub(dim);
-		dim.mul(2.f);
-		tl.y += dim.y;
-		tl = view.mul(tl);
-		//dim = view.mul(dim);
-		Point d = dim.toPoint();
-		Point p = tl.toPoint();
+	
+	
+		Point s = size.toPoint();
+		Point p = topLeft.toPoint();
 		
 		
 		if(fill)
-			g.fillOval(p.x, p.y, d.x,d.y);
+			g.fillOval(p.x, p.y, s.x,s.y);
 		else
-			g.drawOval(p.x, p.y, d.x,d.y);
+			g.drawOval(p.x, p.y, s.x,s.y);
 	}
 
 }

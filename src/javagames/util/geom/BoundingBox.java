@@ -18,7 +18,7 @@ public class BoundingBox extends BoundingShape
 	
 	public BoundingBox()
 	{
-		this(0.f, 0.f);
+		this(GameConstants.UNIT_SIZE);
 	}
 	
 	public BoundingBox(float size)
@@ -203,7 +203,7 @@ public class BoundingBox extends BoundingShape
 		if(fill)
 			g.fillRect((int)topLeft.x, (int)topLeft.y, (int)size.x, (int)size.y);
 		
-		g.setColor(Color.BLACK);
+		//g.setColor(Color.BLACK);
 		g.drawRect((int)topLeft.x, (int)topLeft.y, (int)size.x, (int)size.y);
 		
 	}

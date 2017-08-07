@@ -12,8 +12,15 @@ public class Construct extends GameObject implements HasIngredients, Destroyable
 	{
 		super();
 		this.ingredients = resources;
+		setName("Construct");
 	}
 
+	public Construct(Construct toCopy)
+	{
+		super(toCopy);
+		this.ingredients = toCopy.getIngredients();
+	}
+	
 	@Override
 	public Ingredient[] getIngredientTypes() 
 	{

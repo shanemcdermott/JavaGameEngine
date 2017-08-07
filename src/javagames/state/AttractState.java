@@ -1,5 +1,6 @@
 package javagames.state;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -61,10 +62,19 @@ public abstract class AttractState extends State
 		time += delta;
 
 		Vector<GameObject> gameCopies = new Vector<GameObject>(gameObjects);
+		Vector<GameObject> movingCopies = new Vector<GameObject>();
+		
 		for (GameObject g : gameCopies) 
 		{
+			
+			g.setColor(Color.black);
 			g.update(delta);
+			if(g.isMoving())
+				movingCopies.add(g);
 		}
+		
+		checkCollisions(movingCopies, delta);
+		
 		gameObjects = gameCopies;
 		
 		if (shouldChangeState()) 
@@ -76,8 +86,24 @@ public abstract class AttractState extends State
 			getController().setState(state);
 		}
 	}
-
-
+	
+	protected void checkCollisions(List<GameObject> movingObjects, float deltaTime)
+	{
+		for(GameObject m : movingObjects)
+		{
+			for(GameObject s : gameObjects)
+			{
+				if(m == s) continue;
+				if(m.intersects(s.getBounds()))
+				{
+					m.onOverlap(s, deltaTime);
+					if(!m.isMoving()) break;
+				}
+			}
+		}
+		
+	}
+	
 	protected abstract boolean shouldChangeState(); 
 
 	private void setGameObjects(List<GameObject> gameObjects) 

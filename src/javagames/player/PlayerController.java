@@ -54,14 +54,13 @@ public class PlayerController extends GameObject implements PlayerControls
 		{
 			if(testItem != null)
 			{
-				Construct c = new Construct(testItem.getIngredients());
-				c.setSprite(testItem.getSprite());
-				c.setPosition(getPosition().add(getDirection().getV().mul(GameConstants.UNIT_SIZE)));
+				Construct c = new Construct(testItem);
+				c.setPosition(getDirection().getV().mul(GameConstants.UNIT_SIZE).add(getPosition()));
 				gameState.addGameObject(c);
 			}
 		}
 		
-		viewport.setPostion(getPosition());
+		viewport.setPosition(getPosition());
 	}
 	
 	public Viewport getViewport() 

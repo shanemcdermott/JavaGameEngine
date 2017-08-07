@@ -100,6 +100,11 @@
                         "h":32
                     }
                 }
+            },
+            "Bounds":{
+                "type": "Box",
+                "size": [7.5,7.5],
+                "channel": "PLAYER"
             }
         },
         "item":
@@ -118,12 +123,17 @@
                 "y": 48,
                 "w": 16,
                 "h": 16
+            },
+            "Bounds":{
+                "type": "Circle",
+                "radius": 3.0,
+                "channel": "SOLID"
             }
         },
         "tree_top":
         {
             "Class": "GameObject",
-            "Location": [-10.0, 15.0],
+            "Location": [-40.0, 15.0],
             "Sprite":
             {
                 "file": "PGTileseti.png",
@@ -133,11 +143,16 @@
                     "h": 16,
                     "width": 10.0,
                     "height": 10.0
+            },
+            "Bounds":{
+                "type": "Box",
+                "size": [10.0,10.0],
+                "channel": "NONE"
             }
         },
         "tree_mid":{
             "Class": "GameObject",
-            "Location": [-10.0, 5.0],
+            "Location": [-40.0, 5.0],
             "Sprite": 
             {
                 "file": "PGTileseti.png",
@@ -147,12 +162,17 @@
                 "h": 16,
                 "width": 30.0,
                 "height": 10.0
+            },
+            "Bounds":{
+                "type": "Box",
+                "size": [30.0,10.0],
+                "channel": "NONE"
             }
         },
         "tree_base":
         {
             "Class": "GameObject",
-            "Location": [-10.0, -10.0],
+            "Location": [-40.0, -10.0],
             "Sprite": 
             {
                 "file": "PGTileseti.png",
@@ -162,7 +182,12 @@
                 "h": 32,
                 "width": 30.0,
                 "height": 20.0
-            } 
+            },
+            "Bounds":{
+                "type": "Box",
+                "size": [30.0,20.0],
+                "channel": "SOLID"
+            }
         },
         "shop":
         {

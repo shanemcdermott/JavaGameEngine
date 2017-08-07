@@ -24,7 +24,7 @@ public class Viewport extends Transform implements PlayerControls
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void setPostion(Vector2f pos)
+	public void setPosition(Vector2f pos)
 	{
 		bounds.setPosition(pos);
 		translation = pos.mul(-1);

@@ -27,6 +27,10 @@ import javagames.game.Construct;
 import javagames.game.GameObject;
 import javagames.player.PlayerController;
 import javagames.state.LoadingState;
+import javagames.util.geom.BoundingBox;
+import javagames.util.geom.BoundingCircle;
+import javagames.util.geom.BoundingShape;
+import javagames.util.geom.CollisionChannel;
 import javagames.world.GameMap;
 import javagames.world.Ingredient;
 import javagames.world.IngredientObject;
@@ -129,14 +133,36 @@ public class ResourceLoader {
 	
 	public static GameObject loadObject(Class<?> clazz, JSONObject json) throws Exception
 	{
-			GameObject g = new GameObject();
-			g.setSprite(ResourceLoader.loadSprite(clazz, (JSONObject)json.get("Sprite")));
-			Vector2f pos = new Vector2f();
-			JSONArray p = (JSONArray)json.get("Location");
-			pos.x = (float)(double)p.get(0);
-			pos.y = (float)(double)p.get(1);
-			g.setPosition(pos);
-			return g;
+		GameObject obj = null;
+		if(json.get("Class").equals("GameObject"))
+			obj = new GameObject();
+		if(json.get("Class").equals("GameMap"))
+			obj = ResourceLoader.loadMap(clazz, json);
+		if(json.get("Class").equals("PlayerController"))
+			obj = ResourceLoader.loadPlayer(clazz, json);
+		if(json.get("Class").equals("Construct"))
+			obj = ResourceLoader.loadConstruct(clazz,json);
+		
+		if(json.containsKey("Sprite"))
+			obj.setSprite(ResourceLoader.loadSprite(clazz, (JSONObject)json.get("Sprite")));
+		
+		if(json.containsKey("Location"))
+			obj.setPosition(ResourceLoader.loadVector(clazz, (JSONArray)json.get("Location")));
+				
+		if(json.containsKey("Bounds"))
+			obj.setBounds(ResourceLoader.loadBounds(clazz, (JSONObject)json.get("Bounds")));
+
+		
+		return obj;
+	}
+	
+	public static Vector2f loadVector(Class<?> clazz, JSONArray json) throws Exception
+	{
+		return new Vector2f
+				(
+						(float)(double)json.get(0),
+						(float)(double)json.get(1)
+				);
 	}
 	
 	public static IngredientObject loadIngredients(Class<?> clazz, JSONObject json) throws Exception
@@ -156,20 +182,36 @@ public class ResourceLoader {
 	public static Construct loadConstruct(Class<?> clazz, JSONObject json) throws Exception
 	{
 		Construct g = new Construct(ResourceLoader.loadIngredients(clazz, (JSONObject)json.get("Ingredients")));
-		g.setSprite(ResourceLoader.loadSprite(clazz, (JSONObject)json.get("Sprite")));
-		Vector2f pos = new Vector2f();
-		JSONArray p = (JSONArray)json.get("Location");
-		pos.x = (float)(double)p.get(0);
-		pos.y = (float)(double)p.get(1);
-		g.setPosition(pos);
 		return g;
 	}
 	
 	public static PlayerController loadPlayer(Class<?> clazz, JSONObject json) throws Exception
 	{
 		PlayerController p = new PlayerController();
-		p.setSprite(ResourceLoader.loadSprite(clazz, (JSONObject)json.get("Sprite")));
 		return p;
+	}
+	
+	public static BoundingShape loadBounds(Class<?> clazz, JSONObject json) throws Exception
+	{
+		String t = (String)json.get("type");
+		if(t.equals("Box"))
+		{
+			JSONArray arr = (JSONArray)json.get("size");
+			float w = (float)(double)arr.get(0);
+			float h = (float)(double)arr.get(1);
+			BoundingBox b = new BoundingBox(w,h);
+			b.setChannel(CollisionChannel.valueOf((String)json.get("channel")));
+			return b;
+		}
+		else if(t.equals("Circle"))
+		{
+			float r = (float)(double)json.get("radius");
+			BoundingCircle b = new BoundingCircle(r);
+			b.setChannel(CollisionChannel.valueOf((String)json.get("channel")));
+			System.out.printf("Loaded circle with radius %f . \n", r);
+			return b;
+		}
+		return null;
 	}
 	
 	public static byte[] loadSound(Class<?> clazz, String fileName)

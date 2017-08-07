@@ -12,6 +12,7 @@ import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
 import javagames.util.geom.BoundingBox;
 import javagames.util.geom.BoundingShape;
+import javagames.util.geom.CollisionChannel;
 
 public class GameObject implements Drawable
 {
@@ -19,7 +20,7 @@ public class GameObject implements Drawable
 	protected int zOrder;
 	protected BoundingShape bounds;
 	protected float rotation;
-	private float rotationDelta;
+	protected float rotPerSec;
 	protected Direction direction;
 	protected Vector2f velocity;
 	protected Vector2f scale;
@@ -34,20 +35,65 @@ public class GameObject implements Drawable
 		scale = new Vector2f();
 		rotation = 0.f;
 		zOrder = 0;
+		name = "GameObject";
 	}
 
+	public GameObject(GameObject toCopy)
+	{
+		setBounds(toCopy.getBounds());
+		setPosition(toCopy.getPosition());
+		setSprite(toCopy.getSprite());
+		setVelocity(new Vector2f());
+		setScale(toCopy.getScale());
+		setRotation(toCopy.rotation);
+		setDirection(toCopy.getDirection());
+		setZOrder(toCopy.getZOrder());
+		setColor(toCopy.getColor());
+		setName(toCopy.getName());
+	}
+	
 	public BoundingShape getBounds() {
 		return bounds;
 	}
 
-	public void setBounds(BoundingShape inBounds) {
+	public void setBounds(BoundingShape inBounds) 
+	{
+		if(bounds!=null)
+			inBounds.setPosition(getPosition());
 		bounds = inBounds;
 	}
+	
+	public boolean intersects(BoundingShape bounds)
+	{
+		return this.bounds.intersects(bounds);
+	}
 
+	/**
+	 * Handles collision with other objects. Defaults to reverting position and stopping motion.
+	 * @param otherObject - Object that was collided with.
+	 * @param deltaTime - amount of time that has passed since last update.
+	 */
+	public void onOverlap(GameObject otherObject, float deltaTime)
+	{
+		System.out.printf("%s overlapped with %s at %s.\n", getName(), otherObject.getName(), otherObject.getPosition());
+		if(otherObject.getBounds().getChannel() == CollisionChannel.SOLID)
+		{
+			setPosition(getPosition().sub(velocity.mul(deltaTime)));
+			setVelocity(new Vector2f());
+		}
+		else if(otherObject.getBounds().getChannel() == CollisionChannel.NONE)
+			setColor(Color.RED);
+	}
+	
 	public void setVelocity(Vector2f vel) {
 		velocity = vel;
 	}
 
+	public void setRotation(float angle)
+	{
+		rotation = angle;
+	}
+	
 	public Direction getDirection() {
 		return direction;
 	}
@@ -56,6 +102,11 @@ public class GameObject implements Drawable
 		this.direction = direction;
 	}
 
+	public boolean isMoving()
+	{
+		return !velocity.equals(new Vector2f());
+	}
+	
 	public void move(Direction direction, float speed) {
 		setDirection(direction);
 		setVelocity(direction.getV().mul(speed));
@@ -80,7 +131,7 @@ public class GameObject implements Drawable
 	public void update(float deltaTime) {
 		updateSprite(deltaTime);
 		setPosition(getPosition().add(velocity.mul(deltaTime)));
-		rotation += rotationDelta * deltaTime;
+		rotation += rotPerSec * deltaTime;
 
 	}
 
@@ -138,8 +189,7 @@ public class GameObject implements Drawable
 	public void setSprite(Sprite sprite) 
 	{
 		this.sprite = sprite;
-		Vector2f v = sprite.getDimensions();
-		bounds = new BoundingBox(v.x, v.y);
+		
 	}
 
 	public Sprite getSprite() 

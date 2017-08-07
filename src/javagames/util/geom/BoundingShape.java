@@ -13,6 +13,7 @@ public abstract class BoundingShape implements Drawable
 	private int zOrder;
 	public boolean fill=false;
 	protected Vector2f position;
+	private CollisionChannel channel;
 	
 	/**
 	 * Checks intersection with another shape.
@@ -44,6 +45,14 @@ public abstract class BoundingShape implements Drawable
 	{
 		zOrder = order;
 		
+	}
+
+	public CollisionChannel getChannel() {
+		return channel;
+	}
+
+	public void setChannel(CollisionChannel channel) {
+		this.channel = channel;
 	}
 
 	@Override
