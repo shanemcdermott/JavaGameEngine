@@ -8,6 +8,7 @@ import javagames.state.AttractState;
 import javagames.util.Direction;
 import javagames.util.GameConstants;
 import javagames.util.Vector2f;
+import javagames.util.geom.BoundingShape;
 
 public class PlayerController extends GameObject implements PlayerControls
 {
@@ -54,8 +55,12 @@ public class PlayerController extends GameObject implements PlayerControls
 		{
 			if(testItem != null)
 			{
-				Construct c = new Construct(testItem);
+				Construct c = new Construct(testItem.getIngredients());
+				
+				c.setBounds(testItem.getBounds().copy());
 				c.setPosition(getDirection().getV().mul(GameConstants.UNIT_SIZE).add(getPosition()));
+				c.setSprite(testItem.getSprite());
+				c.setZOrder(testItem.getZOrder());
 				gameState.addGameObject(c);
 			}
 		}

@@ -10,7 +10,7 @@ import javagames.util.Vector2f;
 
 public class BoundingPoly extends BoundingShape {
 
-	private ArrayList<Vector2f> vertices;
+	protected ArrayList<Vector2f> vertices;
 	
 	public BoundingPoly()
 	{
@@ -28,6 +28,16 @@ public class BoundingPoly extends BoundingShape {
 		vertices.add(vertex);
 		if(numVertices()>2)
 			vertices = GeomUtility.quickHull(vertices);
+	}
+	
+	@Override
+	public BoundingPoly copy()
+	{
+		BoundingPoly p = new BoundingPoly();
+		p.setPosition(getPosition());
+		p.setChannel(getChannel());
+		p.vertices = new ArrayList<Vector2f>(vertices);
+		return p;
 	}
 	
 	@Override

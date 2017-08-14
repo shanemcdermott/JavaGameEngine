@@ -4,9 +4,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import javagames.g2d.Sprite;
 import javagames.game.GameObject;
 import javagames.util.Matrix3x3f;
+import javagames.util.ResourceLoader;
 import javagames.util.Vector2f;
 
 public class GameMap extends GameObject 
@@ -34,12 +38,22 @@ public class GameMap extends GameObject
 		}
 	}
 	
+	public GameMap(Sprite[] tiles, float tileSize, int[][] grid) 
+	{
+		super();
+		this.tileSize = tileSize;
+		offset = new Vector2f((1-DEF_SIZE) * tileSize * 0.5f);
+		this.tiles = tiles;
+		setGrid(grid);
+	}
+	
 	public void setGrid(int[][] grid)
 	{
 		this.grid = grid;
 		if(grid.length != DEF_SIZE)
 			offset = new Vector2f((1 - grid.length) * tileSize * 0.5f);
 	}
+	
 	
 	@Override
 	public void render(Graphics g, Matrix3x3f view)

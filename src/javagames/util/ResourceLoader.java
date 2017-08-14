@@ -123,9 +123,12 @@ public class ResourceLoader {
 		
 		for(int i = 0; i < tiles.length; i++)
 		{
-			tiles[i++] = ResourceLoader.loadSprite(clazz, (JSONObject)tileobj.get(i));
+			tiles[i] = ResourceLoader.loadSprite(clazz, (JSONObject)tileobj.get(i));
 		}
-		GameMap map = new GameMap(tiles,10.f);
+		
+		if(!json.containsKey("grid"))
+			return new GameMap(tiles,10.f);
+		
 		JSONArray jgrid = (JSONArray)json.get("grid");
 		int[][] grid = new int[jgrid.size()][jgrid.size()];
 		for(int y = 0; y < grid.length; y++)
@@ -136,8 +139,8 @@ public class ResourceLoader {
 				grid[x][y] = (int)(long)row.get(x);
 			}
 		}
-		map.setGrid(grid);
-		return map;
+		return new GameMap(tiles, 10.f, grid);
+		
 	}
 	
 	public static GameObject loadObject(Class<?> clazz, JSONObject json) throws Exception

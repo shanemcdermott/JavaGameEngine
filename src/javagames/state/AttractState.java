@@ -3,6 +3,7 @@ package javagames.state;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -14,13 +15,17 @@ import javagames.player.PlayerControls;
 import javagames.player.RelativeMouseInput;
 import javagames.player.Viewport;
 import javagames.util.Matrix3x3f;
+import javagames.util.Utility;
 import javagames.world.GameMap;
 
 /*State that cycles to another State */
 public abstract class AttractState extends State 
 {
 	private List<GameObject> gameObjects;
+	private List<GameObject> pendingObjects;
+	
 	private float time;
+	
 	//private Sprite background;
 	protected KeyboardInput keys;
 	protected RelativeMouseInput mouse;
@@ -33,6 +38,7 @@ public abstract class AttractState extends State
 	public AttractState(List<GameObject> gameObjects)
 	{
 		this.gameObjects = gameObjects;
+		pendingObjects = new ArrayList<GameObject>();
 	}
 	
 	@Override
@@ -52,6 +58,10 @@ public abstract class AttractState extends State
 		if(gameObjects == null)
 		{
 			gameObjects = new Vector<GameObject>();
+		}
+		if(pendingObjects == null)
+		{
+			pendingObjects = new ArrayList<GameObject>();
 		}
 		time = 0.0f;
 	}
@@ -75,7 +85,12 @@ public abstract class AttractState extends State
 		
 		checkCollisions(movingCopies, delta);
 		
-		gameObjects = gameCopies;
+		setGameObjects(gameCopies);
+		if(!pendingObjects.isEmpty())
+		{
+			gameObjects.addAll(pendingObjects);
+			pendingObjects.clear();
+		}
 		
 		if (shouldChangeState()) 
 		{
@@ -118,7 +133,7 @@ public abstract class AttractState extends State
 
 	public void addGameObject(GameObject gameObject)
 	{
-		gameObjects.add(gameObject);
+		pendingObjects.add(gameObject);
 	}
 	
 	public List<GameObject> getGameObjects() 
@@ -137,15 +152,19 @@ public abstract class AttractState extends State
 	}
 
 	@Override
-	public void render(Graphics2D g, Matrix3x3f view) {
+	public void render(Graphics2D g, Matrix3x3f view) 
+	{
 		view = viewport.asMatrix().mul(view);
 		map.render(g, view);
 		//background.render(g, view);
-		for (GameObject o : gameObjects) {
+		for (GameObject o : gameObjects) 
+		{
 			if(viewport.contains(o))
+			{
 				o.render(g, view);
+			}
 		}
-		
+		Utility.drawString(g, 30, 30, gameObjects.toString());
 		viewport.bounds.render(g, view);
 	}
 }

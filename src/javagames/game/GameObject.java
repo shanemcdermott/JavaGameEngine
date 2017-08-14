@@ -59,8 +59,15 @@ public class GameObject implements Drawable
 	public void setBounds(BoundingShape inBounds) 
 	{
 		if(bounds!=null)
-			inBounds.setPosition(getPosition());
-		bounds = inBounds;
+		{
+			Vector2f pos = bounds.getPosition();
+			bounds = inBounds;
+			bounds.setPosition(pos);
+		}
+		else
+		{
+			bounds = inBounds;
+		}
 	}
 	
 	public boolean intersects(BoundingShape bounds)
@@ -128,11 +135,11 @@ public class GameObject implements Drawable
 		this.scale=scale;
 	}
 
-	public void update(float deltaTime) {
-		updateSprite(deltaTime);
+	public void update(float deltaTime) 
+	{
 		setPosition(getPosition().add(velocity.mul(deltaTime)));
 		rotation += rotPerSec * deltaTime;
-
+		updateSprite(deltaTime);
 	}
 
 	@Override
@@ -150,7 +157,10 @@ public class GameObject implements Drawable
 	public void renderSprite(Graphics g, Matrix3x3f view)
 	{
 		if(sprite !=null)
+		{
 			sprite.render((Graphics2D)g, view, getPosition(), rotation);
+		}
+		
 	}
 	
 	public Color getColor() {
@@ -189,7 +199,6 @@ public class GameObject implements Drawable
 	public void setSprite(Sprite sprite) 
 	{
 		this.sprite = sprite;
-		
 	}
 
 	public Sprite getSprite() 
@@ -206,5 +215,11 @@ public class GameObject implements Drawable
 				spr.startAnimation(getDirection().getAnim());
 			spr.update(deltaTime);
 		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("%s (%s)", getName(), getPosition().toString());
 	}
 }

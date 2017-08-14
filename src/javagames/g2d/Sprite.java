@@ -15,7 +15,8 @@ public class Sprite {
 	private Vector2f topLeft;
 	private Vector2f bottomRight;
 
-	public Sprite(BufferedImage image, Vector2f topLeft, Vector2f bottomRight) {
+	public Sprite(BufferedImage image, Vector2f topLeft, Vector2f bottomRight) 
+	{
 		this.image = image;
 		this.topLeft = topLeft;
 		this.bottomRight = bottomRight;

@@ -25,7 +25,7 @@
             "Class": "GameMap",
             "tiles":
             [
-                "grass_short":
+                
                 {
                 "file": "PGTileseti.png",
                     "x": 32,
@@ -35,7 +35,6 @@
                     "width": 10.0,
                     "height": 10.0
                 },
-                "grass_long":
                 {
                     "file": "PGTileseti.png",
                     "x":0,

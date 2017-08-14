@@ -43,6 +43,7 @@ public class BoundingBox extends BoundingShape
 		this.position = new Vector2f(bb.position);
 		this.width = bb.width;
 		this.height = bb.height;
+		setChannel(getChannel());
 	}
 	
 	public BoundingBox(Rectangle rectangle)
@@ -54,6 +55,11 @@ public class BoundingBox extends BoundingShape
 		position.y = (float) rectangle.getCenterY();
 	}
 
+	public BoundingBox copy()
+	{
+		return new BoundingBox(this);
+	}
+	
 	public void resize(float width, float height)
 	{
 		this.width=width;

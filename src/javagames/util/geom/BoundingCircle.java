@@ -22,6 +22,13 @@ public class BoundingCircle extends BoundingShape
 		this.radius = radius;
 	}
 	
+	public BoundingCircle copy()
+	{
+		BoundingCircle c = new BoundingCircle(getPosition(), radius);
+		c.setChannel(getChannel());
+		return c;
+	}
+	
 	public void setRadius(float radius)
 	{
 		this.radius=radius;
