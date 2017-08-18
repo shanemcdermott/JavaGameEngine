@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import javagames.game.SpriteObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -13,7 +14,7 @@ import javagames.util.Matrix3x3f;
 import javagames.util.ResourceLoader;
 import javagames.util.Vector2f;
 
-public class GameMap extends GameObject 
+public class GameMap extends SpriteObject
 {
 	private final int DEF_SIZE = 10;
 	private float tileSize = 10.f;

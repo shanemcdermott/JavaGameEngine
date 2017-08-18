@@ -4,13 +4,14 @@ import java.awt.event.KeyEvent;
 
 import javagames.game.Construct;
 import javagames.game.GameObject;
+import javagames.game.SpriteObject;
 import javagames.state.AttractState;
 import javagames.util.Direction;
 import javagames.util.GameConstants;
 import javagames.util.Vector2f;
 import javagames.util.geom.BoundingShape;
 
-public class PlayerController extends GameObject implements PlayerControls
+public class PlayerController extends SpriteObject implements PlayerControls
 {
 
 	private Viewport viewport;

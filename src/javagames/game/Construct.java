@@ -4,7 +4,7 @@ import javagames.world.HasIngredients;
 import javagames.world.Ingredient;
 import javagames.world.IngredientObject;
 
-public class Construct extends GameObject implements HasIngredients, Destroyable
+public class Construct extends SpriteObject implements HasIngredients, Destroyable
 {
 	private IngredientObject ingredients;
 	

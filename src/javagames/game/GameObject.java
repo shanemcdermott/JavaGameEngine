@@ -1,12 +1,9 @@
 package javagames.game;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
+
 
 import javagames.g2d.Drawable;
-import javagames.g2d.Sprite;
-import javagames.g2d.SpriteSheet;
 import javagames.util.Direction;
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
@@ -16,7 +13,7 @@ import javagames.util.geom.CollisionChannel;
 
 public class GameObject implements Drawable
 {
-	protected Sprite sprite;
+
 	protected int zOrder;
 	protected BoundingShape bounds;
 	protected float rotation;
@@ -42,7 +39,6 @@ public class GameObject implements Drawable
 	{
 		setBounds(toCopy.getBounds());
 		setPosition(toCopy.getPosition());
-		setSprite(toCopy.getSprite());
 		setVelocity(new Vector2f());
 		setScale(toCopy.getScale());
 		setRotation(toCopy.rotation);
@@ -139,13 +135,11 @@ public class GameObject implements Drawable
 	{
 		setPosition(getPosition().add(velocity.mul(deltaTime)));
 		rotation += rotPerSec * deltaTime;
-		updateSprite(deltaTime);
 	}
 
 	@Override
 	public void render(Graphics g, Matrix3x3f view)
 	{
-		renderSprite(g,view);
 		renderBounds(g,view);
 	}
 
@@ -154,15 +148,7 @@ public class GameObject implements Drawable
 		bounds.render(g, view);
 	}
 	
-	public void renderSprite(Graphics g, Matrix3x3f view)
-	{
-		if(sprite !=null)
-		{
-			sprite.render((Graphics2D)g, view, getPosition(), rotation);
-		}
-		
-	}
-	
+
 	public Color getColor() {
 		return color;
 	}
@@ -187,7 +173,6 @@ public class GameObject implements Drawable
 	@Override
 	public void setZOrder(int order) {
 		zOrder = order;
-
 	}
 
 	@Override
@@ -196,27 +181,6 @@ public class GameObject implements Drawable
 	}
 
 
-	public void setSprite(Sprite sprite) 
-	{
-		this.sprite = sprite;
-	}
-
-	public Sprite getSprite() 
-	{
-		return sprite;
-	}
-
-	public void updateSprite(float deltaTime) 
-	{
-		if(sprite != null && sprite instanceof SpriteSheet)
-		{
-			SpriteSheet spr = (SpriteSheet)sprite;
-			if(!velocity.equals(new Vector2f()))
-				spr.startAnimation(getDirection().getAnim());
-			spr.update(deltaTime);
-		}
-	}
-	
 	@Override
 	public String toString()
 	{

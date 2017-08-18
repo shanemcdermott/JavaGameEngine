@@ -1,9 +1,10 @@
 package javagames.player;
 
 import javagames.game.GameObject;
+import javagames.game.SpriteObject;
 import javagames.util.Vector2f;
 
-public class GameCursor extends GameObject implements MouseControls 
+public class GameCursor extends SpriteObject implements MouseControls
 {
 
 	@Override

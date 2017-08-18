@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import javagames.g2d.SpriteSheet;
 import javagames.game.Construct;
 import javagames.game.GameObject;
+import javagames.game.SpriteObject;
 import javagames.player.KeyboardInput;
 import javagames.player.PlayerController;
 import javagames.player.PlayerControls;
@@ -84,7 +86,13 @@ public abstract class AttractState extends State
 		}
 		
 		checkCollisions(movingCopies, delta);
-		
+
+		for(GameObject g: gameCopies)
+		{
+			if(g instanceof SpriteObject)
+				((SpriteObject)g).updateSprite(delta);
+		}
+
 		setGameObjects(gameCopies);
 		if(!pendingObjects.isEmpty())
 		{

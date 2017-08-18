@@ -137,7 +137,7 @@
         },
         "tree_top":
         {
-            "Class": "GameObject",
+            "Class": "SpriteObject",
             "Location": [-40.0, 15.0],
             "Sprite":
             {
@@ -156,7 +156,7 @@
             }
         },
         "tree_mid":{
-            "Class": "GameObject",
+            "Class": "SpriteObject",
             "Location": [-40.0, 5.0],
             "Sprite": 
             {
@@ -176,7 +176,7 @@
         },
         "tree_base":
         {
-            "Class": "GameObject",
+            "Class": "SpriteObject",
             "Location": [-40.0, -10.0],
             "Sprite": 
             {

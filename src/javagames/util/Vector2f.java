@@ -79,6 +79,9 @@ public class Vector2f {
 		return new Vector2f(x / scalar, y / scalar);
 	}
 
+	public Vector2f div(Vector2f v) {
+		return new Vector2f(x/v.x, y/v.y);
+	}
 	public Vector2f mid(Vector2f v)
 	{
 		return add(v).mul(0.5f);

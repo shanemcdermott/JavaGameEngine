@@ -12,11 +12,12 @@ import genesis.world.Biome;
 import genesis.world.BiomeMajor;
 import genesis.world.Ecosystem;
 import javagames.game.GameObject;
+import javagames.game.SpriteObject;
 import javagames.util.Matrix3x3f;
 import javagames.util.Vector2f;
 import javagames.util.geom.BoundingBox;
 
-public class GameRoom extends GameObject implements Transformable <Dungeon> 
+public class GameRoom extends SpriteObject implements Transformable <Dungeon>
 {
 	
 	private Ecosystem ecosystem;

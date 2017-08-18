@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.xml.parsers.ParserConfigurationException;
 
+import javagames.game.SpriteObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.w3c.dom.Document;
@@ -146,17 +147,33 @@ public class ResourceLoader {
 	public static GameObject loadObject(Class<?> clazz, JSONObject json) throws Exception
 	{
 		GameObject obj = null;
-		if(json.get("Class").equals("GameObject"))
-			obj = new GameObject();
-		if(json.get("Class").equals("GameMap"))
-			obj = ResourceLoader.loadMap(clazz, json);
-		if(json.get("Class").equals("PlayerController"))
-			obj = ResourceLoader.loadPlayer(clazz, json);
-		if(json.get("Class").equals("Construct"))
-			obj = ResourceLoader.loadConstruct(clazz,json);
+		switch((String)json.get("Class"))
+		{
+			case "GameObject":
+				obj = new GameObject();
+				break;
+			case "SpriteObject":
+				obj = new SpriteObject();
+				break;
+			case "GameMap":
+				obj = ResourceLoader.loadMap(clazz, json);
+				break;
+			case "PlayerController":
+				obj = ResourceLoader.loadPlayer(clazz,json);
+				break;
+			case "Construct":
+				obj = ResourceLoader.loadConstruct(clazz,json);
+				break;
+			default:
+				System.out.printf("Unrecognized Class: %s\n", json.get("Class"));
+		}
+
 		
-		if(json.containsKey("Sprite"))
-			obj.setSprite(ResourceLoader.loadSprite(clazz, (JSONObject)json.get("Sprite")));
+		if(json.containsKey("Sprite")) {
+			SpriteObject spr = (SpriteObject)obj;
+			spr.setSprite(ResourceLoader.loadSprite(clazz, (JSONObject) json.get("Sprite")));
+			obj = spr;
+		}
 		
 		if(json.containsKey("Location"))
 			obj.setPosition(ResourceLoader.loadVector(clazz, (JSONArray)json.get("Location")));
