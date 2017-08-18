@@ -25,16 +25,16 @@ public abstract class AttractState extends State
 {
 	private List<GameObject> gameObjects;
 	private List<GameObject> pendingObjects;
-	
+
 	private float time;
-	
+
 	//private Sprite background;
 	protected KeyboardInput keys;
 	protected RelativeMouseInput mouse;
 	protected Viewport viewport;
 	protected PlayerControls player;
 	protected GameMap map;
-	
+
 	public AttractState() {}
 
 	public AttractState(List<GameObject> gameObjects)
@@ -42,9 +42,9 @@ public abstract class AttractState extends State
 		this.gameObjects = gameObjects;
 		pendingObjects = new ArrayList<GameObject>();
 	}
-	
+
 	@Override
-	public void enter() 
+	public void enter()
 	{
 		keys = (KeyboardInput) controller.getAttribute("keys");
 		mouse = (RelativeMouseInput) controller.getAttribute("mouse");
@@ -69,22 +69,22 @@ public abstract class AttractState extends State
 	}
 
 	@Override
-	public void updateObjects(float delta) 
+	public void updateObjects(float delta)
 	{
 		time += delta;
 
 		Vector<GameObject> gameCopies = new Vector<GameObject>(gameObjects);
 		Vector<GameObject> movingCopies = new Vector<GameObject>();
-		
-		for (GameObject g : gameCopies) 
+
+		for (GameObject g : gameCopies)
 		{
-			
+
 			g.setColor(Color.black);
 			g.update(delta);
 			if(g.isMoving())
 				movingCopies.add(g);
 		}
-		
+
 		checkCollisions(movingCopies, delta);
 
 		for(GameObject g: gameCopies)
@@ -99,17 +99,17 @@ public abstract class AttractState extends State
 			gameObjects.addAll(pendingObjects);
 			pendingObjects.clear();
 		}
-		
-		if (shouldChangeState()) 
+
+		if (shouldChangeState())
 		{
 			State state = getNextState();
 			if(state instanceof AttractState)
 				((AttractState)state).setGameObjects(gameObjects);
-			
+
 			getController().setState(state);
 		}
 	}
-	
+
 	protected void checkCollisions(List<GameObject> movingObjects, float deltaTime)
 	{
 		for(GameObject m : movingObjects)
@@ -124,12 +124,12 @@ public abstract class AttractState extends State
 				}
 			}
 		}
-		
-	}
-	
-	protected abstract boolean shouldChangeState(); 
 
-	private void setGameObjects(List<GameObject> gameObjects) 
+	}
+
+	protected abstract boolean shouldChangeState();
+
+	private void setGameObjects(List<GameObject> gameObjects)
 	{
 		this.gameObjects = gameObjects;
 	}
@@ -143,14 +143,14 @@ public abstract class AttractState extends State
 	{
 		pendingObjects.add(gameObject);
 	}
-	
-	public List<GameObject> getGameObjects() 
+
+	public List<GameObject> getGameObjects()
 	{
 		return gameObjects;
 	}
 
 	@Override
-	public void processInput(float delta) 
+	public void processInput(float delta)
 	{
 		if (keys.keyDownOnce(KeyEvent.VK_ESCAPE)) {
 			app.shutDownGame();
@@ -160,12 +160,12 @@ public abstract class AttractState extends State
 	}
 
 	@Override
-	public void render(Graphics2D g, Matrix3x3f view) 
+	public void render(Graphics2D g, Matrix3x3f view)
 	{
 		view = viewport.asMatrix().mul(view);
 		map.render(g, view);
 		//background.render(g, view);
-		for (GameObject o : gameObjects) 
+		for (GameObject o : gameObjects)
 		{
 			if(viewport.contains(o))
 			{

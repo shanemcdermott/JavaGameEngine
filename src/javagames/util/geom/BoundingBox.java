@@ -30,7 +30,12 @@ public class BoundingBox extends BoundingShape
 	{
 		this(new Vector2f(), new Vector2f(width,height));
 	}
-	
+
+	public BoundingBox(Vector2f size)
+	{
+		this(new Vector2f(), size);
+	}
+
 	public BoundingBox(Vector2f position, Vector2f size)
 	{
 		this.position = position;
