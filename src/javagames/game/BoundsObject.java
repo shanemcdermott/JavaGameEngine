@@ -19,9 +19,14 @@ public class BoundsObject implements Drawable
 
     public BoundsObject()
     {
-        bounds = new BoundingBox();
-        name = "BoundsObject";
+        this(new BoundingBox());
     }
+
+    public BoundsObject(BoundingShape bounds)
+	{
+		this.bounds = bounds;
+		name = "BoundsObject";
+	}
 
     public BoundsObject(BoundsObject toCopy)
     {
@@ -122,7 +127,7 @@ public class BoundsObject implements Drawable
 	@Override
 	public String toString()
 	{
-		return String.format("%s (%s)", getName(), getPosition().toString());
+		return String.format("%s:{ Position: %s }", getName(), getPosition().toString());
 	}
 
 }

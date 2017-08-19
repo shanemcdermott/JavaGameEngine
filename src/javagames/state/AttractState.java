@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import javagames.ai.TileGraph;
 import javagames.g2d.SpriteSheet;
 import javagames.game.Construct;
 import javagames.game.GameObject;
@@ -18,6 +19,7 @@ import javagames.player.RelativeMouseInput;
 import javagames.player.Viewport;
 import javagames.util.Matrix3x3f;
 import javagames.util.Utility;
+import javagames.util.Vector2f;
 import javagames.world.GameMap;
 
 /*State that cycles to another State */
@@ -34,6 +36,7 @@ public abstract class AttractState extends State
 	protected Viewport viewport;
 	protected PlayerControls player;
 	protected GameMap map;
+
 
 	public AttractState() {}
 
@@ -132,6 +135,17 @@ public abstract class AttractState extends State
 	private void setGameObjects(List<GameObject> gameObjects)
 	{
 		this.gameObjects = gameObjects;
+
+		if(time>5.f)
+		{
+			TileGraph graph = new TileGraph(20,20, new Vector2f(200.f));
+			for (GameObject go : gameObjects)
+			{
+				graph.addObject(go);
+			}
+			System.out.printf("Graph:\n%s\n", graph.toString());
+			time = 0.f;
+		}
 	}
 
 	/**
